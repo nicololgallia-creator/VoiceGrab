@@ -694,31 +694,13 @@ contextBridge.exposeInMainWorld("electronAPI", {
   resizeDictationErrorWindowToContent: (surfaceHeight) =>
     ipcRenderer.invoke("resize-dictation-error-window-to-content", surfaceHeight),
 
-  // Update functions
-  checkForUpdates: () => ipcRenderer.invoke("check-for-updates"),
-  downloadUpdate: () => ipcRenderer.invoke("download-update"),
-  installUpdate: () => ipcRenderer.invoke("install-update"),
+  // App version
   getAppVersion: () => ipcRenderer.invoke("get-app-version"),
   getPostMigrationState: () => ipcRenderer.invoke("get-post-migration-state"),
   getOAuthProtocolRegistered: () => ipcRenderer.invoke("get-oauth-protocol-registered"),
   getOAuthProtocol: () => ipcRenderer.invoke("get-oauth-protocol"),
   markBundleMigrated: () => ipcRenderer.invoke("mark-bundle-migrated"),
   markBundleMigrationDismissed: () => ipcRenderer.invoke("mark-bundle-migration-dismissed"),
-  getUpdateStatus: () => ipcRenderer.invoke("get-update-status"),
-  getUpdateInfo: () => ipcRenderer.invoke("get-update-info"),
-  setAutoUpdatesEnabled: (enabled) => ipcRenderer.invoke("set-auto-updates-enabled", enabled),
-
-  // Update event listeners
-  onUpdateStatusChanged: registerListener(
-    "update-status-changed",
-    (callback) => (_event, status) => callback(status)
-  ),
-  onUpdateAvailable: registerListener("update-available"),
-  onUpdateNotAvailable: registerListener("update-not-available"),
-  onUpdateDownloaded: registerListener("update-downloaded"),
-  onUpdateDownloadProgress: registerListener("update-download-progress"),
-  onUpdateError: registerListener("update-error"),
-
   // Audio event listeners
   onCancelHotkeyPressed: registerListener("cancel-hotkey-pressed", (cb) => () => cb()),
   registerCancelHotkey: (key) => ipcRenderer.invoke("register-cancel-hotkey", key),

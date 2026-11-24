@@ -62,7 +62,8 @@ function createRegistryLoader({
     require("./downloadUtils")
       .getAssetDownloadSession()
       .fetch(...args),
-  isEnabled = () => process.env.OPENWHISPR_MODEL_REGISTRY_MODE !== "bundled",
+  // Off unless the user turns on "Model list updates" (OPENWHISPR_MODEL_REGISTRY_MODE=live).
+  isEnabled = () => process.env.OPENWHISPR_MODEL_REGISTRY_MODE === "live",
   onError = () => {},
   startupDelayMs = 5000,
   intervalMs = 15 * 60 * 1000,

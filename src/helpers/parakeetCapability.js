@@ -14,24 +14,15 @@ function compareVersions(left, right) {
   return 0;
 }
 
-function getParakeetCapability({ platform = process.platform, systemVersion } = {}) {
-  if (platform !== "darwin") return { supported: true };
-
-  const detectedVersion =
-    systemVersion ??
-    (typeof process.getSystemVersion === "function" ? process.getSystemVersion() : null);
-
-  // Plain Node does not expose Electron's system-version API. Production main-process
-  // calls always provide it; allowing Node keeps build tooling and unit tests portable.
-  if (!detectedVersion || compareVersions(detectedVersion, PARAKEET_MINIMUM_MACOS_VERSION) >= 0) {
-    return { supported: true };
-  }
-
+// The sherpa-onnx WebSocket server has no host option: it listens on every network
+// interface (asio tcp::v4 in sherpa-onnx v1.13.8), with no password. Every local model
+// that runs through it (Oruk, NVIDIA, Cohere) stays off until it can bind 127.0.0.1.
+function getParakeetCapability() {
   return {
     supported: false,
     code: PARAKEET_UNSUPPORTED_OS_CODE,
-    message: `Parakeet requires macOS ${PARAKEET_MINIMUM_MACOS_VERSION} or later. Use cloud transcription (or Whisper where supported) on this Mac.`,
-    minimumMacOSVersion: PARAKEET_MINIMUM_MACOS_VERSION,
+    message:
+      "Parakeet is turned off in VoiceGrab: its server cannot be limited to this computer. Use Whisper.",
   };
 }
 
@@ -41,7 +32,6 @@ function assertParakeetSupported(options) {
 
   throw Object.assign(new Error(capability.message), {
     code: capability.code,
-    minimumMacOSVersion: capability.minimumMacOSVersion,
   });
 }
 

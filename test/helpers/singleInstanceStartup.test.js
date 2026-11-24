@@ -15,6 +15,7 @@ function runStartup({ lockAvailable, hidden }) {
     commandLine: { appendSwitch() {} },
     getPath: () => "/fixture/user-data",
     setPath() {},
+    setName() {},
     setDesktopName() {},
     requestSingleInstanceLock: () => {
       events.push(["lock"]);
@@ -29,7 +30,6 @@ function runStartup({ lockAvailable, hidden }) {
   const mocks = {
     electron: { app },
     path,
-    http: {},
     tls: { getCACertificates: () => [] },
     dotenv: { config: () => ({}) },
     "./src/helpers/xwayland": {
@@ -38,9 +38,6 @@ function runStartup({ lockAvailable, hidden }) {
     },
     "./src/helpers/hotkeyRepeatGate": { createHotkeyRepeatGate() {} },
     "./src/helpers/linuxGpuCompositing": { shouldDisableGpuCompositing: () => false },
-    "./src/helpers/linuxUrlSchemeHandler": {
-      registerLinuxUrlSchemeHandler: () => ({ registered: true }),
-    },
   };
   const context = {
     require: (name) => {

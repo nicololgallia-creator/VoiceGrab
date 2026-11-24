@@ -53,8 +53,8 @@ test("the guard covers the default session and later ones, but not asset or upda
   app.emit("session-created", later);
   assert.equal(await decide(later, "request", "https://blocked.example/"), true);
 
-  // Model and update downloads keep their own sessions, outside the guard.
-  for (const name of ["local-model-assets", "electron-updater"]) {
+  // Model downloads keep their own session, outside the guard.
+  for (const name of ["local-model-assets"]) {
     app.emit("session-created", session.fromPartition(name));
     assert.equal(session.fromPartition(name).handlers.request, undefined, name);
   }

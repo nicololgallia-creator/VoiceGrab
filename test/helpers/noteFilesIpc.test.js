@@ -1155,10 +1155,9 @@ for (const transition of ["account switch", "scope sign-out", "token sign-out"])
   });
 }
 
-for (const mode of ["normal", "update", "held delete"]) {
-  const updating = mode === "update";
-  // Every quit, an update's included, also ends a live meeting as app-quit in
-  // the audit log while its windows are still open.
+for (const mode of ["normal", "held delete"]) {
+  // Every quit also ends a live meeting as app-quit in the audit log while
+  // its windows are still open.
   test(`${mode} quit synchronously drains queued and deferred note writes once and closes the audit session`, async () => {
     await enableMirror();
     await invoke("db-upsert-note-from-cloud", { id: 100, content: "body at quit" });
@@ -1196,7 +1195,6 @@ for (const mode of ["normal", "update", "held delete"]) {
           auditCloses++;
         },
       },
-      updateManager: { isQuittingForUpdate: updating, cleanup: () => {} },
       windowManager:
         mode === "held delete"
           ? {
@@ -1262,8 +1260,8 @@ for (const mode of ["normal", "update", "held delete"]) {
       recordsAtQuit + (mode === "held delete" ? 1 : 0),
       "scheduled immediates do not write twice after the drain"
     );
-    assert.equal(prevented, !updating);
-    assert.equal(exited, !updating);
+    assert.equal(prevented, true);
+    assert.equal(exited, true);
     if (mode === "held delete") assert.match(bodyAtExit, /body from held delete$/);
   });
 }

@@ -159,7 +159,7 @@ export default function CompactPermissionsStep({
   };
 
   return (
-    <CompactOnboardingFrame showLegalNotice={false}>
+    <CompactOnboardingFrame>
       <div className="onboarding-shell-scroll relative flex h-full flex-col overflow-y-auto px-5 pb-6 pt-45 text-center">
         {/* text-balance evens the two lines out ("Set up OpenWhispr" / "in 3
             minutes") instead of leaving one word stranded. Preferred over a

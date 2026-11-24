@@ -19,7 +19,6 @@ const eventHandlers = new Map();
 const broadcasts = [];
 const userDataDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "account-scope-ipc-"));
 let tokenState = { token: null, generation: 0 };
-const autoUpdater = { checkForUpdates: async () => null };
 
 const electronStub = {
   app: {
@@ -65,7 +64,6 @@ const electronStub = {
 
 Module._load = function loadWithMocks(request, parent, isMain) {
   if (request === "electron") return electronStub;
-  if (request === "electron-updater") return { autoUpdater };
   if (parent?.filename.endsWith("/affiliateLinks.js") && request === "./tokenStore") {
     return { getState: () => ({ ...tokenState }) };
   }
@@ -498,10 +496,9 @@ test("activation storage failure cannot prevent clearing the local bearer", asyn
   }
 });
 
-// Restores what an updater test changes on the fake handler `this`.
-function restoreUpdaterState(t) {
+// Restores what a sign-out or policy test changes on the fake handler `this`.
+function restoreHandlerState(t) {
   const previous = {
-    updateManager: fakeThis.updateManager,
     databaseManager: fakeThis.databaseManager,
     windowManager: fakeThis.windowManager,
     metaActivation: fakeThis.metaActivation,
@@ -509,7 +506,6 @@ function restoreUpdaterState(t) {
   };
   const previousTokenState = tokenState;
   t.after(() => {
-    fakeThis.updateManager.cleanup();
     Object.assign(fakeThis, previous);
     tokenState = previousTokenState;
   });
@@ -525,23 +521,6 @@ function scopedDatabase(activeAccountId) {
     },
     { get: (value, property) => (property in value ? value[property] : anything()) }
   );
-}
-
-// Skip native updater setup; an AppImage keeps policy checks supported on Linux.
-function createUpdater() {
-  const previousEnvironment = process.env.NODE_ENV;
-  const previousAppImage = process.env.APPIMAGE;
-  try {
-    process.env.NODE_ENV = "development";
-    if (process.platform === "linux") process.env.APPIMAGE = "/tmp/OpenWhispr.AppImage";
-    const UpdateManager = require("../../src/updater");
-    return new UpdateManager({ getPolicy: (options) => fakeThis.getUpdatePolicy(options) });
-  } finally {
-    if (previousEnvironment === undefined) delete process.env.NODE_ENV;
-    else process.env.NODE_ENV = previousEnvironment;
-    if (previousAppImage === undefined) delete process.env.APPIMAGE;
-    else process.env.APPIMAGE = previousAppImage;
-  }
 }
 
 const TEST_API_URL = "https://api.openwhispr.test";
@@ -589,8 +568,8 @@ function cachePolicyForHeaders(authHeaders, data) {
   return identity;
 }
 
-async function signOutUpdater(t, generation) {
-  restoreUpdaterState(t);
+async function signOutFixture(t, generation) {
+  restoreHandlerState(t);
   tokenState = { token: `sign-out-token-${generation}`, generation };
   fakeThis.databaseManager = scopedDatabase("departing-account");
   const win = {
@@ -604,33 +583,8 @@ async function signOutUpdater(t, generation) {
   fakeThis.productEvents = { flush: async () => {} };
   await setScope("departing-account", generation);
   await fakeThis.refreshEffectivePolicy();
-  fakeThis.updateManager = createUpdater();
-  fakeThis.updateManager.updatePolicy({
-    success: true,
-    managed: true,
-    policy: { updates: { mode: "it_managed" } },
-  });
-  return { manager: fakeThis.updateManager, win };
+  return { win };
 }
-
-test("local sign-out restores guest updater readiness without a server or renderer response", async (t) => {
-  useTestApi(t);
-  const { manager } = await signOutUpdater(t, 100);
-  const requests = [];
-  t.mock.method(electronStub.net, "fetch", async (url, init) => {
-    requests.push({ url, headers: init.headers, tokenState: { ...tokenState } });
-    throw new Error("offline");
-  });
-  const result = await handlers.get("auth-clear-session")({ sender: {} });
-  await new Promise(setImmediate);
-
-  assert.equal(result.success, true);
-  assert.equal(readBinding(), null);
-  assert.equal(fakeThis.databaseManager.activeAccountId, null);
-  assert.equal((await manager.getUpdateStatus()).policyReady, true);
-  assert.equal((await manager.getUpdateStatus()).updateMode, "user_choice");
-  assert.deepEqual(requests, []);
-});
 
 test(
   "local sign-out retires both collectors after close settles and prevents later dispatch",
@@ -641,7 +595,7 @@ test(
       { request: fakeThis.productEvents.request, path: "/api/product-events/batch" },
     ];
     useTestApi(t);
-    const { manager } = await signOutUpdater(t, 110);
+    await signOutFixture(t, 110);
     const uploaded = deferred();
     const response = deferred();
     const closing = deferred();
@@ -685,7 +639,6 @@ test(
     assert.equal((await signOut).success, true);
     assert.deepEqual(tokenState, { token: null, generation: 111 });
     assert.ok(requests.every(({ signal }) => signal.aborted));
-    assert.equal((await manager.getUpdateStatus()).policyReady, true);
     response.resolve(Response.json({ accepted: [] }));
     assert.ok((await Promise.all(pending)).every((result) => result.success === false));
     for (const { request, path } of collectors)
@@ -694,233 +647,8 @@ test(
   }
 );
 
-test("completed cookie sign-out discards a pending cookie-authorized updater policy", async (t) => {
-  const { deferred } = require("./harness/deferred");
-  const { manager, win } = await signOutUpdater(t, 102);
-  tokenState = { token: null, generation: 102 };
-  const clearing = deferred();
-  const cleared = deferred();
-  const requested = deferred();
-  const reply = deferred();
-  let cookie = "departing-cookie";
-  win.webContents.session.cookies.get = async () =>
-    cookie ? [{ name: "__Secure-openwhispr.session_token", value: cookie }] : [];
-  win.webContents.session.clearStorageData = async (options) => {
-    assert.deepEqual(options, { storages: ["cookies"] });
-    clearing.resolve();
-    await cleared.promise;
-    cookie = null;
-  };
-  t.mock.method(electronStub.BrowserWindow, "fromWebContents", () => win);
-  t.mock.method(electronStub.net, "fetch", async (_url, init) => {
-    assert.equal(init.headers.Cookie, "__Secure-openwhispr.session_token=departing-cookie");
-    requested.resolve();
-    return reply.promise;
-  });
-  useTestApi(t);
-  const response = {
-    ok: true,
-    status: 200,
-    json: async () => ({ data: managedPolicy("it_managed") }),
-  };
-  t.after(() => {
-    cleared.resolve();
-    reply.resolve(response);
-  });
-  broadcasts.length = 0;
-  const signOut = handlers.get("auth-clear-session")({ sender: {} });
-  await clearing.promise;
-  const policy = manager.refreshPolicy();
-  await requested.promise;
-  cleared.resolve();
-  assert.equal((await signOut).success, true);
-  await new Promise(setImmediate);
-  assert.equal((await manager.getUpdateStatus()).policyReady, true);
-  assert.equal((await manager.getUpdateStatus()).updateMode, "user_choice");
-
-  reply.resolve(response);
-  await policy;
-  assert.equal((await manager.getUpdateStatus()).policyReady, true);
-  assert.equal((await manager.getUpdateStatus()).updateMode, "user_choice");
-});
-
-test("an earlier consumer's bearer 401 permits guest updates while a held IT verdict stands", async (t) => {
-  restoreUpdaterState(t);
-  useTestApi(t);
-  let refusals = 0;
-  t.mock.method(electronStub.net, "fetch", async () => {
-    refusals++;
-    return { ok: false, status: 401, json: async () => ({}) };
-  });
-  // A 401 leaves the renderer's account scope in place, and another consumer
-  // can receive it before the updater's first lookup.
-  tokenState = { token: "expired-bearer", generation: 110 };
-  fakeThis.databaseManager = scopedDatabase("expired-account");
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  require("../../src/helpers/accountScopeBinding").persist("expired-account", "expired-bearer");
-  fakeThis.updateManager = createUpdater();
-  fakeThis.updateManager.httpExecutor = { resumeRequests() {}, abortRequests() {} };
-  // The updater logs its checks to stdout, which the test runner also uses for
-  // its own messages from this file's process.
-  t.mock.method(console, "log", () => {});
-  let checks = 0;
-  t.mock.method(autoUpdater, "checkForUpdates", async () => {
-    checks++;
-    return null;
-  });
-  // Another consumer meets the 401 before the updater.
-  await fakeThis.refreshEffectivePolicy();
-  await fakeThis.updateManager.refreshPolicy();
-  let status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, true);
-  assert.equal(status.updateMode, "user_choice");
-  fakeThis.updateManager._autoCheckForUpdates("Periodic");
-  await new Promise(setImmediate);
-  assert.equal(checks, 1);
-  fakeThis.updateManager._autoCheckForUpdates("Periodic");
-  await new Promise(setImmediate);
-  assert.equal(checks, 2);
-  assert.equal((await fakeThis.updateManager.getUpdateStatus()).policyReady, true);
-  assert.equal(refusals, 1);
-
-  cachePolicyForHeaders(
-    { Authorization: "Bearer expired-managed-bearer" },
-    managedPolicy("it_managed")
-  );
-  tokenState = { token: "expired-managed-bearer", generation: 111 };
-  fakeThis.updateManager.invalidatePolicy();
-  const refusalsBefore = refusals;
-  await fakeThis.updateManager.refreshPolicy();
-  await new Promise(setImmediate);
-  assert.equal(refusals, refusalsBefore + 1);
-  status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, true);
-  assert.equal(status.updateMode, "it_managed");
-});
-
 // Without evidence that anything manages the account, a failed lookup
 // restricts nothing (effectivePolicyManager.js), updates included.
-test("earlier non-401 policy failures leave a never-managed account's updates to the user", async (t) => {
-  restoreUpdaterState(t);
-  useTestApi(t);
-  fakeThis.databaseManager = scopedDatabase("unavailable-account");
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  let requests = 0;
-  let httpStatus;
-  t.mock.method(electronStub.net, "fetch", async () => {
-    requests++;
-    if (httpStatus === undefined) throw new Error("offline");
-    return { ok: false, status: httpStatus, json: async () => ({}) };
-  });
-  for (const [index, status] of [403, 503, undefined].entries()) {
-    httpStatus = status;
-    tokenState = { token: `unavailable-bearer-${index}`, generation: 112 + index };
-    fakeThis.updateManager = createUpdater();
-    await fakeThis.refreshEffectivePolicy();
-    await fakeThis.updateManager.refreshPolicy();
-    const updateStatus = await fakeThis.updateManager.getUpdateStatus();
-    assert.equal(updateStatus.policyReady, true);
-    assert.equal(updateStatus.updateMode, "user_choice");
-    fakeThis.updateManager.cleanup();
-  }
-  assert.ok(requests >= 3);
-});
-
-test("a refused bearer the server called unresolvable stays fail-closed, not a guest", async (t) => {
-  restoreUpdaterState(t);
-  useTestApi(t);
-  t.mock.method(electronStub.net, "fetch", async () => ({
-    ok: false,
-    status: 401,
-    json: async () => ({}),
-  }));
-  // The fail-closed marker an earlier POLICY_UNRESOLVABLE left on disk.
-  cachePolicyForHeaders(
-    { Authorization: "Bearer unresolved-bearer" },
-    {
-      managed: false,
-      policy: null,
-      policyUpdatedAt: null,
-      requiresManagedPolicy: true,
-    }
-  );
-  tokenState = { token: "unresolved-bearer", generation: 115 };
-  fakeThis.databaseManager = scopedDatabase(null);
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  fakeThis.updateManager = createUpdater();
-  await fakeThis.updateManager.refreshPolicy();
-  const status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, false);
-  assert.equal(status.updateMode, null);
-});
-
-test("a sign-in-required device policy deployed while signed out sets the updater's mode", async (t) => {
-  const {
-    defaultDevicePolicy,
-    normalizeDeviceValues,
-  } = require("../../src/helpers/managedDevicePolicy");
-  restoreUpdaterState(t);
-  useTestApi(t);
-  const deviceSnapshot = fakeThis.managedDevicePolicy.getSnapshot;
-  let device = normalizeDeviceValues({});
-  fakeThis.managedDevicePolicy.getSnapshot = () => device;
-  t.after(() => {
-    fakeThis.managedDevicePolicy.getSnapshot = deviceSnapshot;
-  });
-  tokenState = { token: null, generation: 118 };
-  fakeThis.databaseManager = scopedDatabase(null);
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  fakeThis.updateManager = createUpdater();
-  await fakeThis.updateManager.refreshPolicy();
-  assert.equal((await fakeThis.updateManager.getUpdateStatus()).updateMode, "user_choice");
-
-  const policy = defaultDevicePolicy();
-  policy.updates.mode = "it_managed";
-  device = normalizeDeviceValues({ Policy: JSON.stringify(policy) });
-  await fakeThis.refreshEffectivePolicy();
-  const status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, true);
-  assert.equal(status.updateMode, "it_managed");
-});
-
-test("under a device policy, an outage with nothing held leaves updates unavailable once it fails", async (t) => {
-  const {
-    defaultDevicePolicy,
-    normalizeDeviceValues,
-  } = require("../../src/helpers/managedDevicePolicy");
-  restoreUpdaterState(t);
-  useTestApi(t);
-  const deviceSnapshot = fakeThis.managedDevicePolicy.getSnapshot;
-  const device = normalizeDeviceValues({ Policy: JSON.stringify(defaultDevicePolicy()) });
-  fakeThis.managedDevicePolicy.getSnapshot = () => device;
-  t.after(() => {
-    fakeThis.managedDevicePolicy.getSnapshot = deviceSnapshot;
-  });
-  let goOffline;
-  t.mock.method(
-    electronStub.net,
-    "fetch",
-    () => new Promise((_resolve, reject) => (goOffline = reject))
-  );
-  tokenState = { token: "device-managed-bearer", generation: 117 };
-  fakeThis.databaseManager = scopedDatabase(null);
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  fakeThis.updateManager = createUpdater();
-  const lookup = fakeThis.updateManager.refreshPolicy();
-  await new Promise(setImmediate);
-  // A verdict still on its way is pending, not unavailable.
-  let status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, false);
-  assert.equal(status.policyUnavailable, false);
-
-  goOffline(new Error("offline"));
-  await lookup;
-  status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, false);
-  assert.equal(status.policyUnavailable, true);
-  assert.equal(status.updateMode, null);
-});
-
 for (const [index, { name, data, mode }] of [
   {
     name: "unresolved",
@@ -936,8 +664,8 @@ for (const [index, { name, data, mode }] of [
   { name: "always-on", data: managedPolicy("always_on"), mode: "always_on" },
   { name: "unmanaged", data: null, mode: "user_choice" },
 ].entries()) {
-  test(`cookie expiry preserves ${name} policy in main and updater lookups`, async (t) => {
-    restoreUpdaterState(t);
+  test(`cookie expiry preserves ${name} policy`, async (t) => {
+    restoreHandlerState(t);
     useTestApi(t);
     const { readWorkspacePolicyCache } = require("../../src/helpers/workspacePolicyCache");
     tokenState = { token: null, generation: 140 + index };
@@ -959,45 +687,26 @@ for (const [index, { name, data, mode }] of [
       assert.equal(init.headers.Cookie, `${cookieName}=${cookieValue}`);
       return { ok: false, status: 401, json: async () => ({}) };
     });
-    fakeThis.updateManager = createUpdater();
-    fakeThis.updateManager.setAutoUpdatesEnabled(false);
-    for (const consumer of ["main", "updater"]) {
-      cookieValue = `expired-${name}-${consumer}`;
-      const identity =
-        data && cachePolicyForHeaders({ Cookie: `${cookieName}=${cookieValue}` }, data);
-      if (consumer === "main") {
-        const snapshot = await fakeThis.refreshEffectivePolicy();
-        assert.equal(snapshot.success, mode !== null);
-        if (mode === null) assert.equal(snapshot.code, "POLICY_UNRESOLVABLE");
-        else assert.equal(snapshot.managed, data !== null);
-      } else {
-        await fakeThis.updateManager.refreshPolicy();
-        const status = await fakeThis.updateManager.getUpdateStatus();
-        assert.equal(status.policyReady, mode !== null);
-        assert.equal(status.updateMode, mode);
-        assert.equal(status.effectiveAutoUpdatesEnabled, mode === "always_on");
-        if (mode === null) {
-          assert.equal(
-            (await fakeThis.updateManager.checkForUpdates()).code,
-            "UPDATE_POLICY_UNAVAILABLE"
-          );
-        }
-        await new Promise(setImmediate);
-      }
-      if (data?.requiresManagedPolicy) {
-        assert.equal(
-          readWorkspacePolicyCache(path.join(userDataDirectory, "workspace-policy.json"), identity)
-            .requiresManagedPolicy,
-          true
-        );
-      }
+    cookieValue = `expired-${name}-main`;
+    const identity =
+      data && cachePolicyForHeaders({ Cookie: `${cookieName}=${cookieValue}` }, data);
+    const snapshot = await fakeThis.refreshEffectivePolicy();
+    assert.equal(snapshot.success, mode !== null);
+    if (mode === null) assert.equal(snapshot.code, "POLICY_UNRESOLVABLE");
+    else assert.equal(snapshot.managed, data !== null);
+    if (data?.requiresManagedPolicy) {
+      assert.equal(
+        readWorkspacePolicyCache(path.join(userDataDirectory, "workspace-policy.json"), identity)
+          .requiresManagedPolicy,
+        true
+      );
     }
-    assert.equal(requests, 2);
+    assert.equal(requests, 1);
   });
 }
 
 test("a stray cookie leaves a signed-out member a guest without reaching the API", async (t) => {
-  restoreUpdaterState(t);
+  restoreHandlerState(t);
   useTestApi(t);
   const requests = [];
   t.mock.method(electronStub.net, "fetch", async (_url, init) => {
@@ -1015,16 +724,12 @@ test("a stray cookie leaves a signed-out member a guest without reaching the API
     },
     retireMeetingNotificationScope() {},
   };
-  fakeThis.updateManager = createUpdater();
-  await fakeThis.updateManager.refreshPolicy();
-  const status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, true);
-  assert.equal(status.updateMode, "user_choice");
+  await fakeThis.refreshEffectivePolicy();
   assert.deepEqual(requests, []);
 });
 
 test("a stray cookie never reaches the API for an account with no session to send", async (t) => {
-  restoreUpdaterState(t);
+  restoreHandlerState(t);
   useTestApi(t);
   const requests = [];
   t.mock.method(electronStub.net, "fetch", async (_url, init) => {
@@ -1042,59 +747,12 @@ test("a stray cookie never reaches the API for an account with no session to sen
     },
     retireMeetingNotificationScope() {},
   };
-  fakeThis.updateManager = createUpdater();
-  await fakeThis.updateManager.refreshPolicy();
+  await fakeThis.refreshEffectivePolicy();
   assert.deepEqual(requests, []);
 });
 
-test("an offline restart adopts the cached verdict without waiting for the network", async (t) => {
-  restoreUpdaterState(t);
-  useTestApi(t);
-  let goOffline;
-  t.mock.method(
-    electronStub.net,
-    "fetch",
-    () => new Promise((_resolve, reject) => (goOffline = reject))
-  );
-  t.after(() => goOffline?.(new Error("offline")));
-  cachePolicyForHeaders({ Authorization: "Bearer restarted-bearer" }, managedPolicy("always_on"));
-  tokenState = { token: "restarted-bearer", generation: 130 };
-  fakeThis.databaseManager = scopedDatabase(null);
-  fakeThis.windowManager = { retireMeetingNotificationScope() {} };
-  fakeThis.updateManager = createUpdater();
-  await Promise.race([fakeThis.updateManager.refreshPolicy(), new Promise(setImmediate)]);
-  const status = await fakeThis.updateManager.getUpdateStatus();
-  assert.equal(status.policyReady, true);
-  assert.equal(status.updateMode, "always_on");
-});
-
-test("a relaunch with a staged macOS update restarts into it whatever the update policy", async (t) => {
-  restoreUpdaterState(t);
-  const calls = [];
-  fakeThis.updateManager = {
-    hasStagedUpdate: () => true,
-    restartIntoStagedUpdate: async () => {
-      calls.push("restart");
-      return { success: true };
-    },
-    installUpdate: async () => ({ success: false, code: "UPDATES_MANAGED_BY_ORG" }),
-    deferInstallOnQuit: () => calls.push("defer"),
-    cleanup() {},
-  };
-  Object.assign(electronStub.app, {
-    quit: () => calls.push("quit"),
-    relaunch: () => calls.push("relaunch"),
-  });
-  t.after(() => {
-    delete electronStub.app.quit;
-    delete electronStub.app.relaunch;
-  });
-  await handlers.get("relaunch-app")();
-  assert.deepEqual(calls, ["restart"]);
-});
-
 test("cookie storage failure still clears the local bearer and reports the failure", async (t) => {
-  const { win } = await signOutUpdater(t, 104);
+  const { win } = await signOutFixture(t, 104);
   win.webContents.session.clearStorageData = async () => {
     throw new Error("cookie storage unavailable");
   };

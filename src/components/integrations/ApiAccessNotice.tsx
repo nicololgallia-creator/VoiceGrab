@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useUpdater } from "../../hooks/useUpdater";
 import { usePolicyStore } from "../../stores/policyStore";
 import type { ApiAccessRestriction } from "../../stores/policyRules";
 
@@ -12,19 +11,13 @@ export function ApiAccessNotice({
 }): ReactElement {
   const { t } = useTranslation();
   const minAppVersion = usePolicyStore((state) => state.policy?.minAppVersion ?? null);
-  const { updateMode } = useUpdater().status;
   const [title, message] =
     restriction === "disabled"
       ? [t("common.managedByOrg"), t("integrations.apiAccessDisabled")]
       : restriction === "versionBlocked"
         ? [
             t("controlPanel.updateRequiredByOrg.title"),
-            t(
-              updateMode === "it_managed"
-                ? "controlPanel.updateRequiredByOrg.contactIT"
-                : "controlPanel.updateRequiredByOrg.description",
-              { version: minAppVersion }
-            ),
+            t("controlPanel.updateRequiredByOrg.description", { version: minAppVersion }),
           ]
         : [null, t("models.policy.unresolved")];
   return (

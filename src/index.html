@@ -3,23 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <!--
-      Defense in depth against images an injected model reply points at an
-      attacker's server. Remote images are limited to avatar hosts: Gravatar,
-      Google profile photos (Microsoft photos arrive as data: URLs), and the
-      production and preview workspace-icon Blob stores. The stores are named
-      exactly, since anyone can create one under public.blob.vercel-storage.com;
-      a new store must be listed here before the API serves icons from it (until
-      then icons show initials). A meta tag because the packaged build loads from
-      file://, which has no response headers.
+      Content security policy. A meta tag because the packaged build loads from file://,
+      which has no response headers. Scripts: this app's own files, plus blob: because the
+      audio worklets for dictation and meeting capture are loaded from blob URLs the app
+      builds itself. Network: the local whisper, llama and qdrant servers on 127.0.0.1, and
+      the hosts of the bring-your-own-key speech and language providers (https and wss).
+      Images: this app and data: or blob: URLs, so no remote image can load.
     -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="img-src 'self' data: https://www.gravatar.com https://lh3.googleusercontent.com https://lh4.googleusercontent.com https://lh5.googleusercontent.com https://lh6.googleusercontent.com https://ja8ti2toradt16sd.public.blob.vercel-storage.com https://x9ywypmymer60x8e.public.blob.vercel-storage.com"
+      content="default-src 'self'; script-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; media-src 'self' blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; connect-src 'self' http://127.0.0.1:* ws://127.0.0.1:* http://localhost:* ws://localhost:* https://api.openai.com https://api.anthropic.com https://generativelanguage.googleapis.com https://api.groq.com https://api.x.ai https://api.mistral.ai https://api.deepgram.com wss://api.deepgram.com https://api.elevenlabs.io wss://api.elevenlabs.io https://api.assemblyai.com https://streaming.assemblyai.com wss://streaming.assemblyai.com https://openrouter.ai https://api.together.xyz https://*.openai.azure.com https://*.cognitiveservices.azure.com https://*.amazonaws.com https://*.googleapis.com https://inference.tinfoil.sh https://ai.eu.corti.app"
     />
     <link rel="icon" type="image/png" href="./assets/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/fonts/noto-sans.css">
-    <title>OpenWhispr</title>
+    <title>VoiceGrab</title>
   </head>
   <body>
     <div id="root"></div>

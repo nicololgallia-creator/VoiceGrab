@@ -1373,43 +1373,6 @@ export interface ScreenContextImage {
   data: string;
 }
 
-export interface UpdateCheckResult {
-  code?: string;
-  updateAvailable: boolean;
-  version?: string;
-  releaseDate?: string;
-  files?: any[];
-  releaseNotes?: string;
-  message?: string;
-}
-
-export interface UpdateStatusResult {
-  /** null while no verdict allows updates. */
-  updateMode?: import("./policy").UpdateMode | null;
-  policyReady?: boolean;
-  /** The policy lookup failed with no verdict held; a check retries it. */
-  policyUnavailable?: boolean;
-  effectiveAutoUpdatesEnabled?: boolean;
-  stagedUpdate?: boolean;
-  updateAvailable: boolean;
-  updateDownloaded: boolean;
-  isDevelopment: boolean;
-  isSupported: boolean;
-}
-
-export interface UpdateInfoResult {
-  version?: string;
-  releaseDate?: string;
-  releaseNotes?: string | null;
-  files?: any[];
-}
-
-export interface UpdateResult {
-  code?: string;
-  success: boolean;
-  message: string;
-}
-
 export interface AppVersionResult {
   version: string;
 }
@@ -2862,10 +2825,6 @@ declare global {
       cleanupApp: () => Promise<{ success: boolean; message: string; errors?: string[] }>;
       relaunchApp: () => Promise<void>;
 
-      // Update operations
-      checkForUpdates: () => Promise<UpdateCheckResult>;
-      downloadUpdate: () => Promise<UpdateResult>;
-      installUpdate: () => Promise<UpdateResult>;
       initialModelRegistrySnapshot: import("../models/registryData").RegistrySnapshot;
       getModelRegistry: () => Promise<import("../models/registryData").RegistrySnapshot>;
       onModelRegistryUpdated: (
@@ -2877,18 +2836,6 @@ declare global {
       getOAuthProtocol: () => Promise<string>;
       markBundleMigrated: () => Promise<void>;
       markBundleMigrationDismissed: () => Promise<void>;
-      getUpdateStatus: () => Promise<UpdateStatusResult>;
-      getUpdateInfo: () => Promise<UpdateInfoResult | null>;
-      setAutoUpdatesEnabled: (enabled: boolean) => Promise<{ success: boolean }>;
-
-      // Update event listeners
-      onUpdateStatusChanged?: (callback: (status: UpdateStatusResult) => void) => () => void;
-      onUpdateAvailable: (callback: (event: any, info: any) => void) => () => void;
-      onUpdateNotAvailable: (callback: (event: any, info: any) => void) => () => void;
-      onUpdateDownloaded: (callback: (event: any, info: any) => void) => () => void;
-      onUpdateDownloadProgress: (callback: (event: any, progressObj: any) => void) => () => void;
-      onUpdateError: (callback: (event: any, error: any) => void) => () => void;
-
       openExternal: (url: string) => Promise<{ success: boolean; error?: string }>;
 
       // Hotkey management

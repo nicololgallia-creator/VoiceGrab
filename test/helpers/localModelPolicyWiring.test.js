@@ -681,10 +681,9 @@ test("a device policy's local model allow-list applies to a guest", async (t) =>
   app.gate.release(await app.gate.authorize("transcription", "small"));
 });
 
-test("startup loads the policy after the bearer migration", () => {
+test("startup loads the policy before the first whisper start", () => {
   const main = fs.readFileSync(path.join(__dirname, "../../main.js"), "utf8");
-  const migration = main.indexOf("await migrateCookieToBearerToken();");
   const load = main.indexOf("ipcHandlers.loadLocalModelPolicy();");
-  assert.ok(migration >= 0 && load > migration);
+  assert.ok(load >= 0);
   assert.ok(load < main.indexOf("whisperManager.initializeAtStartup"));
 });

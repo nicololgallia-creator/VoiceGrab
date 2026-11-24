@@ -29,7 +29,7 @@ import {
   type SectionMeta,
 } from "./integrations/integrationsSections";
 
-const API_DOCS_URL = "https://docs.openwhispr.com/api/overview";
+const API_DOCS_URL = "https://github.com/nicololgallia-creator/VoiceGrab";
 const { mcp: McpIcon, cli: CliIcon } = INTEGRATIONS_SECTION_ICONS;
 
 interface IntegrationsViewProps {

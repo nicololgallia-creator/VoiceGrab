@@ -176,13 +176,13 @@ function useSettingsInternal() {
     return unsubscribe;
   }, [applySnippetsFromExternal]);
 
-  // Auto-learn corrections from user edits in external apps
+  // Auto-learn reads the text field you pasted into, so it is off until you turn it on.
   const [autoLearnCorrections, setAutoLearnCorrectionsRaw] = useLocalStorage(
     "autoLearnCorrections",
-    true,
+    false,
     {
       serialize: String,
-      deserialize: (value: string) => value !== "false",
+      deserialize: (value: string) => value === "true",
     }
   );
 
@@ -405,8 +405,6 @@ function useSettingsInternal() {
     setNotifyMeetingDetection: store.setNotifyMeetingDetection,
     notifyCalendarReminders: store.notifyCalendarReminders,
     setNotifyCalendarReminders: store.setNotifyCalendarReminders,
-    autoUpdatesEnabled: store.autoUpdatesEnabled,
-    setAutoUpdatesEnabled: store.setAutoUpdatesEnabled,
     audioCuesEnabled: store.audioCuesEnabled,
     setAudioCuesEnabled: store.setAudioCuesEnabled,
     pauseMediaOnDictation: store.pauseMediaOnDictation,

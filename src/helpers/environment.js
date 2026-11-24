@@ -62,7 +62,7 @@ const PERSISTED_KEYS = [
   "VERTEX_LOCATION",
   // Written by the Settings debug toggle (set-debug-logging)
   "OPENWHISPR_LOG_LEVEL",
-  // "bundled" turns off model catalog updates (Settings privacy toggle, or managed installs)
+  // "live" turns on model catalog updates (Settings privacy toggle); absent means bundled catalog only
   "OPENWHISPR_MODEL_REGISTRY_MODE",
 ];
 
@@ -542,13 +542,13 @@ class EnvironmentManager {
     return envWriteQueue;
   }
 
-  // Off keeps the app on its bundled model catalog: no cached update, no network check.
+  // Off (the default) keeps the app on its bundled model catalog: no cached update, no network check.
   saveModelRegistryUpdates(enabled) {
-    if (enabled) {
+    if (!enabled) {
       delete process.env.OPENWHISPR_MODEL_REGISTRY_MODE;
       return this.removeKeyFromEnvFile("OPENWHISPR_MODEL_REGISTRY_MODE");
     }
-    process.env.OPENWHISPR_MODEL_REGISTRY_MODE = "bundled";
+    process.env.OPENWHISPR_MODEL_REGISTRY_MODE = "live";
     return this._writeEnvFileAtomic(path.join(app.getPath("userData"), ".env"));
   }
 

@@ -846,7 +846,6 @@ class IPCHandlers {
 
     this.diarizationManager = managers.diarizationManager;
     this.windowManager = managers.windowManager;
-    this.updateManager = managers.updateManager;
     this.windowsKeyManager = managers.windowsKeyManager;
     this.linuxKeyManager = managers.linuxKeyManager;
     this.textEditMonitor = managers.textEditMonitor;
@@ -893,7 +892,7 @@ class IPCHandlers {
     this._meetingMicStreaming = null;
     this._meetingSystemStreaming = null;
     this._hotkeyCaptureMode = false;
-    this._autoLearnEnabled = true; // Default on, synced from renderer
+    this._autoLearnEnabled = false; // Default off, synced from renderer
     this._autoLearnDebounceTimer = null;
     this._autoLearnLatestData = null;
     this._sharedDictionaryHints = { space: [], workspace: [] };
@@ -1224,11 +1223,9 @@ class IPCHandlers {
       // As set-active-account-scope does: a connect can't outlive its account.
       this.connectorManager?.accountChanged();
     }
-    this.updateManager?.invalidatePolicy();
     const effectivePolicy = this.effectivePolicyManager?.invalidate();
     // Signed out is a guest, whose verdict (the device's policy, if any) is known.
     if (!token) this._localModelPolicy?.invalidate(effectivePolicy);
-    void this.updateManager?.refreshPolicy();
     void this.refreshEffectivePolicy?.();
     broadcastToWindows("auth-token-state-changed", {
       generation,
@@ -3806,7 +3803,6 @@ class IPCHandlers {
       // holds for the same account: that only re-scopes the policy, and only a
       // different account ends the work and meeting already running.
       if (scopeChanged) {
-        this.updateManager?.invalidatePolicy();
         this._audioFeaturePolicy?.invalidate();
         if (leftAccount) {
           this._audioFeaturePolicy?.cancelJobs();
@@ -3849,7 +3845,6 @@ class IPCHandlers {
         );
         this.effectivePolicyManager.invalidate();
       } else if (guest) this._localModelPolicy?.update(this.effectivePolicyManager.getCurrent());
-      void this.updateManager?.refreshPolicy();
       void this.refreshEffectivePolicy();
       // A failed best-effort claim must remain eligible for the next scope request.
       this._appliedAccountScope = privateNotesClaimed
@@ -5973,16 +5968,6 @@ class IPCHandlers {
     // instance would have no renderer: just quit there.
     ipcMain.handle("relaunch-app", async () => {
       if (process.env.NODE_ENV === "development") return app.quit();
-      // Once Squirrel.Mac holds a downloaded update it installs it on this quit regardless
-      // of any flag, so the updater owns that restart instead of racing app.relaunch().
-      if (this.updateManager.hasStagedUpdate()) {
-        const { success } = await this.updateManager.restartIntoStagedUpdate().catch((error) => {
-          debugLogger.error("Restart into staged update failed", { error: error.message });
-          return { success: false };
-        });
-        if (success) return;
-      }
-      this.updateManager.deferInstallOnQuit();
       const { launcherPath, args } = getRelaunchOptions({
         argv: process.argv,
         protocol: this.oauthProtocol,
@@ -8363,10 +8348,7 @@ class IPCHandlers {
       "";
 
     const getAuthUrl = () =>
-      process.env.AUTH_URL ||
-      process.env.VITE_AUTH_URL ||
-      runtimeEnv.VITE_AUTH_URL ||
-      "https://auth.openwhispr.com";
+      process.env.AUTH_URL || process.env.VITE_AUTH_URL || runtimeEnv.VITE_AUTH_URL || "";
 
     const getSessionCookiesFromWindow = async (win) => {
       const scopedUrls = [getAuthUrl(), getApiUrl()].filter(Boolean);
@@ -8655,14 +8637,12 @@ class IPCHandlers {
         },
       },
       getScope,
-      broadcast: (snapshot, updatePolicy) => {
+      broadcast: (snapshot) => {
         // Known restrictions still apply while the workspace decision is pending.
         if (snapshot.status !== "loading" || !snapshot.deviceReady || snapshot.policy)
           this._audioFeaturePolicy?.update(snapshot);
         if (snapshot.workspaceRequired || snapshot.authGeneration === credentialsGeneration)
           this._localModelPolicy?.update(snapshot);
-        // The updater would take a verdict still loading for a failed lookup.
-        if (updatePolicy.status !== "loading") this.updateManager?.updatePolicy?.(updatePolicy);
         if (
           !snapshot.deviceReady ||
           snapshot.localOnly ||
@@ -8722,10 +8702,6 @@ class IPCHandlers {
         held,
       });
     };
-    this.getUpdatePolicy = async (options) => {
-      await this.refreshEffectivePolicy(undefined, options);
-      return this.effectivePolicyManager.getUpdatePolicy();
-    };
     const { createAudioFeaturePolicy } = require("./audioFeaturePolicy");
     // CLI and tray-only sessions also refresh while a native server stays loaded.
     this._localModelPolicyRefreshTimer = this._localModelPolicy?.startPeriodicRefresh(
@@ -8752,20 +8728,8 @@ class IPCHandlers {
     registerProductHelpIpc({
       ipcMain,
       fetch: proxyFetch,
-      canLookup: createConnectorPolicyResolver({
-        getAuthHeader: createConnectorAuthLookup({
-          hasBearerToken: () => Boolean(tokenStore.get()),
-          windowFor: (event) => BrowserWindow.fromWebContents(event.sender),
-          authHeaderFor: getAuthHeaderFromWindow,
-        }),
-        getPolicy: (options) =>
-          this.effectivePolicyManager.getPolicy({ ...options, accountId: getScope().accountId }),
-        peekPolicy: (options) =>
-          this.effectivePolicyManager.peekPolicy({ ...options, accountId: getScope().accountId }),
-        getAuthGeneration: () => tokenStore.getState().generation,
-        classifySnapshot: (snapshot) => remoteHelpPolicyState(snapshot, app.getVersion()),
-        fallbackOnUnavailable: true,
-      }),
+      // VoiceGrab never asks the OpenWhispr docs server: help always comes from the bundled copy.
+      canLookup: () => "signed_out",
       getBasics: () => ({
         // checkAccess reads the cached permission verdict; it never requests access.
         systemAudioPermission:
@@ -14643,7 +14607,7 @@ class IPCHandlers {
 
     ipcMain.handle(
       "get-model-registry-updates",
-      () => process.env.OPENWHISPR_MODEL_REGISTRY_MODE !== "bundled"
+      () => process.env.OPENWHISPR_MODEL_REGISTRY_MODE === "live"
     );
 
     ipcMain.handle("set-model-registry-updates", async (event, enabled) => {
@@ -14656,21 +14620,7 @@ class IPCHandlers {
       }
     });
 
-    ipcMain.handle("check-for-updates", async () => {
-      return this.updateManager.checkForUpdates();
-    });
-
-    ipcMain.handle("download-update", async () => {
-      return this.updateManager.downloadUpdate();
-    });
-
-    ipcMain.handle("install-update", async () => {
-      return this.updateManager.installUpdate();
-    });
-
-    ipcMain.handle("get-app-version", async () => {
-      return this.updateManager.getAppVersion();
-    });
+    ipcMain.handle("get-app-version", async () => ({ version: app.getVersion() }));
 
     ipcMain.handle("get-post-migration-state", () => ({
       justMigrated: postMigrationDetector.isReturningFromOldBundle(),
@@ -14686,19 +14636,6 @@ class IPCHandlers {
 
     ipcMain.handle("mark-bundle-migration-dismissed", () => {
       postMigrationDetector.markBundleMigrationDismissed();
-    });
-
-    ipcMain.handle("get-update-status", async () => {
-      return this.updateManager.getUpdateStatus();
-    });
-
-    ipcMain.handle("get-update-info", async () => {
-      return this.updateManager.getUpdateInfo();
-    });
-
-    ipcMain.handle("set-auto-updates-enabled", async (_event, enabled) => {
-      this.updateManager.setAutoUpdatesEnabled(enabled === true);
-      return { success: true };
     });
 
     const fetchStreamingToken = async (event) => {

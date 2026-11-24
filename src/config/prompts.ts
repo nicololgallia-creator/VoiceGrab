@@ -97,9 +97,9 @@ const CONNECTOR_TOOL_RULES =
 // The capability summary groups offered tools so the model sees what it can do
 // before the per-tool guidance; connector tools group by their connectorId.
 const TOOL_GROUPS: Record<string, string> = {
-  search_openwhispr_help: "OpenWhispr help",
-  read_openwhispr_help: "OpenWhispr help",
-  get_openwhispr_context: "Current OpenWhispr settings (read only)",
+  search_openwhispr_help: "VoiceGrab help",
+  read_openwhispr_help: "VoiceGrab help",
+  get_openwhispr_context: "Current VoiceGrab settings (read only)",
   web_search: "Web search",
   search_notes: "The user's notes",
   get_note: "The user's notes",

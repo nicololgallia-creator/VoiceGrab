@@ -27,28 +27,36 @@ async function deviceAwareAuthFetch(...args: Parameters<typeof fetch>): Promise<
   return authContextFetch(...args);
 }
 
-export const AUTH_URL = import.meta.env.VITE_AUTH_URL || "https://auth.openwhispr.com";
+// Empty means no cloud account: VoiceGrab sets no default, so nothing here reaches a server.
+export const AUTH_URL = import.meta.env.VITE_AUTH_URL || "";
 // Recorded by the API as the origin of an account created here; sent only when
 // Electron names the platform, so an unknown one stays unknown.
 const REGISTRATION_OS: string | undefined = (
   { darwin: "macos", win32: "windows", linux: "linux" } as Record<string, string>
 )[window.electronAPI?.getPlatform?.() ?? ""];
-export const authClient = createAuthClient({
-  baseURL: AUTH_URL,
-  plugins: [ssoClient()],
-  fetchOptions: {
-    credentials: "omit",
-    customFetchImpl: deviceAwareAuthFetch,
-    headers: {
-      "x-openwhispr-source": "desktop",
-      ...(REGISTRATION_OS ? { "x-openwhispr-os": REGISTRATION_OS } : {}),
-    },
-    onRequest: prepareAuthRequest,
-    onResponse: handleAuthRequestResponse,
-    onSuccess: handleAuthRequestSuccess,
-    onError: handleAuthRequestError,
-  },
-});
+export const authClient = AUTH_URL
+  ? createAuthClient({
+      baseURL: AUTH_URL,
+      plugins: [ssoClient()],
+      fetchOptions: {
+        credentials: "omit",
+        customFetchImpl: deviceAwareAuthFetch,
+        headers: {
+          "x-openwhispr-source": "desktop",
+          ...(REGISTRATION_OS ? { "x-openwhispr-os": REGISTRATION_OS } : {}),
+        },
+        onRequest: prepareAuthRequest,
+        onResponse: handleAuthRequestResponse,
+        onSuccess: handleAuthRequestSuccess,
+        onError: handleAuthRequestError,
+      },
+    })
+  : null;
+
+function requireAuthClient() {
+  if (!authClient) throw new Error("Cloud sign-in is not configured");
+  return authClient;
+}
 
 let authRefetchTimer: ReturnType<typeof setTimeout> | null = null;
 window.electronAPI?.onAuthTokenStateChanged?.((state) => {
@@ -59,7 +67,7 @@ window.electronAPI?.onAuthTokenStateChanged?.((state) => {
   if (authRefetchTimer) clearTimeout(authRefetchTimer);
   authRefetchTimer = setTimeout(() => {
     authRefetchTimer = null;
-    authClient.$store.notify("$sessionSignal");
+    authClient?.$store.notify("$sessionSignal");
   }, 0);
 });
 
@@ -82,8 +90,8 @@ function syncSessionVerdictRetry(): void {
     return;
   }
   const retry = (): void => {
-    if (!authClient.$store.atoms.session.value?.isRefetching) {
-      authClient.$store.notify("$sessionSignal");
+    if (!authClient?.$store.atoms.session.value?.isRefetching) {
+      authClient?.$store.notify("$sessionSignal");
     }
   };
   window.addEventListener("focus", retry);
@@ -194,7 +202,7 @@ export async function signOut(): Promise<void> {
   credentialAccountCache = null;
   await window.electronAPI?.closeActivationStream?.().catch(() => undefined);
   try {
-    await authClient.signOut({});
+    await requireAuthClient().signOut({});
   } catch {
     // Local sign-out must still cross a credential generation boundary when
     // the server is offline; the remote session can expire independently.
@@ -235,7 +243,8 @@ export async function withSessionRefresh<T>(operation: () => Promise<T>): Promis
   }
 }
 
-const DESKTOP_OAUTH_CALLBACK_URL = "https://openwhispr.com/auth/desktop-callback";
+// No hosted pages: these only matter next to a cloud AUTH_URL, which VoiceGrab does not set.
+const DESKTOP_OAUTH_CALLBACK_URL = import.meta.env.VITE_DESKTOP_OAUTH_CALLBACK_URL || "";
 
 export async function signInWithSocial(provider: SocialProvider): Promise<{ error?: Error }> {
   try {
@@ -258,7 +267,11 @@ export async function signInWithSocial(provider: SocialProvider): Promise<{ erro
     }
 
     const callbackURL = `${window.location.href.split("?")[0].split("#")[0]}?panel=true`;
-    await authClient.signIn.social({ provider, callbackURL, newUserCallbackURL: callbackURL });
+    await requireAuthClient().signIn.social({
+      provider,
+      callbackURL,
+      newUserCallbackURL: callbackURL,
+    });
     return {};
   } catch (error) {
     return { error: error instanceof Error ? error : new Error("Social sign-in failed") };
@@ -284,7 +297,7 @@ export async function signInWithSSO(email: string): Promise<{ error?: Error }> {
     }
 
     const callbackURL = `${window.location.href.split("?")[0].split("#")[0]}?panel=true`;
-    await authClient.signIn.sso({ email, callbackURL });
+    await requireAuthClient().signIn.sso({ email, callbackURL });
     return {};
   } catch (error) {
     return { error: error instanceof Error ? error : new Error("Single sign-on failed") };
@@ -293,9 +306,9 @@ export async function signInWithSSO(email: string): Promise<{ error?: Error }> {
 
 export async function requestPasswordReset(email: string): Promise<{ error?: Error }> {
   try {
-    const { error } = await authClient.requestPasswordReset({
+    const { error } = await requireAuthClient().requestPasswordReset({
       email: email.trim(),
-      redirectTo: "https://openwhispr.com/reset-password",
+      redirectTo: import.meta.env.VITE_PASSWORD_RESET_URL || "",
     });
     if (error) {
       return { error: toAuthActionError(error, "Failed to send reset email") };
@@ -323,7 +336,7 @@ function toAuthActionError(source: unknown, fallbackMessage: string): AuthAction
 
 export async function updateDisplayName(name: string): Promise<{ error?: AuthActionError }> {
   try {
-    const { error } = await authClient.updateUser({ name });
+    const { error } = await requireAuthClient().updateUser({ name });
     if (error) return { error: toAuthActionError(error, "Failed to update name") };
     return {};
   } catch (error) {
@@ -337,7 +350,7 @@ export async function changePassword(params: {
   revokeOtherSessions: boolean;
 }): Promise<{ error?: AuthActionError }> {
   try {
-    const { error } = await authClient.changePassword({
+    const { error } = await requireAuthClient().changePassword({
       currentPassword: params.currentPassword,
       newPassword: params.newPassword,
       revokeOtherSessions: params.revokeOtherSessions,
@@ -349,7 +362,7 @@ export async function changePassword(params: {
   }
 }
 
-export const ADMIN_URL = import.meta.env.VITE_ADMIN_URL || "https://admin.openwhispr.com";
+export const ADMIN_URL = import.meta.env.VITE_ADMIN_URL || "";
 
 /**
  * Open the enterprise admin console signed in: the desktop session lives in
@@ -364,7 +377,9 @@ export async function openAdminConsole(): Promise<void> {
   try {
     // The generated $fetch types don't discriminate on `throw`, and the
     // payload arrives bare or under `data` depending on the client version.
-    const result = (await authClient.$fetch("/one-time-token/generate", { throw: true })) as {
+    const result = (await requireAuthClient().$fetch("/one-time-token/generate", {
+      throw: true,
+    })) as {
       token?: string;
       data?: { token?: string } | null;
     };
@@ -387,7 +402,7 @@ let credentialAccountCache: boolean | null = null;
 export async function hasCredentialAccount(): Promise<boolean> {
   if (credentialAccountCache !== null) return credentialAccountCache;
   try {
-    const { data, error } = await authClient.listAccounts({ query: {} });
+    const { data, error } = await requireAuthClient().listAccounts({ query: {} });
     if (error || !data) return true;
     credentialAccountCache = data.some((account) => account.providerId === "credential");
     return credentialAccountCache;

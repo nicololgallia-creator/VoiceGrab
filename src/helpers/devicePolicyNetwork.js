@@ -28,10 +28,9 @@ function devicePolicyNetworkAllowed(snapshot, target, controlOrigins = []) {
 
 function installManagedNetworkGuard({ app, session, isAllowed }) {
   const assetSession = require("./downloadUtils").getAssetDownloadSession();
-  const updateSession = session.fromPartition("electron-updater", { cache: false });
   const sessions = new Set();
   const guard = (target) => {
-    if (target === assetSession || target === updateSession) return;
+    if (target === assetSession) return;
     sessions.add(target);
     const filter = { urls: ["http://*/*", "https://*/*", "ws://*/*", "wss://*/*"] };
     target.webRequest.onBeforeRequest(filter, (details, callback) =>

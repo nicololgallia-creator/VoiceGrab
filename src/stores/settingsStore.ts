@@ -518,17 +518,6 @@ function migrateMicrophoneSelectionMode() {
 
 migrateMicrophoneSelectionMode();
 
-// Automatic updates default on for new installs only. An install that already
-// finished onboarding keeps the manual download-and-install flow until the
-// user opts in.
-function initializeAutoUpdatesDefault() {
-  if (!isBrowser || localStorage.getItem("autoUpdatesEnabled") !== null) return;
-  const isExistingInstall = localStorage.getItem("onboardingCompleted") === "true";
-  localStorage.setItem("autoUpdatesEnabled", String(!isExistingInstall));
-}
-
-initializeAutoUpdatesDefault();
-
 const BOOLEAN_SETTINGS = new Set([
   "useLocalWhisper",
   "meetingUseLocalWhisper",
@@ -574,7 +563,6 @@ const BOOLEAN_SETTINGS = new Set([
   "notificationsEnabled",
   "notifyMeetingDetection",
   "notifyCalendarReminders",
-  "autoUpdatesEnabled",
   "gcalPrimaryOnly",
   "mcalPrimaryOnly",
   "appleCalendarConnected",
@@ -1185,7 +1173,6 @@ export interface SettingsState
   notificationsEnabled: boolean;
   notifyMeetingDetection: boolean;
   notifyCalendarReminders: boolean;
-  autoUpdatesEnabled: boolean;
   gcalPrimaryOnly: boolean;
   mcalPrimaryOnly: boolean;
   appleCalendarConnected: boolean;
@@ -1524,7 +1511,6 @@ export interface SettingsState
   setNotificationsEnabled: (value: boolean) => void;
   setNotifyMeetingDetection: (value: boolean) => void;
   setNotifyCalendarReminders: (value: boolean) => void;
-  setAutoUpdatesEnabled: (enabled: boolean) => void;
   setGcalPrimaryOnly: (value: boolean) => void;
   setMcalPrimaryOnly: (value: boolean) => void;
   setAppleCalendarConnected: (value: boolean) => void;
@@ -1814,7 +1800,7 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   uiLanguage: normalizeUiLanguage(
     isBrowser ? localStorage.getItem("uiLanguage") || i18n.language : null
   ),
-  useLocalWhisper: readBoolean("useLocalWhisper", false),
+  useLocalWhisper: readBoolean("useLocalWhisper", true),
   whisperModel: readString("whisperModel", "base"),
   localTranscriptionProvider: readLocalProvider("localTranscriptionProvider"),
   parakeetModel: readString("parakeetModel", ""),
@@ -1839,7 +1825,7 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   reasoningModelByProvider: readModelMemory("reasoningModelByProvider"),
   // Secrets aren't hydrated yet at construction; the BYOK default is set
   // post-hydration in initializeSettings.
-  cloudTranscriptionMode: readString("cloudTranscriptionMode", "openwhispr"),
+  cloudTranscriptionMode: readString("cloudTranscriptionMode", "local"),
   cleanupCloudMode: readString("cleanupCloudMode", "openwhispr"),
   cleanupCloudBaseUrl: readString("cleanupCloudBaseUrl", API_ENDPOINTS.OPENAI_BASE),
   cortiEnvironment: readString("cortiEnvironment", "us"),
@@ -1950,7 +1936,6 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   notificationsEnabled: readBoolean("notificationsEnabled", true),
   notifyMeetingDetection: readBoolean("notifyMeetingDetection", true),
   notifyCalendarReminders: readBoolean("notifyCalendarReminders", true),
-  autoUpdatesEnabled: readBoolean("autoUpdatesEnabled", true),
   ...(() => {
     let accounts: CalendarAccount[] = [];
     try {
@@ -2022,9 +2007,9 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   isSignedIn: readBoolean("isSignedIn", false),
 
   transcriptionMode: (() => {
-    const v = readString("transcriptionMode", "openwhispr");
+    const v = readString("transcriptionMode", "local");
     if (v === "openwhispr" || v === "providers" || v === "local" || v === "self-hosted") return v;
-    return "openwhispr" as InferenceMode;
+    return "local" as InferenceMode;
   })(),
   remoteTranscriptionType: (() => {
     const v = readString("remoteTranscriptionType", "lan");
@@ -2049,9 +2034,9 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   keepLocalModelLoaded: readBoolean("keepLocalModelLoaded", false),
 
   meetingTranscriptionMode: (() => {
-    const v = readString("meetingTranscriptionMode", "openwhispr");
+    const v = readString("meetingTranscriptionMode", "local");
     if (v === "openwhispr" || v === "providers" || v === "local" || v === "self-hosted") return v;
-    return "openwhispr" as InferenceMode;
+    return "local" as InferenceMode;
   })(),
   meetingUseLocalWhisper: readBoolean("meetingUseLocalWhisper", false),
   meetingWhisperModel: readString("meetingWhisperModel", ""),
@@ -2069,9 +2054,9 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   meetingRemoteTranscriptionUrl: readString("meetingRemoteTranscriptionUrl", ""),
 
   uploadTranscriptionMode: (() => {
-    const v = readString("uploadTranscriptionMode", "openwhispr");
+    const v = readString("uploadTranscriptionMode", "local");
     if (v === "openwhispr" || v === "providers" || v === "local" || v === "self-hosted") return v;
-    return "openwhispr" as InferenceMode;
+    return "local" as InferenceMode;
   })(),
   uploadUseLocalWhisper: readBoolean("uploadUseLocalWhisper", false),
   uploadWhisperModel: readString("uploadWhisperModel", ""),
@@ -2841,11 +2826,6 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   setNotificationsEnabled: createBooleanSetter("notificationsEnabled"),
   setNotifyMeetingDetection: createBooleanSetter("notifyMeetingDetection"),
   setNotifyCalendarReminders: createBooleanSetter("notifyCalendarReminders"),
-  setAutoUpdatesEnabled: (enabled: boolean) => {
-    if (isBrowser) localStorage.setItem("autoUpdatesEnabled", String(enabled));
-    set({ autoUpdatesEnabled: enabled });
-    if (isBrowser) window.electronAPI?.setAutoUpdatesEnabled?.(enabled);
-  },
   setGcalPrimaryOnly: (value: boolean) => {
     if (isBrowser) localStorage.setItem("gcalPrimaryOnly", String(value));
     useSettingsStore.setState({ gcalPrimaryOnly: value });
@@ -4468,18 +4448,6 @@ export async function initializeSettings(): Promise<void> {
     } catch (err) {
       logger.warn(
         "Failed to sync snippets on startup",
-        { error: (err as Error).message },
-        "settings"
-      );
-    }
-
-    try {
-      await window.electronAPI.setAutoUpdatesEnabled?.(
-        useSettingsStore.getState().autoUpdatesEnabled
-      );
-    } catch (err) {
-      logger.warn(
-        "Failed to sync automatic updates preference on startup",
         { error: (err as Error).message },
         "settings"
       );

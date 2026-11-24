@@ -28,7 +28,6 @@ interface ControlPanelSidebarProps {
   isOverLimit?: boolean;
   isSignedIn?: boolean;
   upsell: UpsellDecision;
-  updateAction?: React.ReactNode;
   /** False while another modal (Settings) is open, so the workspace intro waits. */
   workspaceIntroAllowed?: boolean;
 }
@@ -43,7 +42,6 @@ export default function ControlPanelSidebar({
   isOverLimit,
   isSignedIn,
   upsell,
-  updateAction,
   workspaceIntroAllowed = false,
 }: ControlPanelSidebarProps) {
   const { t } = useTranslation();
@@ -175,12 +173,6 @@ export default function ControlPanelSidebar({
       )}
 
       <div className="px-2 pb-2 space-y-0.5">
-        {updateAction && (
-          <div className="px-1 pb-1" style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}>
-            {updateAction}
-          </div>
-        )}
-
         {isSignedIn && onOpenReferrals && (
           <button
             onClick={onOpenReferrals}

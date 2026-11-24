@@ -8,7 +8,7 @@ import type { ApiAccessRestriction } from "../../stores/policyRules";
 import { ApiAccessNotice } from "./ApiAccessNotice";
 import { IntegrationsPane } from "./IntegrationsPane";
 
-const CLI_DOCS_URL = "https://docs.openwhispr.com/cli/install";
+const CLI_DOCS_URL = "https://github.com/nicololgallia-creator/VoiceGrab";
 const INSTALL_CMD = "npm install -g @openwhispr/cli";
 const LOCAL_EXAMPLE = "openwhispr --local notes list";
 const CLOUD_LOGIN_CMD = "openwhispr auth login";

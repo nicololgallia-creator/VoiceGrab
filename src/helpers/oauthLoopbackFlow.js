@@ -3,14 +3,6 @@ const crypto = require("crypto");
 const { openExternalUrl } = require("./externalUrlOpener");
 
 const OAUTH_TIMEOUT_MS = 120000;
-const DEFAULT_DESKTOP_CALLBACK_URL = "https://openwhispr.com/auth/desktop-callback";
-
-const PROTOCOL_BY_CHANNEL = {
-  development: "openwhispr-dev",
-  staging: "openwhispr-staging",
-  production: "openwhispr",
-};
-
 // Thrown by handleCallback to control the error code shown on the hosted
 // desktop-callback page (defaults to "server_error").
 class OAuthFlowError extends Error {
@@ -20,27 +12,13 @@ class OAuthFlowError extends Error {
   }
 }
 
-function getDesktopCallbackUrl() {
-  return process.env.VITE_OPENWHISPR_OAUTH_CALLBACK_URL || DEFAULT_DESKTOP_CALLBACK_URL;
-}
-
-function getProtocol() {
-  const channel = process.env.OPENWHISPR_CHANNEL || "production";
-  return PROTOCOL_BY_CHANNEL[channel] || PROTOCOL_BY_CHANNEL.production;
-}
-
-function buildCallbackRedirect(params) {
-  const url = new URL(getDesktopCallbackUrl());
-  url.searchParams.set("protocol", getProtocol());
-  for (const [key, value] of Object.entries(params)) {
-    url.searchParams.set(key, value);
-  }
-  return url.toString();
-}
-
+// The browser lands on this local page; nothing leaves the machine.
 function redirect(res, params) {
-  res.writeHead(302, { Location: buildCallbackRedirect(params) });
-  res.end();
+  const failed = Object.keys(params).some((key) => key.endsWith("_error"));
+  res.writeHead(failed ? 400 : 200, { "Content-Type": "text/html; charset=utf-8" });
+  res.end(
+    `<html><body><h3>${failed ? "Connection failed." : "Connected."}</h3><p>You can close this tab and return to VoiceGrab.</p></body></html>`
+  );
 }
 
 function codedError(code, message, extra = {}) {

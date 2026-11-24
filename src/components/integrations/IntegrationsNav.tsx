@@ -10,7 +10,7 @@ import {
   type SectionMeta,
 } from "./integrationsSections";
 
-export const INTEGRATIONS_DOCS_URL = "https://docs.openwhispr.com";
+export const INTEGRATIONS_DOCS_URL = "https://github.com/nicololgallia-creator/VoiceGrab";
 
 interface IntegrationsNavProps {
   active: IntegrationsSection;
