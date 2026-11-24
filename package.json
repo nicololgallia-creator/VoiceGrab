@@ -202,7 +202,7 @@
     "kysely": "^0.28.17",
     "lowlight": "3.3.0",
     "object-assign": "^4.1.1",
-    "onnxruntime-node": "^1.21.0",
+    "onnxruntime-node": "^1.31.1",
     "opencc-js": "^1.4.1",
     "ps-list": "^9.0.0",
     "react": "^19.1.0",
