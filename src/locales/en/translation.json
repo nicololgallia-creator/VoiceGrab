@@ -4,7 +4,7 @@
       "sectionTitle": "Language",
       "sectionDescription": "Set interface and transcription languages independently",
       "uiLabel": "Interface language",
-      "uiDescription": "Choose the language used throughout OpenWhispr's interface",
+      "uiDescription": "Choose the language used throughout VoiceGrab's interface",
       "transcriptionLabel": "Transcription language",
       "transcriptionDescription": "Choose the language you speak for more accurate transcription",
       "chineseScriptLabel": "Chinese script (dictation)",
@@ -64,12 +64,12 @@
     },
     "openControlPanel": "Open Control Panel",
     "hideControlPanel": "Hide Control Panel",
-    "quit": "Quit OpenWhispr",
-    "tooltip": "OpenWhispr - Voice Dictation"
+    "quit": "Quit VoiceGrab",
+    "tooltip": "VoiceGrab - Voice Dictation"
   },
   "menu": {
-    "appLabel": "OpenWhispr",
-    "quit": "Quit OpenWhispr",
+    "appLabel": "VoiceGrab",
+    "quit": "Quit VoiceGrab",
     "speech": "Speech",
     "settings": "Settings...",
     "help": "Help",
@@ -87,8 +87,8 @@
       "message": "Failed to open the link in your browser:\n{{url}}\n\nError: {{error}}"
     },
     "loadFailure": {
-      "title": "OpenWhispr failed to load",
-      "message": "OpenWhispr could not load its UI.",
+      "title": "VoiceGrab failed to load",
+      "message": "VoiceGrab could not load its UI.",
       "detail": {
         "window": "Window: {{windowName}}",
         "error": "Error {{errorCode}}: {{errorDescription}}",
@@ -99,17 +99,17 @@
   },
   "startup": {
     "error": {
-      "title": "OpenWhispr Startup Error",
+      "title": "VoiceGrab Startup Error",
       "message": "Failed to start the application:\n\n{{error}}\n\nPlease report this issue."
     },
     "globeHotkey": {
       "title": "Globe Hotkey Unavailable",
-      "message": "OpenWhispr could not activate the Globe key hotkey.",
+      "message": "VoiceGrab could not activate the Globe key hotkey.",
       "details": {
         "unknown": "Unknown error occurred while starting the Globe listener.",
         "fallback": "The Globe key shortcut will remain disabled; existing keyboard shortcuts continue to work.",
         "devHint": "Run `npm run compile:globe` and rebuild the app to regenerate the listener binary.",
-        "reinstallHint": "Try reinstalling OpenWhispr or contact support if the issue persists."
+        "reinstallHint": "Try reinstalling VoiceGrab or contact support if the issue persists."
       }
     }
   },
@@ -164,7 +164,7 @@
     "close": "Close"
   },
   "windows": {
-    "pttUnavailable": "OpenWhispr's key listener isn't available."
+    "pttUnavailable": "VoiceGrab's key listener isn't available."
   },
   "common": {
     "continue": "Continue",
@@ -222,13 +222,13 @@
     "managedDeviceAndWorkspace": "Managed device and workspace",
     "deviceLocalOnly": "This device uses local processing only. Cloud features are unavailable, including for previously signed-in accounts.",
     "deviceSignInRequired": "Your organization requires sign-in on this device.",
-    "devicePolicyInvalid": "The device policy could not be read or is invalid. Contact your administrator. OpenWhispr can't be used until the policy is corrected.",
+    "devicePolicyInvalid": "The device policy could not be read or is invalid. Contact your administrator. VoiceGrab can't be used until the policy is corrected.",
     "deviceWorkspaceUnavailable": "This device requires local processing, but the saved account's workspace policy is unavailable. Log out to continue without that account, or contact your administrator."
   },
   "onboarding": {
     "rehaul": {
       "permissions": {
-        "title": "Set up OpenWhispr in 3 minutes",
+        "title": "Set up VoiceGrab in 3 minutes",
         "microphoneDescription": "Listens only while you record.",
         "accessibilityDescription": "Pastes text into any app.",
         "systemAudioTitle": "System Audio",
@@ -241,7 +241,7 @@
         "title": "Which languages do you speak?",
         "titleLineOne": "Which languages",
         "titleLineTwo": "do you speak?",
-        "description": "Select all that apply. This helps OpenWhispr recognize language switches more accurately."
+        "description": "Select all that apply. This helps VoiceGrab recognize language switches more accurately."
       },
       "dictationHotkey": {
         "title": "Choose your dictation shortcut",
@@ -251,10 +251,10 @@
         "activation": "Tap or hold?"
       },
       "assistantHotkey": {
-        "title": "Set up OpenWhispr Assistant",
+        "title": "Set up VoiceGrab Assistant",
         "titleLineOne": "Set up",
-        "titleLineTwo": "OpenWhispr Assistant",
-        "description": "Speak a request. OpenWhispr Assistant writes the result for you."
+        "titleLineTwo": "VoiceGrab Assistant",
+        "description": "Speak a request. VoiceGrab Assistant writes the result for you."
       },
       "hotkey": {
         "capture": "Press the key you want to use",
@@ -266,15 +266,15 @@
         "title": "Try your first dictation",
         "titleLineOne": "Try your",
         "titleLineTwo": "first dictation",
-        "description": "Press {{hotkey}} and start speaking. OpenWhispr will turn your voice into text.",
-        "founder": "Hey, I’m Gabe, the founder. Thanks for trying OpenWhispr!",
-        "prompt": "Click the box below, press your shortcut, and tell me: what would you love OpenWhispr to do for you?",
-        "placeholder": "Click here, then press your shortcut. OpenWhispr types into any text box."
+        "description": "Press {{hotkey}} and start speaking. VoiceGrab will turn your voice into text.",
+        "founder": "Hey, I’m Gabe, the founder. Thanks for trying VoiceGrab!",
+        "prompt": "Click the box below, press your shortcut, and tell me: what would you love VoiceGrab to do for you?",
+        "placeholder": "Click here, then press your shortcut. VoiceGrab types into any text box."
       },
       "assistantDemo": {
-        "title": "Meet OpenWhispr Assistant",
+        "title": "Meet VoiceGrab Assistant",
         "titleLineOne": "Meet",
-        "titleLineTwo": "OpenWhispr Assistant",
+        "titleLineTwo": "VoiceGrab Assistant",
         "email": {
           "subject": "Coffee next week?",
           "senderName": "Maria Alvarez",
@@ -308,13 +308,13 @@
         "typing": "Typing…"
       },
       "notes": {
-        "title": "Record meetings without a bot with OpenWhispr Notes",
+        "title": "Record meetings without a bot with VoiceGrab Notes",
         "titleLineOne": "Record meetings without a bot",
-        "titleLineTwoPrefix": "with OpenWhispr",
+        "titleLineTwoPrefix": "with VoiceGrab",
         "titleLineTwoBrand": "Notes",
-        "description": "OpenWhispr turns your conversation into clear notes. No meeting bot joins your call.",
+        "description": "VoiceGrab turns your conversation into clear notes. No meeting bot joins your call.",
         "hero": {
-          "description": "Record your meeting and let OpenWhispr turn the conversation into clear, organized notes.",
+          "description": "Record your meeting and let VoiceGrab turn the conversation into clear, organized notes.",
           "chat": "Chat with your meeting notes",
           "transcript": "Review the full transcript",
           "speakers": "See who said what"
@@ -330,16 +330,16 @@
         }
       },
       "setupChoice": {
-        "title": "Choose your OpenWhispr setup",
+        "title": "Choose your VoiceGrab setup",
         "titleLineOne": "Choose your",
-        "titleLineTwo": "OpenWhispr setup",
+        "titleLineTwo": "VoiceGrab setup",
         "description": "Pick the option that fits how you work.",
         "unavailable": {
           "title": "No setup option is available",
           "description": "Your workspace policy does not allow a complete transcription and AI setup. Contact your administrator."
         },
         "cloud": {
-          "title": "OpenWhispr Cloud",
+          "title": "VoiceGrab Cloud",
           "description": "Get 2,000 free words each week. Your settings stay synced across devices.",
           "continue": "Continue for free",
           "signIn": "Sign in to use Cloud",
@@ -525,14 +525,14 @@
       "accessibilityTitle": "Accessibility",
       "accessibilityDescription": "Types the finished text straight into whatever app you're in — docs, email, chat.",
       "testAndGrant": "Test & Grant",
-      "requiredForApp": "Required for OpenWhispr to work",
+      "requiredForApp": "Required for VoiceGrab to work",
       "microphoneRequired": "Microphone access required",
       "openSystemSettings": "Open System Settings",
       "systemAudioTitle": "System Audio",
       "systemAudioDescription": "Lets the meeting recorder hear the other side of your calls — meetings, lectures, podcasts. You can turn this on later in Settings.",
       "optional": "Optional",
       "recommended": "Recommended",
-      "accessibilityTroubleshooting": "In System Settings → Accessibility, switch OpenWhispr's toggle off and back on. If OpenWhispr isn't in the list at all, click + and add it from your Applications folder. Still stuck? Email support@openwhispr.com."
+      "accessibilityTroubleshooting": "In System Settings → Accessibility, switch VoiceGrab's toggle off and back on. If VoiceGrab isn't in the list at all, click + and add it from your Applications folder. Still stuck? Email support@openwhispr.com."
     },
     "transcription": {
       "title": "Transcription Setup",
@@ -552,18 +552,18 @@
       "textareaPlaceholder": "Click here and use your hotkey to dictate..."
     },
     "connectivity": {
-      "title": "We can't reach OpenWhispr Cloud from this network",
+      "title": "We can't reach VoiceGrab Cloud from this network",
       "body": "{{cause}} You can switch to the local engine, or continue and try again later.",
       "useLocal": "Use local engine",
       "continue": "Continue anyway"
     },
     "useCase": {
-      "title": "How will you use OpenWhispr?",
+      "title": "How will you use VoiceGrab?",
       "titleLineOne": "How will you",
-      "titleLineTwo": "use OpenWhispr?",
+      "titleLineTwo": "use VoiceGrab?",
       "description": "Choose all that apply. We’ll tailor your setup.",
       "noteLabel": "Anything else you'd like us to know?",
-      "notePlaceholder": "Tell us how you plan to use OpenWhispr (Optional)",
+      "notePlaceholder": "Tell us how you plan to use VoiceGrab (Optional)",
       "proceedToSetup": "Proceed to setup",
       "options": {
         "dictation": {
@@ -596,13 +596,13 @@
     "meeting": {
       "title": "Meeting notes",
       "description": "Capture and summarize your meetings",
-      "autoDetect": "OpenWhispr automatically detects when you're in a meeting and offers to start notes — nothing is recorded without you.",
+      "autoDetect": "VoiceGrab automatically detects when you're in a meeting and offers to start notes — nothing is recorded without you.",
       "hotkeyLabel": "Meeting hotkey",
       "hotkeyHint": "Optional — press it in any meeting to start a note instantly."
     },
     "finish": {
       "title": "You're all set",
-      "cloudDescription": "You're on OpenWhispr Cloud — fast, accurate, zero data retention, 2,000 words free every week. Prefer everything on-device? Switch to local processing in Settings.",
+      "cloudDescription": "You're on VoiceGrab Cloud — fast, accurate, zero data retention, 2,000 words free every week. Prefer everything on-device? Switch to local processing in Settings.",
       "localDescription": "You're set up with local processing or your own key. Adjust how your audio is processed anytime in Settings.",
       "cleanupNote": "AI text cleanup runs with sensible defaults. You can adjust it anytime in Settings.",
       "openSettings": "Open Settings",
@@ -638,20 +638,20 @@
       "return": "Return to onboarding",
       "missingApp": "Or use + to select the app",
       "failed": "Could not check access.",
-      "microphone": "Turn on OpenWhispr in Microphone.",
-      "accessibility": "Drag OpenWhispr into Accessibility, then turn it on.",
-      "systemAudio": "Turn on OpenWhispr under System Audio Recording Only.",
-      "screenContext": "Drag OpenWhispr into Screen & System Audio Recording, then turn it on.",
+      "microphone": "Turn on VoiceGrab in Microphone.",
+      "accessibility": "Drag VoiceGrab into Accessibility, then turn it on.",
+      "systemAudio": "Turn on VoiceGrab under System Audio Recording Only.",
+      "screenContext": "Drag VoiceGrab into Screen & System Audio Recording, then turn it on.",
       "settings": "Open Settings",
       "check": "Check again",
-      "restart": "Restart OpenWhispr",
-      "restartRequired": "Restart OpenWhispr to apply screen access."
+      "restart": "Restart VoiceGrab",
+      "restartRequired": "Restart VoiceGrab to apply screen access."
     }
   },
   "streaming": {
     "errors": {
       "cloudUnreachable": {
-        "title": "Can't reach OpenWhispr Cloud",
+        "title": "Can't reach VoiceGrab Cloud",
         "generic": "Network request failed. Check your connection.",
         "dnsBlocked": "DNS isn't resolving openwhispr.com — an ad blocker or filter may be blocking it.",
         "refused": "Connection was refused — likely a firewall or VPN.",
@@ -664,21 +664,7 @@
   "controlPanel": {
     "updateRequiredByOrg": {
       "title": "Update required",
-      "description": "Your organization requires OpenWhispr {{version}} or newer. Please update the app.",
-      "contactIT": "Your organization requires OpenWhispr {{version}} or newer. Contact IT to install an approved version."
-    },
-    "update": {
-      "readyTitle": "Update ready to install",
-      "readyDescription": "Click 'Install Update' to restart with the latest version.",
-      "installTitle": "Install Update",
-      "installDescription": "OpenWhispr will restart to apply the update. Any in-progress work will be saved.",
-      "couldNotInstallTitle": "Couldn't install update",
-      "couldNotInstallDescription": "Something went wrong. Please try again.",
-      "couldNotDownloadTitle": "Couldn't download update",
-      "couldNotDownloadDescription": "Check your internet connection and try again.",
-      "installing": "Installing...",
-      "installButton": "Install Update",
-      "availableButton": "Update Available"
+      "description": "Your organization requires VoiceGrab {{version}} or newer. Please update the app."
     },
     "limit": {
       "weeklyTitle": "Weekly Cloud limit reached",
@@ -686,7 +672,7 @@
     },
     "accessibilityMissing": {
       "title": "Accessibility permissions needed",
-      "description": "We've detected that OpenWhispr needs accessibility permissions to work properly. Please enable them below."
+      "description": "We've detected that VoiceGrab needs accessibility permissions to work properly. Please enable them below."
     },
     "billing": {
       "pastDueTitle": "We couldn't process your payment",
@@ -782,7 +768,7 @@
     },
     "cloudNudge": {
       "title": "You're signed in",
-      "description": "Dictation still runs on your own setup. You can switch to OpenWhispr Cloud anytime.",
+      "description": "Dictation still runs on your own setup. You can switch to VoiceGrab Cloud anytime.",
       "action": "Open Settings"
     }
   },
@@ -894,7 +880,7 @@
           "modelNotFound": "AWS Bedrock could not find the selected model in region {{region}}. Check the model ID and whether it is available in that region.",
           "configurationRejected": "AWS Bedrock rejected the model configuration for region {{region}}. Check the model ID, inference profile, and region.",
           "notConfigured": "AWS Bedrock is not configured correctly. Check the region and AWS credentials.",
-          "serviceUnavailable": "AWS Bedrock is temporarily unavailable due to high demand. This is an AWS service issue, not an OpenWhispr outage. Please try again in a few minutes.",
+          "serviceUnavailable": "AWS Bedrock is temporarily unavailable due to high demand. This is an AWS service issue, not an VoiceGrab outage. Please try again in a few minutes.",
           "throttled": "AWS Bedrock is temporarily limiting requests because it is receiving too many. Please wait a moment and try again. If this continues, ask your AWS administrator to check your Bedrock usage and quotas.",
           "timeout": "AWS Bedrock did not respond in time. Please try again. If this continues, check your internet connection and AWS Bedrock service status.",
           "network": "AWS Bedrock could not be reached. Check your internet connection and try again.",
@@ -981,12 +967,12 @@
       "docsLink": "Read the docs"
     },
     "elevenlabs": {
-      "keytermsNote": "OpenWhispr sends eligible words from your dictionary to ElevenLabs. ElevenLabs charges 20% more when those words are included."
+      "keytermsNote": "VoiceGrab sends eligible words from your dictionary to ElevenLabs. ElevenLabs charges 20% more when those words are included."
     }
   },
   "hooks": {
     "audioRecording": {
-      "cleanupSignedOut": "AI cleanup uses OpenWhispr Cloud, but you're signed out.",
+      "cleanupSignedOut": "AI cleanup uses VoiceGrab Cloud, but you're signed out.",
       "cleanupUnconfigured": "AI cleanup is on, but no cleanup model is set up.",
       "errorTitles": {
         "sessionExpired": "Session Expired",
@@ -1027,7 +1013,7 @@
         "description": "Part of the recording couldn't be transcribed."
       },
       "errorDescriptions": {
-        "sessionExpired": "Your OpenWhispr Cloud session is unavailable. Please sign in again from Settings.",
+        "sessionExpired": "Your VoiceGrab Cloud session is unavailable. Please sign in again from Settings.",
         "offline": "You're offline. Cloud transcription requires an internet connection.",
         "dailyLimitReached": "You've reached today's transcription limit. Try again tomorrow or upgrade your plan.",
         "providerRateLimited": "Your transcription provider rate-limited the request. Wait a moment and try again.",
@@ -1040,7 +1026,7 @@
         "managedRouteInvalid": "Managed transcription couldn't start due to a configuration mismatch. Try again or contact your administrator.",
         "managedAuthRejected": "Your organization's managed transcription credentials were rejected. Contact your administrator.",
         "managedRequestRejected": "Your organization's transcription service refused this audio (HTTP {{status}}). Try again or contact your administrator.",
-        "managedResponseMalformed": "Your organization's transcription service sent a response OpenWhispr couldn't read. Try again or contact your administrator.",
+        "managedResponseMalformed": "Your organization's transcription service sent a response VoiceGrab couldn't read. Try again or contact your administrator.",
         "managedChunkTooLarge": "This audio couldn't be split small enough for your organization's transcription service. Contact your administrator.",
         "streamingOnlyProvider": "This provider only supports live transcription. Choose another provider for file uploads and retries.",
         "providerKeyMissing": "No API key is set for your transcription provider. Add it in Settings → Speech to Text.",
@@ -1066,24 +1052,24 @@
       },
       "selectionEditing": {
         "notAppliedTitle": "Selection edit not applied",
-        "changed": "The selected text or target app changed while OpenWhispr was processing. Nothing was replaced.",
+        "changed": "The selected text or target app changed while VoiceGrab was processing. Nothing was replaced.",
         "expired": "The selection edit took too long and expired. Select the text and try again.",
-        "pasteFailed": "OpenWhispr generated the edit but could not replace the selected text.",
-        "modifiersHeld": "OpenWhispr generated the edit, but a modifier key (like Ctrl or Shift) was still held down, so it was not applied. The edit is on the clipboard.",
-        "modifiersHeldClipboardFailed": "OpenWhispr generated the edit, but a modifier key (like Ctrl or Shift) was still held down, so it was not applied, and it could not be copied to the clipboard either.",
-        "unavailable": "OpenWhispr could not safely read the selected text. Check accessibility or input automation permissions and try again.",
+        "pasteFailed": "VoiceGrab generated the edit but could not replace the selected text.",
+        "modifiersHeld": "VoiceGrab generated the edit, but a modifier key (like Ctrl or Shift) was still held down, so it was not applied. The edit is on the clipboard.",
+        "modifiersHeldClipboardFailed": "VoiceGrab generated the edit, but a modifier key (like Ctrl or Shift) was still held down, so it was not applied, and it could not be copied to the clipboard either.",
+        "unavailable": "VoiceGrab could not safely read the selected text. Check accessibility or input automation permissions and try again.",
         "tooLarge": "The selection is too large to edit safely. Select 6,000 characters or fewer.",
         "reasoningFailed": "The AI could not complete the selection edit. Your original text was not changed.",
         "invalidResponse": "The AI returned an invalid edit response. Nothing was replaced. Select the text and try again.",
         "emptyResponse": "The AI returned an empty edit. Nothing was replaced. Try a more specific instruction.",
         "truncatedResponse": "The AI stopped before completing the edit. Nothing was replaced. Try selecting less text.",
-        "wlCopyMissing": "OpenWhispr generated the edit, but on this desktop Wayland apps can only read pasted text through wl-copy. Install wl-clipboard to apply edits.",
-        "wlCopyFailed": "OpenWhispr generated the edit, but wl-copy couldn't copy it for Wayland apps, so it wasn't applied."
+        "wlCopyMissing": "VoiceGrab generated the edit, but on this desktop Wayland apps can only read pasted text through wl-copy. Install wl-clipboard to apply edits.",
+        "wlCopyFailed": "VoiceGrab generated the edit, but wl-copy couldn't copy it for Wayland apps, so it wasn't applied."
       },
       "pastePermission": {
         "title": "Allow automatic pasting",
-        "description": "Enable OpenWhispr in System Settings → Privacy & Security → Accessibility.",
-        "settingsFailed": "Couldn't open Settings. Open System Settings → Privacy & Security → Accessibility and enable OpenWhispr.",
+        "description": "Enable VoiceGrab in System Settings → Privacy & Security → Accessibility.",
+        "settingsFailed": "Couldn't open Settings. Open System Settings → Privacy & Security → Accessibility and enable VoiceGrab.",
         "manualPaste": "Copy your text below, then press {{shortcut}} to paste it.",
         "openSettings": "Open Settings",
         "copyToClipboard": "Copy to clipboard",
@@ -1095,7 +1081,7 @@
       "pasteFailed": {
         "title": "Couldn't paste automatically"
       },
-      "interruptedRecordingRecovered": "Recovered after OpenWhispr closed before this dictation finished.",
+      "interruptedRecordingRecovered": "Recovered after VoiceGrab closed before this dictation finished.",
       "waylandClipboard": {
         "title": "Transcription not pasted",
         "wlCopyMissing": "On this desktop, Wayland apps can only read pasted text through wl-copy. Install wl-clipboard to paste your dictations.",
@@ -1173,7 +1159,7 @@
       "micErrors": {
         "accessFailed": "Microphone access failed. Please try again.",
         "noMicrophones": "No microphones were detected. Connect or select a microphone in {{settingsPath}}.",
-        "permissionDenied": "Permission was denied. Open {{privacyPath}} and allow OpenWhispr.",
+        "permissionDenied": "Permission was denied. Open {{privacyPath}} and allow VoiceGrab.",
         "couldNotStart": "Could not start the selected microphone. Choose an input device in {{settingsPath}}, then rerun the test.",
         "noActiveInput": "No active audio input was found. Pick a microphone in {{settingsPath}}.",
         "unknown": "Microphone access failed: {{error}}. Select a different input device and try again.",
@@ -1202,8 +1188,8 @@
         "accessibilityNeeded": "Please grant accessibility permissions in System Settings to enable automatic text pasting.",
         "windowsReady": "Windows does not require special permissions for automatic pasting. You're all set!",
         "linuxReadyWithMethod": "Automatic pasting is available using {{method}}. You are all set!",
-        "waylandClipboardMode": "Automatic pasting is not available on this Wayland session. OpenWhispr will copy text to your clipboard and you can paste with Ctrl+V.",
-        "optionalPasteTool": "For automatic pasting, install {{tool}}:\n\n{{installCmd}}{{waylandNote}}\n\nWithout this, you can still use OpenWhispr - text will be copied to your clipboard and you can paste with Ctrl+V."
+        "waylandClipboardMode": "Automatic pasting is not available on this Wayland session. VoiceGrab will copy text to your clipboard and you can paste with Ctrl+V.",
+        "optionalPasteTool": "For automatic pasting, install {{tool}}:\n\n{{installCmd}}{{waylandNote}}\n\nWithout this, you can still use VoiceGrab - text will be copied to your clipboard and you can paste with Ctrl+V."
       },
       "alerts": {
         "accessibilityNeeded": "Accessibility permissions needed! Please grant them in System Settings."
@@ -1216,7 +1202,7 @@
         "defaultPasteTool": "xdotool",
         "xdotoolXwayland": "xdotool (XWayland apps)"
       },
-      "accessibilityTestText": "OpenWhispr accessibility test",
+      "accessibilityTestText": "VoiceGrab accessibility test",
       "warning": {
         "messages": {
           "macos": "Check Sound settings to select your input device",
@@ -1294,7 +1280,7 @@
       "emailRequired": "Enter your work email to use SSO.",
       "failed": "Single sign-on failed. Please try again.",
       "companySignInTitle": "Use your company sign-in",
-      "requiredDescription": "{{domain}} requires SSO for OpenWhispr.",
+      "requiredDescription": "{{domain}} requires SSO for VoiceGrab.",
       "availableDescription": "Your {{domain}} account is ready for company SSO.",
       "useEmailInstead": "Use email and password instead"
     },
@@ -1306,9 +1292,9 @@
       "protocolUnavailable": "Browser sign-in unavailable — re-register the openwhispr:// protocol in your system's Default Apps settings."
     },
     "welcomeSubtitle": "The power of your voice. On your terms.",
-    "welcomeTitle": "Welcome to OpenWhispr",
+    "welcomeTitle": "Welcome to VoiceGrab",
     "sessionExpired": "Session expired. Please restart the sign-up process.",
-    "unconfirmedSession": "We couldn't confirm your sign-in, so nothing was changed. Try again once OpenWhispr can reach its servers."
+    "unconfirmedSession": "We couldn't confirm your sign-in, so nothing was changed. Try again once VoiceGrab can reach its servers."
   },
   "calendar": {
     "title": "Google Calendar",
@@ -1349,7 +1335,7 @@
     "systemAudioRequired": "System Audio permission is needed to capture other participants' audio.",
     "openSettings": "Open System Settings",
     "connectCalendar": "Connect your calendar",
-    "connectCalendarDescription": "See your meetings and join them without leaving OpenWhispr.",
+    "connectCalendarDescription": "See your meetings and join them without leaving VoiceGrab.",
     "connectCalendarButton": "Connect Calendar"
   },
   "cleanupPrompt": "Cleanup",
@@ -1420,7 +1406,7 @@
   },
   "apiKeysSection": {
     "title": "API Keys",
-    "description": "Create keys to access the OpenWhispr API programmatically.",
+    "description": "Create keys to access the VoiceGrab API programmatically.",
     "empty": "No API keys yet",
     "createButton": "Create API Key",
     "create": {
@@ -1625,15 +1611,15 @@
     "recheckChecking": "Checking...",
     "title": "Automatic Pasting",
     "usingMethodPrefix": "Using",
-    "waylandClipboardDescription": "Automatic pasting isn't available on this Wayland session. OpenWhispr will copy text to your clipboard so you can paste manually with Ctrl+V.",
+    "waylandClipboardDescription": "Automatic pasting isn't available on this Wayland session. VoiceGrab will copy text to your clipboard so you can paste manually with Ctrl+V.",
     "waylandClipboardTitle": "Clipboard Mode on Wayland",
     "windowsReady": "Windows supports automatic pasting out of the box. No setup required!",
-    "withoutToolPrefix": "Without this tool, OpenWhispr will copy text to your clipboard. You can then paste manually with Ctrl+V.",
+    "withoutToolPrefix": "Without this tool, VoiceGrab will copy text to your clipboard. You can then paste manually with Ctrl+V.",
     "wtypeCosmicTerminalsDescription": "On COSMIC, terminals such as Warp only receive pasted text through wtype. Other apps already paste without it.",
     "wtypeFallbackDescription": "wtype is the preferred auto-paste method for this wlroots compositor. A fallback is available, but may be less reliable.",
     "xwaylandAppsOnly": "automatic pasting works for XWayland apps only",
     "wlClipboardTitle": "Install wl-clipboard to paste into Wayland apps",
-    "wlClipboardDescription": "On this desktop, Wayland apps can only read text that OpenWhispr copies through wl-copy. To paste dictation into them, install wl-clipboard:"
+    "wlClipboardDescription": "On this desktop, Wayland apps can only read text that VoiceGrab copies through wl-copy. To paste dictation into them, install wl-clipboard:"
   },
   "promptStudio": {
     "common": {
@@ -1682,7 +1668,7 @@
       "none": "None",
       "outputLabel": "Output",
       "processing": "Processing...",
-      "openwhisprCloud": "OpenWhispr Cloud",
+      "openwhisprCloud": "VoiceGrab Cloud",
       "providerLabel": "Provider",
       "run": "Run Test",
       "customEndpoint": "Custom endpoint",
@@ -1777,7 +1763,7 @@
         "description": "Check your connection and try again.",
         "retry": "Retry"
       },
-      "staleList": "Couldn't reach OpenWhispr. Showing your workspaces from the last time you were connected.",
+      "staleList": "Couldn't reach VoiceGrab. Showing your workspaces from the last time you were connected.",
       "tab": {
         "general": "General",
         "members": "Members",
@@ -2454,7 +2440,7 @@
       "offline": "Offline",
       "offlineAccount": {
         "title": "Showing your last sign-in",
-        "description": "Sync and account changes are paused until OpenWhispr can reach its servers."
+        "description": "Sync and account changes are paused until VoiceGrab can reach its servers."
       },
       "planLabels": {
         "free": "Free",
@@ -2515,7 +2501,7 @@
       "title": "Account",
       "toasts": {
         "approachingLimit": {
-          "description": "You've used {{used}} of {{limit}} OpenWhispr Cloud words this week. Upgrade to Pro for unlimited use.",
+          "description": "You've used {{used}} of {{limit}} VoiceGrab Cloud words this week. Upgrade to Pro for unlimited use.",
           "title": "Approaching Cloud word limit"
         }
       },
@@ -2531,7 +2517,7 @@
         "button": "Delete My Account",
         "deleting": "Deleting...",
         "title": "Delete Your Account?",
-        "description": "This permanently deletes your OpenWhispr account and personal data. Workspace-owned content and data belonging to other local users stay on this device.",
+        "description": "This permanently deletes your VoiceGrab account and personal data. Workspace-owned content and data belonging to other local users stay on this device.",
         "confirmText": "Delete Account",
         "eraseDeviceLabel": "Also erase all data from this device",
         "eraseDeviceDescription": "Deletes every local user's notes and workspace cache, downloaded models, settings, calendar connections, credentials, and recordings.",
@@ -2604,13 +2590,13 @@
       "description": "Clean up transcriptions, handle commands, and fix errors while preserving your tone.",
       "assemblyAiCleanup": {
         "pickerOn": "Standard cleanup is included with AssemblyAI Dictation.",
-        "pickerOff": "Text cleanup is off. OpenWhispr will paste your original wording.",
+        "pickerOff": "Text cleanup is off. VoiceGrab will paste your original wording.",
         "description": "AssemblyAI returns both polished text and your original wording. Leave cleanup on to paste polished text, or turn it off to paste your original wording.",
         "standard": "Standard dictation cleanup",
         "included": "Included with your dictation model. No separate cleanup model is needed.",
         "advanced": "Advanced cleanup",
         "summary": "Saved provider for custom prompts and Tone & Style",
-        "advancedHelp": "AssemblyAI handles standard dictation cleanup. Choose which provider OpenWhispr uses when a custom prompt or Tone & Style needs a separate cleanup pass.",
+        "advancedHelp": "AssemblyAI handles standard dictation cleanup. Choose which provider VoiceGrab uses when a custom prompt or Tone & Style needs a separate cleanup pass.",
         "saved": "Saved",
         "modelNeeded": "Local cleanup model needed",
         "modelHelp": "Choose and download a local cleanup model to apply your tone or custom prompt. AssemblyAI provides standard cleanup."
@@ -2618,7 +2604,7 @@
       "enableTextCleanup": "Enable text cleanup",
       "enableTextCleanupDescription": "Use AI to remove filler words, fix grammar, and polish punctuation",
       "modes": {
-        "openwhispr": "OpenWhispr Cloud",
+        "openwhispr": "VoiceGrab Cloud",
         "providers": "Bring your own key",
         "local": "Local",
         "selfHosted": "Self-Hosted",
@@ -2629,13 +2615,13 @@
         "selfHostedDesc": "Your own server on your network.",
         "enterpriseDesc": "Use your organization's cloud account (AWS, Azure, GCP)."
       },
-      "openwhisprCloud": "OpenWhispr Cloud",
+      "openwhisprCloud": "VoiceGrab Cloud",
       "openwhisprCloudDescription": "Reliable accuracy. No setup needed.",
       "title": "AI Text Enhancement",
       "toasts": {
         "switchedCloud": {
-          "description": "Text enhancement will use OpenWhispr's cloud service.",
-          "title": "Switched to OpenWhispr Cloud"
+          "description": "Text enhancement will use VoiceGrab's cloud service.",
+          "title": "Switched to VoiceGrab Cloud"
         },
         "switchedCustom": {
           "description": "Configure your own provider and API key.",
@@ -2731,7 +2717,7 @@
       "appearance": {
         "auto": "Auto",
         "dark": "Dark",
-        "description": "Control how OpenWhispr looks",
+        "description": "Control how VoiceGrab looks",
         "light": "Light",
         "theme": "Theme",
         "themeDescription": "Choose light, dark, or match your system",
@@ -2759,8 +2745,8 @@
         "linuxPttSetupDescription": "Your user needs access to keyboard input devices.",
         "linuxPttSetupNote": "After running the command, log out of your Linux user account, then log back in.",
         "hyprlandConfigWriteWarningTitle": "Hyprland keybinds will not persist",
-        "hyprlandConfigWriteWarningDescription": "OpenWhispr cannot write to {{path}}, so keybinds will not survive a Hyprland config reload. Make sure the file exists and is writable.",
-        "hyprlandUnbindDescription": "On Hyprland, OpenWhispr claims the selected shortcut. Any existing Hyprland bind that uses the same key combination will be unbound when OpenWhispr registers its shortcut."
+        "hyprlandConfigWriteWarningDescription": "VoiceGrab cannot write to {{path}}, so keybinds will not survive a Hyprland config reload. Make sure the file exists and is writable.",
+        "hyprlandUnbindDescription": "On Hyprland, VoiceGrab claims the selected shortcut. Any existing Hyprland bind that uses the same key combination will be unbound when VoiceGrab registers its shortcut."
       },
       "meetingHotkey": {
         "title": "Meeting Mode Hotkey",
@@ -2786,7 +2772,7 @@
       },
       "notifications": {
         "title": "Notifications",
-        "description": "Control which notifications OpenWhispr can show",
+        "description": "Control which notifications VoiceGrab can show",
         "disableAll": "Disable all notifications",
         "disableAllDescription": "Silence everything except error messages",
         "meetingDetection": "Meeting detection",
@@ -2803,14 +2789,14 @@
       },
       "startup": {
         "launchAtLogin": "Launch at login",
-        "launchAtLoginDescription": "Start OpenWhispr in the background when you log in",
+        "launchAtLoginDescription": "Start VoiceGrab in the background when you log in",
         "title": "Startup",
-        "description": "Control how OpenWhispr behaves when it launches",
+        "description": "Control how VoiceGrab behaves when it launches",
         "startMinimized": "Start minimized",
         "startMinimizedDescription": "Launch without showing the control panel window",
         "needsApproval": {
           "title": "Approval needed in System Settings",
-          "description": "macOS registered OpenWhispr as a login item but is waiting for you to allow it under Login Items.",
+          "description": "macOS registered VoiceGrab as a login item but is waiting for you to allow it under Login Items.",
           "action": "Open Login Items"
         }
       },
@@ -2862,7 +2848,7 @@
           "group": {
             "step1Title": "Add your user to the input group",
             "step2Title": "Log out and back in",
-            "step2Desc": "Group changes only take effect after a new login session. Log out of your desktop and log back in, then reopen OpenWhispr."
+            "step2Desc": "Group changes only take effect after a new login session. Log out of your desktop and log back in, then reopen VoiceGrab."
           },
           "service": {
             "step1Title": "Create the service directory",
@@ -2886,88 +2872,34 @@
           "manualTitle": "Add this to your configuration",
           "manualDesc": "Configure it yourself, then rebuild.",
           "flakeTitle": "Installing via our flake?",
-          "flakeDesc": "If you install OpenWhispr from the flake, programs.openwhispr.enable turns on ydotool, the uinput module and the group memberships for you.",
+          "flakeDesc": "If you install VoiceGrab from the flake, programs.openwhispr.enable turns on ydotool, the uinput module and the group memberships for you.",
           "rebuildNote": "Run sudo nixos-rebuild switch, then log out and back in so the group change and the /dev/uinput rule take effect. Replace <you> with your username."
         },
         "wlCopyDesc": "Clipboard tool that Wayland apps read pasted text from on this desktop"
       },
-      "updates": {
-        "automaticUpdates": "Automatic updates",
-        "automaticUpdatesDescription": "Download and install updates in the background",
-        "badges": {
-          "dev": "Dev",
-          "latest": "Latest",
-          "update": "Update"
-        },
-        "checkForUpdates": "Check for Updates",
-        "checking": "Checking...",
-        "currentVersion": "Current version",
-        "devMode": "Running in development mode",
-        "dialogs": {
-          "almostThere": {
-            "description": "The update is almost ready. Please wait a moment.",
-            "title": "Almost there"
-          },
-          "checkFailed": {
-            "description": "We had trouble checking for updates. Please try again later.",
-            "title": "Couldn't check for updates"
-          },
-          "downloadFailed": {
-            "description": "We had trouble downloading the update. Please try again.",
-            "title": "Couldn't download update"
-          },
-          "installFailed": {
-            "description": "We had trouble installing the update. Please try again.",
-            "title": "Couldn't install update"
-          },
-          "installUpdate": {
-            "confirmText": "Install & Restart",
-            "description": "OpenWhispr will restart to apply the update.",
-            "title": "Install Update"
-          },
-          "noUpdates": {
-            "description": "You're on the latest version.",
-            "title": "No Updates"
-          },
-          "updateAvailable": {
-            "description": "Update available: v{{version}}",
-            "title": "Update Available"
-          }
-        },
-        "downloadUpdate": "Download Update {{version}}",
-        "downloading": "Downloading... {{progress}}%",
-        "installAndRestart": "Install & Restart",
-        "latestVersion": "You're on the latest version",
-        "managedByPackageManager": "Updates are installed through your package manager",
-        "newVersion": "A newer version is available",
-        "newVersionAvailable": "New version available",
-        "restarting": "Restarting...",
-        "title": "Updates",
-        "versionPlaceholder": "—",
-        "whatsNew": "What's new in v{{version}}",
-        "managedByOrganization": "Managed by your organization.",
-        "itManaged": "Your organization manages updates.",
-        "policyLoading": "Loading update settings…",
-        "policyUnavailable": "Update settings couldn’t be loaded. Check for updates to try again.",
-        "policyChanged": "Update policy changed. Check for updates again.",
-        "managedBadge": "Managed",
-        "stagedBeforePolicy": "An update was staged before this policy applied and may install when the app quits. Contact IT before quitting or restarting."
-      },
       "translationHotkey": {
         "title": "Translation Hotkey",
         "description": "Dictate in any language — the pasted text comes out translated"
+      },
+      "about": {
+        "title": "About",
+        "version": "Version",
+        "basedOn": "Based on OpenWhispr (MIT)",
+        "basedOnLink": "github.com/OpenWhispr/openwhispr",
+        "project": "VoiceGrab",
+        "projectLink": "github.com/nicololgallia-creator/VoiceGrab"
       }
     },
     "permissions": {
       "accessibilityDescription": "Required for auto-paste to work after transcription",
       "accessibilityTitle": "Accessibility",
-      "description": "Test and manage system permissions required for OpenWhispr to function correctly",
+      "description": "Test and manage system permissions required for VoiceGrab to function correctly",
       "microphoneDescription": "Captures your voice for dictation and transcription",
       "microphoneTitle": "Microphone",
       "resetAccessibility": {
-        "description": "This will remove OpenWhispr from accessibility permissions. You'll need to re-grant access in System Settings > Privacy & Security > Accessibility.",
+        "description": "This will remove VoiceGrab from accessibility permissions. You'll need to re-grant access in System Settings > Privacy & Security > Accessibility.",
         "label": "Reset accessibility permissions",
-        "rowDescription": "Fix issues after reinstalling or rebuilding the app by removing and re-adding OpenWhispr in System Settings",
+        "rowDescription": "Fix issues after reinstalling or rebuilding the app by removing and re-adding VoiceGrab in System Settings",
         "title": "Reset Accessibility Permissions"
       },
       "optional": "Optional",
@@ -2988,9 +2920,9 @@
       "description": "Control what data leaves your device. Everything is off by default.",
       "title": "Privacy",
       "usageAnalytics": "Usage analytics",
-      "usageAnalyticsDescription": "Help us improve OpenWhispr by sharing anonymous performance metrics. We never send transcription content — only timing and error data.",
+      "usageAnalyticsDescription": "Help us improve VoiceGrab by sharing anonymous performance metrics. We never send transcription content — only timing and error data.",
       "modelListUpdates": "Model list updates",
-      "modelListUpdatesDescription": "Check OpenWhispr's public model list on GitHub every 15 minutes for new and retired models. Changes take full effect after restart.",
+      "modelListUpdatesDescription": "Check VoiceGrab's public model list on GitHub every 15 minutes for new and retired models. Changes take full effect after restart.",
       "insightsSync": "Sync personal Insights",
       "insightsSyncDescription": "Sync word counts, the date and exact time of each dictation, durations, and model types across your devices. Transcript content is never included. When you're signed in, clearing history also removes these counters from this device and your account.",
       "insightsSyncRequiresAccount": "Sign in to sync content-free Insights data across your devices.",
@@ -3053,9 +2985,9 @@
     "transcription": {
       "customSetup": "Custom Setup",
       "customSetupDescription": "Use your own provider and API key.",
-      "description": "Choose how OpenWhispr transcribes your voice",
+      "description": "Choose how VoiceGrab transcribes your voice",
       "modes": {
-        "openwhispr": "OpenWhispr Cloud",
+        "openwhispr": "VoiceGrab Cloud",
         "providers": "Cloud Providers",
         "local": "Local",
         "selfHosted": "Self-Hosted",
@@ -3066,13 +2998,13 @@
         "enterprise": "Enterprise cloud",
         "enterpriseDesc": "Audio goes to your organization's own cloud."
       },
-      "openwhisprCloud": "OpenWhispr Cloud",
+      "openwhisprCloud": "VoiceGrab Cloud",
       "openwhisprCloudDescription": "Reliable accuracy. No setup needed.",
       "title": "Speech to Text",
       "toasts": {
         "switchedCloud": {
-          "description": "Transcription will use OpenWhispr's cloud service.",
-          "title": "Switched to OpenWhispr Cloud"
+          "description": "Transcription will use VoiceGrab's cloud service.",
+          "title": "Switched to VoiceGrab Cloud"
         },
         "switchedCustom": {
           "description": "Configure your own provider and API key.",
@@ -3158,7 +3090,7 @@
         }
       },
       "meetingEnterpriseOnly": "Your organization only allows enterprise cloud transcription, which does not cover meeting recording yet.",
-      "meetingCloudSignedOut": "Note recordings can't start on OpenWhispr Cloud while you're signed out. Choose another engine above."
+      "meetingCloudSignedOut": "Note recordings can't start on VoiceGrab Cloud while you're signed out. Choose another engine above."
     },
     "intelligence": {
       "gpuDevice": {
@@ -3180,7 +3112,7 @@
       "headerErrors": {
         "missingName": "Enter a header name.",
         "invalidName": "Header names can't contain spaces, colons or other separators.",
-        "reserved": "OpenWhispr sets this header itself.",
+        "reserved": "VoiceGrab sets this header itself.",
         "invalidValue": "This value has a character a header can't carry, such as a curly quote."
       }
     },
@@ -3449,7 +3381,7 @@
           "seatPrice": "{{price}} per seat per month",
           "customPricing": "Custom pricing",
           "free": "$0",
-          "invoicedByOpenWhispr": "Invoiced by OpenWhispr",
+          "invoicedByOpenWhispr": "Invoiced by VoiceGrab",
           "paidBy": "Paid by {{workspace}}",
           "personalApplies": "Your personal plan applies"
         },
@@ -3526,7 +3458,7 @@
           "yourRole": "Your role",
           "yourSeat": "Your seat",
           "managedBy": "Managed by",
-          "invoicedByOpenWhispr": "Invoiced by OpenWhispr",
+          "invoicedByOpenWhispr": "Invoiced by VoiceGrab",
           "paidSeat": "Paid seat",
           "noPaidSeat": "No paid seat"
         }
@@ -3722,12 +3654,12 @@
     "policy": {
       "guidance": "Your organization approved these models. Pick one that suits your computer.",
       "notApproved": "Not approved by your organization",
-      "noneSupported": "Your organization hasn't approved any on-device models this app version supports. Update OpenWhispr or contact your administrator.",
+      "noneSupported": "Your organization hasn't approved any on-device models this app version supports. Update VoiceGrab or contact your administrator.",
       "emptyIntersection": "Your workspaces have no approved local model in common. Contact your administrator.",
       "modelBlocked": "Choose a local model your organization has approved.",
       "modeBlocked": "Your organization has disabled local processing.",
       "unresolved": "Workspace policy could not be resolved. Connect and try again.",
-      "versionBlocked": "Update OpenWhispr to use your organization’s approved models.",
+      "versionBlocked": "Update VoiceGrab to use your organization’s approved models.",
       "updateRequired": "Update required",
       "unavailable": "Unavailable right now",
       "installedTitle": "Installed local models",
@@ -3837,7 +3769,7 @@
       "emptyStrip_one": "{{count}} teammate hasn't joined the leaderboard yet. Rankings start when they do.",
       "emptyStrip_other": "{{count}} teammates haven't joined the leaderboard yet. Rankings start when they do.",
       "copyNudge": "Copy a nudge",
-      "nudgeText": "Join the leaderboard in OpenWhispr → Insights so we can see the team board.",
+      "nudgeText": "Join the leaderboard in VoiceGrab → Insights so we can see the team board.",
       "nudgeCopied": "Nudge copied",
       "nudgeCopyError": "Couldn't copy the nudge",
       "joinTitle": "See where you rank in {{scope}}",
@@ -3873,7 +3805,7 @@
         "desktop_words": "Desktop words",
         "mobile_words": "Mobile words"
       },
-      "shareText": "See where I rank on OpenWhispr.",
+      "shareText": "See where I rank on VoiceGrab.",
       "shareTitle": "Share leaderboard",
       "shareDescription": "Copy or download this card, or copy it before opening a social composer.",
       "copyImage": "Copy image",
@@ -3988,7 +3920,7 @@
     },
     "join": {
       "title": "Join your team",
-      "domainTitle": "Your team is on OpenWhispr",
+      "domainTitle": "Your team is on VoiceGrab",
       "description": "These workspaces have someone from your email domain.",
       "invitedDescription": "You've been invited to a workspace.",
       "invitedBy": "Invited by {{inviter}} as {{role}}",
@@ -4265,7 +4197,7 @@
     },
     "tryAgain": "Try Again",
     "card": {
-      "brand": "OpenWhispr",
+      "brand": "VoiceGrab",
       "signalId": "Signal ID",
       "audioSignature": "Your audio signature",
       "stop": "Stop",
@@ -4392,7 +4324,7 @@
     },
     "structureIntro": {
       "title": "Where your notes live",
-      "description": "OpenWhispr separates private thoughts from shared work so the right people see the right notes.",
+      "description": "VoiceGrab separates private thoughts from shared work so the right people see the right notes.",
       "personal": {
         "title": "Private",
         "description": "Only you can see the folders and notes here."
@@ -4664,7 +4596,7 @@
       "newFolder": "New Folder",
       "folderName": "Folder name",
       "create": "Create",
-      "openwhisprCloud": "OpenWhispr Cloud",
+      "openwhisprCloud": "VoiceGrab Cloud",
       "custom": "Custom",
       "selectFolder": "Select folder",
       "transcriptionFailed": "Transcription failed",
@@ -4674,17 +4606,17 @@
       "noProviderDescription": "Add an API key or download a local model to start transcribing.",
       "noProviderAction": "Open Transcription Settings",
       "fileTooLarge": "This file exceeds the 500 MB limit.",
-      "paidPlanRequired": "Cloud transcription for files over 25 MB requires a paid plan. Large files are processed with OpenWhispr Cloud for reliable, high-quality results.",
+      "paidPlanRequired": "Cloud transcription for files over 25 MB requires a paid plan. Large files are processed with VoiceGrab Cloud for reliable, high-quality results.",
       "largeFileNote": "Large files are split and transcribed in parallel.",
       "chunkProgress": "Transcribing part {{completed}} of {{total}}...",
       "byokTooLarge": "Third-party API keys only support files up to {{size}} MB.",
-      "byokTooLargeDetail": "For files over {{size}} MB, OpenWhispr Cloud handles splitting, parallel processing, and reassembly — so you get reliable results without depending on third-party provider limits.",
-      "byokTooLargeNeedsAccount": "Create an account and upgrade to a paid plan to transcribe larger files with OpenWhispr Cloud.",
-      "byokTooLargeNeedsUpgrade": "Upgrade to a paid plan to transcribe larger files with OpenWhispr Cloud.",
-      "switchToCloudForLargeFiles": "Switch to OpenWhispr Cloud to transcribe this file.",
+      "byokTooLargeDetail": "For files over {{size}} MB, VoiceGrab Cloud handles splitting, parallel processing, and reassembly — so you get reliable results without depending on third-party provider limits.",
+      "byokTooLargeNeedsAccount": "Create an account and upgrade to a paid plan to transcribe larger files with VoiceGrab Cloud.",
+      "byokTooLargeNeedsUpgrade": "Upgrade to a paid plan to transcribe larger files with VoiceGrab Cloud.",
+      "switchToCloudForLargeFiles": "Switch to VoiceGrab Cloud to transcribe this file.",
       "createAccount": "Create Account",
       "upgrade": "Upgrade",
-      "switchToCloud": "OpenWhispr Cloud",
+      "switchToCloud": "VoiceGrab Cloud",
       "orDivider": "or",
       "urlPlaceholder": "Paste a YouTube or audio URL",
       "urlDownloading": "Downloading audio...",
@@ -4744,7 +4676,7 @@
       },
       "systemAudioStopped": {
         "title": "Meeting audio stopped",
-        "description": "OpenWhispr is no longer capturing the other participants. Stop and start the recording again, or check your sound output device."
+        "description": "VoiceGrab is no longer capturing the other participants. Stop and start the recording again, or check your sound output device."
       },
       "systemAudioQuiet": {
         "title": "Meeting audio has gone quiet",
@@ -5075,7 +5007,7 @@
       "duplicate": "A snippet with this trigger already exists",
       "emptyTitle": "Stuff you shouldn't have to say",
       "emptyTitleAccent": "twice",
-      "emptyDescription": "Speak a trigger word and OpenWhispr replaces it with whatever you saved — URLs, intros, sign-offs, prompts.",
+      "emptyDescription": "Speak a trigger word and VoiceGrab replaces it with whatever you saved — URLs, intros, sign-offs, prompts.",
       "new": "New snippet",
       "examples": {
         "linkedinTrigger": "My LinkedIn",
@@ -5264,13 +5196,10 @@
     }
   },
   "support": {
-    "documentation": "Documentation",
-    "joinDiscord": "Join Discord",
-    "contactSupport": "Contact Support",
     "submitBug": "Submit Bug"
   },
   "postMigration": {
-    "title": "Welcome back to OpenWhispr",
+    "title": "Welcome back to VoiceGrab",
     "description": "Your notes and settings carried over from the previous version. macOS treats this as a new app though, so a few permissions need to be granted again.",
     "done": "Done",
     "remindLater": "Remind Me Later"
@@ -5299,11 +5228,11 @@
     "cudaDescription": "CUDA acceleration for supported NVIDIA GPUs. Requires a current compatible NVIDIA driver.",
     "vulkanDescription": "Vulkan acceleration for compatible AMD, Intel, and NVIDIA GPUs.",
     "activationFailed": "GPU acceleration unavailable",
-    "activationFailedDescription": "OpenWhispr switched to CPU transcription.",
-    "reasoningActivationFailedDescription": "OpenWhispr switched to CPU processing.",
+    "activationFailedDescription": "VoiceGrab switched to CPU transcription.",
+    "reasoningActivationFailedDescription": "VoiceGrab switched to CPU processing.",
     "retryActivation": "Retry GPU acceleration",
     "redownloadNeeded": "GPU pack needs re-downloading",
-    "redownloadNeededDescription": "This version of OpenWhispr can't use your installed GPU pack. Download it again to turn GPU acceleration back on.",
+    "redownloadNeededDescription": "This version of VoiceGrab can't use your installed GPU pack. Download it again to turn GPU acceleration back on.",
     "redownloadButton": "Re-download GPU pack",
     "downloadFailed": "Couldn't download the GPU pack.",
     "remove": "Remove",
@@ -5324,11 +5253,11 @@
       "undo": "Undo",
       "accessibilityMissing": {
         "title": "Accessibility permissions required",
-        "description": "OpenWhispr needs accessibility permissions to detect your hotkey and paste text. Please enable them in the Control Panel."
+        "description": "VoiceGrab needs accessibility permissions to detect your hotkey and paste text. Please enable them in the Control Panel."
       },
       "gpuFallback": {
         "title": "GPU acceleration unavailable",
-        "description": "OpenWhispr switched to CPU transcription.",
+        "description": "VoiceGrab switched to CPU transcription.",
         "retry": "Retry GPU"
       },
       "gpuPackMigration": {
@@ -5371,7 +5300,7 @@
       "visionModelDescription": "Route commands that include a screenshot to a different, vision-capable model.",
       "permissionTitle": "Screen Recording",
       "permissionDescription": "macOS requires Screen Recording permission to capture your screen.",
-      "relaunchHint": "Screen Recording was granted while OpenWhispr was running. Quit and reopen OpenWhispr to start capturing screenshots."
+      "relaunchHint": "Screen Recording was granted while VoiceGrab was running. Quit and reopen VoiceGrab to start capturing screenshots."
     },
     "prompt": {
       "title": "Assistant prompt",
@@ -5449,15 +5378,15 @@
       "openNote": "Open note",
       "unknownTool": "Unknown tool: {{name}}",
       "invalidArgs": "Invalid tool arguments for {{name}}",
-      "search_openwhispr_helpName": "Search OpenWhispr help",
-      "read_openwhispr_helpName": "Read OpenWhispr help",
-      "get_openwhispr_contextName": "Read OpenWhispr settings",
+      "search_openwhispr_helpName": "Search VoiceGrab help",
+      "read_openwhispr_helpName": "Read VoiceGrab help",
+      "get_openwhispr_contextName": "Read VoiceGrab settings",
       "load_skillName": "Load skill",
       "propose_skillName": "Propose skill",
       "update_skillName": "Update skill",
-      "search_openwhispr_helpStatus": "Searching OpenWhispr help...",
-      "read_openwhispr_helpStatus": "Reading OpenWhispr help...",
-      "get_openwhispr_contextStatus": "Reading OpenWhispr settings...",
+      "search_openwhispr_helpStatus": "Searching VoiceGrab help...",
+      "read_openwhispr_helpStatus": "Reading VoiceGrab help...",
+      "get_openwhispr_contextStatus": "Reading VoiceGrab settings...",
       "ask_userName": "Question",
       "ask_userStatus": "Asking you...",
       "request_connectionName": "Connection",
@@ -5636,7 +5565,7 @@
       "disconnectConfirm": "Disconnect {{email}}?",
       "disconnectDescription": "Meeting notes will no longer be recorded from this calendar.",
       "systemAudioRequired": "System Audio Permission Required",
-      "systemAudioDescription": "To transcribe meetings, OpenWhispr needs the System Audio permission to capture other participants' audio. We never record your screen. You'll be taken to System Settings to enable it.",
+      "systemAudioDescription": "To transcribe meetings, VoiceGrab needs the System Audio permission to capture other participants' audio. We never record your screen. You'll be taken to System Settings to enable it.",
       "openSettings": "Open System Settings",
       "connectFailed": "Connection Failed",
       "connectFailedDescription": "Something went wrong while connecting Google Calendar. Please try again."
@@ -5664,10 +5593,10 @@
       "disconnectConfirm": "Disconnect Apple Calendar?",
       "disconnectDescription": "Meeting notes will no longer be recorded from your Apple Calendar.",
       "permissionDenied": "Calendar Access Required",
-      "permissionDeniedDescription": "OpenWhispr needs calendar access to detect meetings. Enable OpenWhispr in System Settings under Privacy & Security → Calendars.",
+      "permissionDeniedDescription": "VoiceGrab needs calendar access to detect meetings. Enable VoiceGrab in System Settings under Privacy & Security → Calendars.",
       "openSettings": "Open System Settings",
       "connectFailed": "Connection Failed",
-      "connectFailedDescription": "Something went wrong while connecting to Calendar.app. Please restart OpenWhispr and try again."
+      "connectFailedDescription": "Something went wrong while connecting to Calendar.app. Please restart VoiceGrab and try again."
     },
     "api": {
       "description": "Manage API keys for programmatic access",
@@ -5677,13 +5606,13 @@
     },
     "mcp": {
       "description": "Chat, search, and work with your notes inside Claude, ChatGPT, and Cursor.",
-      "step1": "In your AI tool, add OpenWhispr MCP using the public URL",
-      "proRequired": "Upgrade to a paid plan to connect OpenWhispr to Claude, ChatGPT, and Cursor.",
+      "step1": "In your AI tool, add VoiceGrab MCP using the public URL",
+      "proRequired": "Upgrade to a paid plan to connect VoiceGrab to Claude, ChatGPT, and Cursor.",
       "worksWith": "Works with",
       "copyUrl": "Copy MCP URL",
       "copied": "Copied",
       "oauthTitle": "Sign in with OAuth",
-      "oauthDescription": "In a client that supports OAuth, add the server URL, then sign in to OpenWhispr and approve access. No API key needed.",
+      "oauthDescription": "In a client that supports OAuth, add the server URL, then sign in to VoiceGrab and approve access. No API key needed.",
       "apiKeyTitle": "Use an API key",
       "apiKeyDescription": "For clients that accept request headers, create a personal API key with the permissions you need and use the header below."
     },
@@ -5694,7 +5623,7 @@
       "local": {
         "label": "Local",
         "freeBadge": "Free",
-        "description": "Read your local notes directly. No login or API key — works while OpenWhispr is running."
+        "description": "Read your local notes directly. No login or API key — works while VoiceGrab is running."
       },
       "cloud": {
         "label": "Cloud",
@@ -5714,7 +5643,7 @@
       "upgrade": "Upgrade"
     },
     "notABot": {
-      "description": "OpenWhispr captures audio directly from your system — it never joins your meetings as a participant. Just connect your calendar and take notes as normal."
+      "description": "VoiceGrab captures audio directly from your system — it never joins your meetings as a participant. Just connect your calendar and take notes as normal."
     },
     "nav": {
       "label": "Integration sections",
@@ -5769,7 +5698,7 @@
         "reconnect_needed": "Slack needs to be reconnected in Settings.",
         "connection_changed": "The Slack connection changed before sending, so nothing was sent.",
         "rate_limited": "Slack is busy. Try again shortly.",
-        "missing_scope": "OpenWhispr doesn't have permission to post there. Reconnect Slack in Settings.",
+        "missing_scope": "VoiceGrab doesn't have permission to post there. Reconnect Slack in Settings.",
         "msg_too_long": "The message is too long for Slack (12,000 characters at most, once formatted).",
         "no_text": "The message is empty.",
         "network": "Slack couldn't be reached. Nothing was sent.",
@@ -5788,9 +5717,9 @@
           "connection_changed": "The GitHub connection changed before posting, so nothing was posted.",
           "credential_save_failed": "The GitHub login couldn't be saved on this computer. Nothing was posted. Try again.",
           "generic": "Something went wrong. Nothing was posted to GitHub.",
-          "not_installed": "The OpenWhispr GitHub App isn't installed on this repository. Add it in Settings. Nothing was posted.",
-          "repo_unlisted": "Couldn't confirm the OpenWhispr GitHub App is installed on this repository. Check the repository name. Nothing was posted.",
-          "no_repositories": "No repositories are chosen for the OpenWhispr GitHub App yet. Choose them in Settings. Nothing was posted.",
+          "not_installed": "The VoiceGrab GitHub App isn't installed on this repository. Add it in Settings. Nothing was posted.",
+          "repo_unlisted": "Couldn't confirm the VoiceGrab GitHub App is installed on this repository. Check the repository name. Nothing was posted.",
+          "no_repositories": "No repositories are chosen for the VoiceGrab GitHub App yet. Choose them in Settings. Nothing was posted.",
           "forbidden": "You don't have permission to do this in the repository. Nothing was posted.",
           "not_found": "The issue or pull request couldn't be found. Nothing was posted.",
           "issues_disabled": "Issues are turned off in this repository. Nothing was posted.",
@@ -5835,7 +5764,7 @@
           "wrong_workspace": "That issue is in another Linear workspace. Nothing was sent.",
           "invalid_reference": "That isn't a Linear issue. Nothing was sent.",
           "refused": "Linear refused the request. Nothing was sent.",
-          "unknown_action": "OpenWhispr can't do that in Linear. Nothing was sent.",
+          "unknown_action": "VoiceGrab can't do that in Linear. Nothing was sent.",
           "generic": "Something went wrong. Nothing was sent to Linear."
         },
         "salesforce": {
@@ -5848,7 +5777,7 @@
           "invalid_input": "Salesforce couldn't accept this as written. Nothing was sent.",
           "too_long": "Too long for Salesforce. Nothing was sent.",
           "refused": "Salesforce refused the request. Nothing was sent.",
-          "unknown_action": "OpenWhispr can't do that in Salesforce. Nothing was sent.",
+          "unknown_action": "VoiceGrab can't do that in Salesforce. Nothing was sent.",
           "generic": "Something went wrong. Nothing was sent to Salesforce.",
           "stale_record": "Salesforce changed since this review. Refresh and review again.",
           "source_unavailable": "The source note is missing or inaccessible.",
@@ -5995,19 +5924,19 @@
         "oauth_denied": "Slack wasn't connected because access wasn't allowed.",
         "oauth_timeout": "Connecting took too long. Try again.",
         "oauth_state_mismatch": "That sign-in link was out of date. Try again.",
-        "ports_busy": "Another app is using the ports OpenWhispr needs to connect. Close it and try again.",
+        "ports_busy": "Another app is using the ports VoiceGrab needs to connect. Close it and try again.",
         "token_exchange_failed": "Slack didn't finish connecting. Try again.",
         "not_configured": "Slack isn't available in this build.",
         "connection_changed": "Your account or Slack connection changed while connecting. Try again.",
-        "signed_out": "Sign in to OpenWhispr to connect Slack.",
+        "signed_out": "Sign in to VoiceGrab to connect Slack.",
         "policy_blocked": "Connectors are turned off by your organization.",
         "policy_unavailable": "Couldn't check your organization's settings. Try again."
       },
       "browser": {
         "connectedTitle": "Slack is connected",
-        "connectedBody": "You can close this tab and return to OpenWhispr.",
+        "connectedBody": "You can close this tab and return to VoiceGrab.",
         "failedTitle": "Slack wasn't connected",
-        "failedBody": "Return to OpenWhispr to try again."
+        "failedBody": "Return to VoiceGrab to try again."
       },
       "pickDestination": "Which “{{destination}}” did you mean?"
     },
@@ -6023,7 +5952,7 @@
       "connectedAs_unknown": "Connected as {{account}}",
       "needsReconnect": "GitHub needs to be reconnected.",
       "reviewOnGithub": "Review on GitHub",
-      "disconnectedHint": "Disconnected from this computer. GitHub keeps OpenWhispr's authorization until you remove it there.",
+      "disconnectedHint": "Disconnected from this computer. GitHub keeps VoiceGrab's authorization until you remove it there.",
       "errors": {
         "connect_failed": "Couldn't connect GitHub. Try again.",
         "disconnect_failed": "Couldn't disconnect GitHub. Try again.",
@@ -6031,7 +5960,7 @@
         "token_exchange_failed": "GitHub didn't finish connecting. Try again.",
         "not_configured": "GitHub isn't available in this build.",
         "connection_changed": "Your account or GitHub connection changed while connecting. Try again.",
-        "signed_out": "Sign in to OpenWhispr to connect GitHub.",
+        "signed_out": "Sign in to VoiceGrab to connect GitHub.",
         "policy_blocked": "Connectors are turned off by your organization.",
         "policy_unavailable": "Couldn't check your organization's settings. Try again.",
         "code_expired": "The code expired. Try again.",
@@ -6057,32 +5986,32 @@
       "connect": "Connect",
       "reconnect": "Reconnect",
       "disconnect": "Disconnect",
-      "connecting": "Finish connecting in your browser… If Google says access is blocked, your organization's Google admin needs to allow OpenWhispr.",
+      "connecting": "Finish connecting in your browser… If Google says access is blocked, your organization's Google admin needs to allow VoiceGrab.",
       "connectedAs": "Connected as {{account}}",
       "needsReconnect": "Gmail needs to be reconnected.",
-      "grantKept": "Disconnected. Google Calendar uses the same Google permission, so OpenWhispr stays listed in your Google Account until you disconnect Google Calendar too.",
+      "grantKept": "Disconnected. Google Calendar uses the same Google permission, so VoiceGrab stays listed in your Google Account until you disconnect Google Calendar too.",
       "errors": {
         "connect_failed": "Couldn't connect Gmail. Try again.",
         "disconnect_failed": "Couldn't disconnect Gmail. Try again.",
         "oauth_denied": "Gmail wasn't connected because access wasn't allowed.",
-        "oauth_timeout": "Connecting took too long. If Google said access is blocked, ask your organization's Google admin to allow OpenWhispr. Otherwise, try again.",
+        "oauth_timeout": "Connecting took too long. If Google said access is blocked, ask your organization's Google admin to allow VoiceGrab. Otherwise, try again.",
         "oauth_state_mismatch": "That sign-in link was out of date. Try again.",
-        "ports_busy": "Another app is using the ports OpenWhispr needs to connect. Close it and try again.",
+        "ports_busy": "Another app is using the ports VoiceGrab needs to connect. Close it and try again.",
         "token_exchange_failed": "Google didn't finish connecting. Try again.",
         "not_configured": "Gmail isn't available in this build.",
         "connection_changed": "Your account or Gmail connection changed while connecting. Try again.",
-        "signed_out": "Sign in to OpenWhispr to connect Gmail.",
+        "signed_out": "Sign in to VoiceGrab to connect Gmail.",
         "policy_blocked": "Connectors are turned off by your organization.",
         "policy_unavailable": "Couldn't check your organization's settings. Try again.",
         "permission_not_granted": "Gmail wasn't connected because permission to send email wasn't granted. Connect again and leave that permission ticked.",
         "email_not_verified": "Google hasn't verified this account's email address, so Gmail wasn't connected.",
-        "domain_policy": "Your organization's Google admin blocked this app. Ask them to allow OpenWhispr."
+        "domain_policy": "Your organization's Google admin blocked this app. Ask them to allow VoiceGrab."
       },
       "browser": {
         "connectedTitle": "Gmail is connected",
-        "connectedBody": "You can close this tab and return to OpenWhispr.",
+        "connectedBody": "You can close this tab and return to VoiceGrab.",
         "failedTitle": "Gmail wasn't connected",
-        "failedBody": "Return to OpenWhispr to try again."
+        "failedBody": "Return to VoiceGrab to try again."
       }
     },
     "linear": {
@@ -6100,20 +6029,20 @@
         "oauth_denied": "Linear wasn't connected because access wasn't allowed.",
         "oauth_timeout": "Connecting took too long. Try again.",
         "oauth_state_mismatch": "That sign-in link was out of date. Try again.",
-        "ports_busy": "Another app is using the ports OpenWhispr needs to connect. Close it and try again.",
+        "ports_busy": "Another app is using the ports VoiceGrab needs to connect. Close it and try again.",
         "token_exchange_failed": "Linear didn't finish connecting. Try again.",
         "not_configured": "Linear isn't available in this build.",
         "connection_changed": "Your account or Linear connection changed while connecting. Try again.",
-        "signed_out": "Sign in to OpenWhispr to connect Linear.",
+        "signed_out": "Sign in to VoiceGrab to connect Linear.",
         "policy_blocked": "Connectors are turned off by your organization.",
         "policy_unavailable": "Couldn't check your organization's settings. Try again.",
         "permission_not_granted": "Linear wasn't connected because not every permission was granted. Connect again and allow all of them."
       },
       "browser": {
         "connectedTitle": "Linear is connected",
-        "connectedBody": "You can close this tab and return to OpenWhispr.",
+        "connectedBody": "You can close this tab and return to VoiceGrab.",
         "failedTitle": "Linear wasn't connected",
-        "failedBody": "Return to OpenWhispr to try again."
+        "failedBody": "Return to VoiceGrab to try again."
       },
       "notes": {
         "priority": {
@@ -6201,8 +6130,8 @@
           "connection_changed": "The GitHub connection changed.",
           "credential_save_failed": "Couldn't save the GitHub login on this computer.",
           "generic": "That didn't work on GitHub.",
-          "not_installed": "The OpenWhispr GitHub App isn't installed there.",
-          "repo_unlisted": "Couldn't confirm the OpenWhispr GitHub App is installed there.",
+          "not_installed": "The VoiceGrab GitHub App isn't installed there.",
+          "repo_unlisted": "Couldn't confirm the VoiceGrab GitHub App is installed there.",
           "no_repositories": "No GitHub repositories chosen yet.",
           "forbidden": "No permission in that repository.",
           "not_found": "Couldn't find that issue or pull request.",
@@ -6303,11 +6232,11 @@
         "oauth_denied": "Salesforce wasn't connected because access wasn't allowed.",
         "oauth_timeout": "Connecting took too long. Try again.",
         "oauth_state_mismatch": "That sign-in link was out of date. Try again.",
-        "ports_busy": "Another app is using the ports OpenWhispr needs to connect. Close it and try again.",
+        "ports_busy": "Another app is using the ports VoiceGrab needs to connect. Close it and try again.",
         "token_exchange_failed": "Salesforce didn't finish connecting. Try again.",
         "not_configured": "Salesforce isn't available in this build.",
         "connection_changed": "Your account or Salesforce connection changed while connecting. Try again.",
-        "signed_out": "Sign in to OpenWhispr to connect Salesforce.",
+        "signed_out": "Sign in to VoiceGrab to connect Salesforce.",
         "policy_blocked": "Connectors are turned off by your organization.",
         "policy_unavailable": "Couldn't check your organization's settings. Try again.",
         "permission_not_granted": "Salesforce wasn't connected because not every permission was granted. Connect again and allow all of them.",
@@ -6315,19 +6244,19 @@
       },
       "browser": {
         "connectedTitle": "Salesforce is connected",
-        "connectedBody": "You can close this tab and return to OpenWhispr.",
+        "connectedBody": "You can close this tab and return to VoiceGrab.",
         "failedTitle": "Salesforce wasn't connected",
-        "failedBody": "Return to OpenWhispr to try again."
+        "failedBody": "Return to VoiceGrab to try again."
       },
       "notes": {
         "updateExisting": "Update the previously saved activity; this will not create another Task.",
         "earlierAttemptUncertain": "An earlier attempt may already have saved this to Salesforce. Check the record there before sending again.",
         "replacesMissing": "The activity saved earlier is no longer on this record in Salesforce, or you can no longer see it, so a new one will be created.",
-        "editedInSalesforce": "This activity was edited in Salesforce after OpenWhispr saved it. Sending replaces those edits.",
+        "editedInSalesforce": "This activity was edited in Salesforce after VoiceGrab saved it. Sending replaces those edits.",
         "sourceNote": "From the note “{{title}}”.",
         "sourceNoteUntitled": "From an untitled note."
       },
-      "provenance": "Source: OpenWhispr — {{title}}{{date}}",
+      "provenance": "Source: VoiceGrab — {{title}}{{date}}",
       "briefing": {
         "untitledRecord": "Selected Salesforce record",
         "retrieved": "Retrieved: {{time}}",
@@ -6443,7 +6372,7 @@
       "more": "More for {{name}}",
       "files": "Files",
       "copyFile": "Copy {{path}}",
-      "neverRun": "OpenWhispr never runs scripts",
+      "neverRun": "VoiceGrab never runs scripts",
       "uninstall": "Uninstall",
       "uninstallConfirm": "Uninstall {{name}}? It's removed from this computer.",
       "uninstallConfirmSynced": "Uninstall {{name}}? It's removed from this computer and your other devices.",
@@ -6466,7 +6395,7 @@
       "revealFailed": "Couldn't find the skill's folder",
       "writeFailed": "Couldn't save the skill",
       "writeFailedNoSpace": "Your disk is full.",
-      "writeFailedPermission": "OpenWhispr can't write to its skills folder.",
+      "writeFailedPermission": "VoiceGrab can't write to its skills folder.",
       "loadFailed": "Couldn't read your skills"
     },
     "manage": {
@@ -6553,7 +6482,7 @@
       "reservedWord": "Names with \"claude\" or \"anthropic\" can't be uploaded to Claude",
       "longBody": "The instructions are over 500 lines, which can slow the assistant down",
       "longDescription": "The description is over 300 characters; shorter ones are picked more reliably",
-      "unknownKeys": "It has extra details at the top that OpenWhispr keeps but doesn't use"
+      "unknownKeys": "It has extra details at the top that VoiceGrab keeps but doesn't use"
     },
     "recommended": {
       "action-items-to-linear": {
@@ -6680,7 +6609,7 @@
         "invitationActions": "Invitation actions",
         "resendSent": "Invitation sent",
         "resendThrottled": "Invitation sent recently. Try again in a minute.",
-        "syncPrompt": "Sharing keeps a copy of this note in your OpenWhispr cloud. Only you can see it until you choose who to share it with.",
+        "syncPrompt": "Sharing keeps a copy of this note in your VoiceGrab cloud. Only you can see it until you choose who to share it with.",
         "syncAndShare": "Sync note",
         "visibility": {
           "label": "Visibility",
@@ -6742,7 +6671,7 @@
   },
   "permissionsGate": {
     "title": "Permissions Required",
-    "description": "OpenWhispr needs a few permissions to work on this computer.",
+    "description": "VoiceGrab needs a few permissions to work on this computer.",
     "continue": "Continue"
   },
   "embeddedChat": {
@@ -6942,20 +6871,20 @@
       }
     },
     "setup": {
-      "introTitle": "Make OpenWhispr\ntype the way you talk",
+      "introTitle": "Make VoiceGrab\ntype the way you talk",
       "introDescription": "Set your tone and style across different apps.",
       "personalize": "Let's Personalize",
-      "cleanupOffTitle": "Teach OpenWhispr\nyour voice",
+      "cleanupOffTitle": "Teach VoiceGrab\nyour voice",
       "cleanupOffDescription": "Turn on AI cleanup, then set your tone and style across different apps.",
       "stepDescription": "Pick the example that sounds most like you.",
       "progress": "Step {{current}} of {{total}}",
       "finish": "Finish"
     },
     "banner": {
-      "title": "Teach OpenWhispr how you write",
+      "title": "Teach VoiceGrab how you write",
       "description": "Set your preferred tone for work, friends, and everything in between.",
       "start": "Start Now",
-      "cleanupOffTitle": "Teach OpenWhispr your voice",
+      "cleanupOffTitle": "Teach VoiceGrab your voice",
       "cleanupOffDescription": "Turn on AI cleanup and pick a tone for messages, email, and more.",
       "notNow": "Not now",
       "decoration": "Your words should sound like you. Whatever you're writing, whoever it's for."
@@ -7049,7 +6978,7 @@
         "timeout": "The audio provider didn't respond in time. Check your network or VPN.",
         "credentialMissing": "A credential this connection needs isn't provisioned on this device.",
         "configChanged": "Your organization changed this audio configuration. Reopen setup and try again.",
-        "protocolFailed": "The audio provider answered in a format OpenWhispr doesn't support. Check the deployment and protocol.",
+        "protocolFailed": "The audio provider answered in a format VoiceGrab doesn't support. Check the deployment and protocol.",
         "networkFailed": "The audio provider couldn't be reached. Check your network, VPN and DNS.",
         "secureStorageUnavailable": "This device has no secure credential storage. On Linux, install and unlock a keyring (such as GNOME Keyring or KWallet), then try again."
       },
@@ -7061,7 +6990,7 @@
         "rateLimited": "Too many test requests. Wait a few minutes and try again."
       },
       "bootstrapNotProtected": "The bootstrap file must be owned by you and readable only by you. Ask IT to redeliver it.",
-      "bootstrapUnreadable": "OpenWhispr can't read the bootstrap file. Ask IT to make it readable by your account.",
+      "bootstrapUnreadable": "VoiceGrab can't read the bootstrap file. Ask IT to make it readable by your account.",
       "bootstrapMismatch": "The bootstrap file doesn't match your account, this workspace or its configured credentials.",
       "testLinkOtherWorkspace": "This test link is for a different workspace. Switch to that workspace and open the link again."
     }

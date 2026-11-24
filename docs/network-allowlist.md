@@ -1,6 +1,6 @@
 # Network Allowlist
 
-Outbound hosts the OpenWhispr desktop app contacts. For firewall, proxy, and
+Outbound hosts the VoiceGrab desktop app contacts. For firewall, proxy, and
 DNS filter configuration.
 
 Destination connections are client-initiated over TLS. A configured HTTP proxy
@@ -9,19 +9,15 @@ TLS. No inbound ports.
 
 ## Required by default
 
-Contacted by every install using OpenWhispr Cloud (the default after
-onboarding).
+None. With the defaults (local transcription, no cloud account, no auto-update, bundled model
+list) VoiceGrab is meant to contact no host until you start a download or add a provider key. The
+OpenWhispr cloud hosts (`api.openwhispr.com`, `auth.openwhispr.com`) are not used: no
+account server is set.
 
-| Host                                          | Protocol | Port | Purpose                                                                            |
-| --------------------------------------------- | -------- | ---- | ---------------------------------------------------------------------------------- |
-| `api.openwhispr.com`                          | HTTPS    | 443  | Cloud API: transcription, sync, agent reasoning, settings, usage.                  |
-| `auth.openwhispr.com`                         | HTTPS    | 443  | Account sign-in and session refresh (Better Auth).                                 |
-| `github.com`, `objects.githubusercontent.com` | HTTPS    | 443  | Application auto-update (release artifacts via electron-updater, GitHub provider). |
+## Model catalog updates (off by default in VoiceGrab)
 
-## Model catalog updates (on by default)
-
-Contacted by every install unless turned off in Settings → Privacy → Model list
-updates, or with `OPENWHISPR_MODEL_REGISTRY_MODE=bundled` in the app's `.env`.
+Contacted only after turning on Settings → Privacy → Model list updates (it sets
+`OPENWHISPR_MODEL_REGISTRY_MODE=live` in the app's `.env`).
 Blocking it is safe: the app keeps its bundled and last verified model list.
 
 | Host                        | Protocol | Port | Purpose                                                                                                                                                                                                                                                                                          |

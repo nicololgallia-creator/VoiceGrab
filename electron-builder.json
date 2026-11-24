@@ -1,14 +1,10 @@
 {
-  "appId": "com.gizmolabs.openwhispr",
+  "appId": "com.nicololgallia.voicegrab",
   "afterPack": "scripts/afterPack.js",
   "extraMetadata": {
     "windowsTrayIdentity": true
   },
-  "productName": "OpenWhispr",
-  "protocols": {
-    "name": "OpenWhispr Protocol",
-    "schemes": ["openwhispr"]
-  },
+  "productName": "VoiceGrab",
   "directories": {
     "output": "dist"
   },
@@ -33,7 +29,6 @@
     "src/types/**/*",
     "src/utils.js",
     "src/utils/**/*",
-    "src/updater.js",
     "src/components.json",
     "!node_modules/.cache/**/*",
     "!src/node_modules/**/*",
@@ -99,7 +94,6 @@
     "src/workers/**/*"
   ],
   "extraResources": [
-    ".env",
     {
       "from": "src/assets",
       "to": "src/assets",
@@ -113,6 +107,8 @@
         "whisper-server-*",
         "llama-server-*",
         "sherpa-onnx-*",
+        "!sherpa-onnx-ws-*",
+        "!sherpa-onnx-online-ws-*",
         "yt-dlp-*",
         "qdrant-*",
         "macos-audio-tap",
@@ -171,11 +167,11 @@
     "extendInfo": {
       "LSUIElement": false,
       "CFBundleIconName": "openwhispr",
-      "NSMicrophoneUsageDescription": "OpenWhispr uses the microphone to capture your voice for transcription.",
-      "NSAudioCaptureUsageDescription": "OpenWhispr uses system audio to capture other participants' audio from calls and meetings.",
-      "NSAccessibilityUsageDescription": "OpenWhispr needs accessibility permissions to paste transcribed text into other applications.",
-      "NSCalendarsUsageDescription": "OpenWhispr reads your calendar to detect upcoming meetings and link meeting notes to events.",
-      "NSCalendarsFullAccessUsageDescription": "OpenWhispr reads your calendar to detect upcoming meetings and link meeting notes to events."
+      "NSMicrophoneUsageDescription": "VoiceGrab uses the microphone to capture your voice for transcription.",
+      "NSAudioCaptureUsageDescription": "VoiceGrab uses system audio to capture other participants' audio from calls and meetings.",
+      "NSAccessibilityUsageDescription": "VoiceGrab needs accessibility permissions to paste transcribed text into other applications.",
+      "NSCalendarsUsageDescription": "VoiceGrab reads your calendar to detect upcoming meetings and link meeting notes to events.",
+      "NSCalendarsFullAccessUsageDescription": "VoiceGrab reads your calendar to detect upcoming meetings and link meeting notes to events."
     }
   },
   "win": {
@@ -187,13 +183,7 @@
       "certificateProfileName": "openwhispr-release",
       "codeSigningAccountName": "OpenWhispr",
       "publisherName": "CN=Gizmo Labs Inc., O=Gizmo Labs Inc., L=Wilmington, S=Delaware, C=US"
-    },
-    "extraResources": [
-      {
-        "from": "resources/bin/nircmd.exe",
-        "to": "bin/nircmd.exe"
-      }
-    ]
+    }
   },
   "linux": {
     "target": ["AppImage", "deb", "rpm", "tar.gz"],
@@ -269,18 +259,11 @@
     "include": "resources/nsis/installer.nsh"
   },
   "dmg": {
-    "title": "OpenWhispr",
+    "title": "VoiceGrab",
     "icon": "src/assets/icon.icns",
     "window": {
       "width": 540,
       "height": 380
     }
-  },
-  "publish": {
-    "provider": "github",
-    "owner": "OpenWhispr",
-    "repo": "openwhispr",
-    "private": false,
-    "releaseType": "draft"
   }
 }

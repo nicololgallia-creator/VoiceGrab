@@ -1,29 +1,15 @@
-<p align="center">
-  <img src="src/assets/logo.svg" alt="OpenWhispr" width="120" />
-</p>
-
-<h1 align="center">OpenWhispr</h1>
+<h1 align="center">VoiceGrab</h1>
 
 <p align="center">
-  <a href="https://github.com/OpenWhispr/openwhispr/blob/main/LICENSE"><img src="https://img.shields.io/github/license/OpenWhispr/openwhispr?style=flat" alt="License" /></a>
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey?style=flat" alt="Platform" />
-  <a href="https://github.com/OpenWhispr/openwhispr/releases/latest"><img src="https://img.shields.io/github/v/release/OpenWhispr/openwhispr?style=flat&sort=semver" alt="GitHub release" /></a>
-  <a href="https://github.com/OpenWhispr/openwhispr/releases"><img src="https://img.shields.io/github/downloads/OpenWhispr/openwhispr/total?style=flat&color=blue" alt="Downloads" /></a>
-  <a href="https://github.com/OpenWhispr/openwhispr/stargazers"><img src="https://img.shields.io/github/stars/OpenWhispr/openwhispr?style=flat" alt="GitHub stars" /></a>
+  Voice-to-text dictation for Windows that runs on your own computer.<br/>
+  Project: <a href="https://github.com/nicololgallia-creator/VoiceGrab">github.com/nicololgallia-creator/VoiceGrab</a>
 </p>
 
-<p align="center">
-  The open-source and free alternative to WisprFlow and Granola.<br/>
-  Privacy-first voice-to-text dictation with AI agents, meeting transcription, and notes. Cross-platform for macOS, Windows, and Linux.
-</p>
+VoiceGrab is a hardened fork of [OpenWhispr](https://github.com/OpenWhispr/openwhispr) (MIT). Based on OpenWhispr (MIT); the original licence and copyright are kept in `LICENSE`.
 
-<p align="center">
-  <a href="https://openwhispr.com">Website</a> &middot;
-  <a href="https://docs.openwhispr.com">Docs</a> &middot;
-  <a href="https://github.com/OpenWhispr/openwhispr/releases/latest">Download</a> &middot;
-  <a href="https://docs.openwhispr.com/api/overview">API</a> &middot;
-  <a href="https://github.com/OpenWhispr/openwhispr/blob/main/CHANGELOG.md">Changelog</a>
-</p>
+What is different from OpenWhispr: no auto-update, no OpenWhispr cloud account (no default server), local transcription by default, the model list stays on the bundled copy unless you turn updates on, Windows helper programs are compiled from the C sources in `resources/`, and every downloaded engine and model is pinned by version and sha256.
+
+The rest of this file is inherited from OpenWhispr and may describe features this build removed.
 
 ---
 
