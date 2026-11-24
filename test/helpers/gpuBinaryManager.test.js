@@ -84,12 +84,19 @@ const WhisperCudaManager = require("../../src/helpers/whisperCudaManager.js");
 const LlamaVulkanManager = require("../../src/helpers/llamaVulkanManager.js");
 const WhisperVulkanManager = require("../../src/helpers/whisperVulkanManager.js");
 
-// CUDA pins real release digests, which a stubbed archive can never hash to. Tests that
-// exercise shared pipeline behavior rather than integrity drop the pin to reach it.
-function cudaManagerWithoutDigestPin() {
-  const manager = new WhisperCudaManager();
-  manager.config.expectedDigests = undefined;
+// Real pins can never match a stubbed archive. Tests that exercise the shared pipeline
+// rather than integrity pin the stub's own hash instead.
+function stubPins() {
+  return new Proxy({}, { get: () => sha256(state.archiveContent) });
+}
+
+function withStubPins(manager) {
+  manager.config.expectedDigests = stubPins();
   return manager;
+}
+
+function cudaManagerWithStubPin() {
+  return withStubPins(new WhisperCudaManager());
 }
 
 function makeRelease(assetName, overrides = {}) {
@@ -112,6 +119,7 @@ function requiredLibrariesManager() {
     name: "test",
     dirName: "test-pack",
     releaseUrl: "https://api.github.com/repos/x/y/releases/latest",
+    expectedDigests: stubPins(),
     assets: {
       "linux-x64": {
         assetName: "bin.zip",
@@ -163,7 +171,7 @@ test("CUDA: resolves its exact asset from the pinned tag and installs binary + c
     "README.md": "doc",
   };
 
-  const manager = cudaManagerWithoutDigestPin();
+  const manager = cudaManagerWithStubPin();
   await manager.download();
 
   assert.match(state.fetchedUrls[0], /OpenWhispr\/whisper\.cpp\/releases\/tags\/0\.0\.11$/);
@@ -192,7 +200,7 @@ test("llama Vulkan: resolves asset by regex from the pinned tag", async () => {
   state.release = makeRelease("llama-b9763-bin-ubuntu-vulkan-x64.tar.gz");
   state.extractedFiles = { "llama-server": "binary", "libvulkan.so.1": "lib" };
 
-  const manager = new LlamaVulkanManager();
+  const manager = withStubPins(new LlamaVulkanManager());
   const result = await manager.download();
 
   assert.deepEqual(result, { success: true });
@@ -223,7 +231,7 @@ test("whisper Vulkan: pinned asset, no companion libs, rejects a digest mismatch
   assert.ok(!fs.existsSync(archivePath), "archive cleaned up after failure");
 });
 
-test("digest: pinned match installs; API-reported digest is the fallback and also fails closed", async () => {
+test("digest: only a pinned match installs; a release's own digest is never trusted", async () => {
   const config = (expectedDigests) => ({
     name: "test",
     dirName: "test-pack",
@@ -241,10 +249,12 @@ test("digest: pinned match installs; API-reported digest is the fallback and als
   assert.ok(fs.existsSync(path.join(userDataDir, "bin", "test-pack", "server-out")));
 
   state.release = makeRelease("bin.zip", { digest: `sha256:${goodDigest}` });
-  await new GpuBinaryManager(config(undefined)).download();
-
-  state.release = makeRelease("bin.zip", { digest: `sha256:${"0".repeat(64)}` });
   await assert.rejects(() => new GpuBinaryManager(config(undefined)).download(), {
+    message: /no pinned sha256/,
+  });
+
+  state.release = makeRelease("bin.zip");
+  await assert.rejects(() => new GpuBinaryManager(config({ "bin.zip": "0".repeat(64) })).download(), {
     message: /integrity check/,
   });
 });
@@ -259,7 +269,7 @@ test("progress: raw (downloaded, total) callback passes straight through", async
   };
 
   const calls = [];
-  await new LlamaVulkanManager().download((downloaded, total) => calls.push([downloaded, total]));
+  await withStubPins(new LlamaVulkanManager()).download((downloaded, total) => calls.push([downloaded, total]));
   assert.deepEqual(calls, [
     [50, 100],
     [100, 100],
@@ -277,7 +287,7 @@ test("cancel semantics: CUDA throws, llama returns { cancelled: true }", async (
   });
 
   state.release = makeRelease("llama-b9763-bin-ubuntu-vulkan-x64.tar.gz");
-  const result = await new LlamaVulkanManager().download();
+  const result = await withStubPins(new LlamaVulkanManager()).download();
   assert.deepEqual(result, { success: false, cancelled: true });
 });
 
@@ -327,7 +337,7 @@ test("guard: a second download while one is in flight throws", async () => {
     "libcublasLt.so.12": "cublasLt",
   };
 
-  const manager = cudaManagerWithoutDigestPin();
+  const manager = cudaManagerWithStubPin();
   const first = manager.download();
   await assert.rejects(() => manager.download(), { message: "Download already in progress" });
   releaseDownload();
@@ -340,7 +350,7 @@ test("cleanup on failure: archive and extract dir removed, next download can sta
     throw new Error("Extraction failed: corrupt");
   };
 
-  const manager = cudaManagerWithoutDigestPin();
+  const manager = cudaManagerWithStubPin();
   await assert.rejects(() => manager.download(), { message: /Extraction failed/ });
 
   assert.equal(fs.readdirSync(tempDir).length, 0, "temp artifacts removed");
@@ -399,11 +409,11 @@ test("install isolation: packs sharing lib names cannot clobber each other", asy
     "libcublas.so.12": "cublas",
     "libcublasLt.so.12": "cublasLt",
   };
-  await cudaManagerWithoutDigestPin().download();
+  await cudaManagerWithStubPin().download();
 
   state.release = makeRelease("llama-b9763-bin-ubuntu-vulkan-x64.tar.gz");
   state.extractedFiles = { "llama-server": "bin", "libcudart.so.12": "llama-cudart" };
-  await new LlamaVulkanManager().download();
+  await withStubPins(new LlamaVulkanManager()).download();
 
   const read = (dir) =>
     fs.readFileSync(path.join(userDataDir, "bin", dir, "libcudart.so.12"), "utf8");
@@ -415,7 +425,7 @@ test("atomic install: an incomplete CUDA runtime leaves no half-installed pack",
   state.release = makeRelease("whisper-server-linux-x64-cuda.zip");
   state.extractedFiles = { "whisper-server-linux-x64-cuda": "binary" };
 
-  const manager = cudaManagerWithoutDigestPin();
+  const manager = cudaManagerWithStubPin();
   await assert.rejects(() => manager.download(), {
     message:
       /missing required libraries: libcudart\.so\.12, libcublas\.so\.12, libcublasLt\.so\.12/,
@@ -534,8 +544,7 @@ test("needs update: a pack with no required libraries is never outdated", () => 
 });
 
 test("Windows whisper Vulkan installs the MSVC runtime libraries from its release archive", async () => {
-  const manager = useWindowsAsset(new WhisperVulkanManager());
-  manager.config.expectedDigests = undefined;
+  const manager = withStubPins(useWindowsAsset(new WhisperVulkanManager()));
   const assetConfig = manager._getAssetConfig();
 
   state.release = makeRelease(assetConfig.assetName);
@@ -565,7 +574,7 @@ test("re-download replaces the previous install, including stale libs", async ()
     "libcublas.so.12": "cublas",
     "libcublasLt.so.12": "cublasLt",
   };
-  await cudaManagerWithoutDigestPin().download();
+  await cudaManagerWithStubPin().download();
 
   const packDir = path.join(userDataDir, "bin", "whisper-cuda");
   assert.deepEqual(fs.readdirSync(packDir).sort(), [

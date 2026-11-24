@@ -128,7 +128,7 @@ test("an archive with no catalog hash still gets the structural check, with its 
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const data = structuredClone(require("../../src/models/modelRegistryData.json"));
   const model = "parakeet-tdt-110m-en";
-  assert.equal(data.parakeetModels[model].sha256, undefined);
+  delete data.parakeetModels[model].sha256; // the stubbed downloader skips the hash check
   const manager = loadManager(root, data, {
     "./parakeetServer": class {
       isModelDownloaded() {

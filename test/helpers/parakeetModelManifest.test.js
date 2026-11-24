@@ -65,6 +65,8 @@ function setup(t, options = {}) {
       }
     },
     "./downloadUtils": {
+      // Fixtures cannot hash to the pinned sha256; downloadIntegrity tests cover the real check.
+      async verifyFileSha256() {},
       async downloadFile(url, target, { signal }) {
         calls.downloads.push(url);
         if (options.cancel) {

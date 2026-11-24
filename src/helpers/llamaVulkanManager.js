@@ -1,8 +1,14 @@
 const GpuBinaryManager = require("./gpuBinaryManager");
 
 // Pinned to the same build as the bundled CPU binary (download-llama-server.js).
-// Overridable via LLAMA_CPP_VERSION so GPU and CPU stay on one tested llama.cpp.
-const LLAMA_CPP_TAG = process.env.LLAMA_CPP_VERSION || "b12110";
+// Bump together with the digests below (from the GitHub release, 2026-11-24).
+const LLAMA_CPP_TAG = "b12110";
+const EXPECTED_DIGESTS = {
+  "llama-b12110-bin-win-vulkan-x64.zip":
+    "9732a5e48887ca54d0bfe4af4324dc85fd56cd8cda19b52df3542fa6ebe6874f",
+  "llama-b12110-bin-ubuntu-vulkan-x64.tar.gz":
+    "a5d741940956ec62e8783aee7e5a4c7c761af867d6f027c3277a51e1a3ac59b0",
+};
 
 const BIN_SUBDIR = "llama-vulkan";
 
@@ -12,6 +18,7 @@ class LlamaVulkanManager extends GpuBinaryManager {
       name: "Vulkan llama",
       dirName: BIN_SUBDIR,
       releaseUrl: `https://api.github.com/repos/ggml-org/llama.cpp/releases/tags/${LLAMA_CPP_TAG}`,
+      expectedDigests: EXPECTED_DIGESTS,
       assets: {
         "win32-x64": {
           assetPattern: /^llama-.*-bin-win-vulkan-x64\.zip$/,

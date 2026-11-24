@@ -9,6 +9,18 @@ const {
 const SHA = "a".repeat(64);
 const localProvider = (data) => data.localProviders.find((provider) => provider.id === "qwen");
 
+// VoiceGrab ships every download pinned. These cases need a shipped entry without a pin.
+function unpinnedSeed() {
+  const shipped = structuredClone(seed);
+  const model = localProvider(shipped).models[0];
+  delete model.sha256;
+  delete model.revision;
+  const tiny = shipped.whisperModels.tiny;
+  tiny.downloadUrl = tiny.downloadUrl.replace(/\/resolve\/[^/]+\//, "/resolve/main/");
+  delete tiny.sha256;
+  return shipped;
+}
+
 test("every download this release ships passes unchanged", () => {
   const rejected = [];
   assert.deepEqual(
@@ -49,13 +61,14 @@ test("speech downloads are held to the same publishers, across their URL fields"
 });
 
 test("a new or moved download must name its hash", () => {
-  const data = structuredClone(seed);
+  const shipped = unpinnedSeed();
+  const data = structuredClone(shipped);
   const provider = localProvider(data);
   const original = structuredClone(provider.models[0]);
   provider.models[0].revision = "b".repeat(40);
   provider.models.push({ ...original, id: "new-no-hash" });
   provider.models.push({ ...original, id: "new-hashed", sha256: SHA, revision: "b".repeat(40) });
-  const models = localProvider(withTrustedDownloads(data, seed)).models;
+  const models = localProvider(withTrustedDownloads(data, shipped)).models;
   assert.deepEqual(models[0], original, "moved without a hash");
   assert.deepEqual(
     models.map((model) => model.id).filter((id) => id.startsWith("new-")),
@@ -64,7 +77,7 @@ test("a new or moved download must name its hash", () => {
 });
 
 test("a shipped download moves or rehashes, never both, and keeps a shipped hash", () => {
-  const shipped = structuredClone(seed);
+  const shipped = unpinnedSeed();
   const pinned = localProvider(shipped).models[0];
   pinned.sha256 = SHA;
   const data = structuredClone(shipped);
@@ -92,12 +105,13 @@ test("a shipped download moves or rehashes, never both, and keeps a shipped hash
 });
 
 test("a shipped download without a hash can't move", () => {
-  const data = structuredClone(seed);
+  const shipped = unpinnedSeed();
+  const data = structuredClone(shipped);
   Object.assign(data.whisperModels.tiny, {
     downloadUrl: data.whisperModels.tiny.downloadUrl.replace("/main/", `/${"b".repeat(40)}/`),
     sha256: SHA,
   });
-  assert.deepEqual(withTrustedDownloads(data, seed).whisperModels.tiny, seed.whisperModels.tiny);
+  assert.deepEqual(withTrustedDownloads(data, shipped).whisperModels.tiny, shipped.whisperModels.tiny);
 });
 
 test("retired entries stay, so their retirement still applies", () => {

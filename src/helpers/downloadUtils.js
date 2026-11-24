@@ -275,8 +275,12 @@ async function fetchJson(url, options = {}) {
 }
 
 async function verifyFileSha256(filePath, expectedSha256, signal) {
-  if (!expectedSha256) return;
-  if (!/^[a-f0-9]{64}$/.test(expectedSha256)) throw new Error("Invalid expected SHA-256");
+  // VoiceGrab: every download must be pinned; a missing hash fails closed.
+  if (!/^[a-f0-9]{64}$/.test(expectedSha256 || "")) {
+    throw Object.assign(new Error("No pinned SHA-256 for this download"), {
+      code: "ERR_MODEL_INTEGRITY",
+    });
+  }
   const hash = createHash("sha256");
   for await (const chunk of fs.createReadStream(filePath)) {
     if (signal?.aborted) throw Object.assign(new Error("Download cancelled"), { isAbort: true });

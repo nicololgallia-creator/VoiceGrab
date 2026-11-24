@@ -43,6 +43,7 @@ function spokenSeconds(text) {
 const {
   EMBEDDING_MODEL_FILE: EMBEDDING_ONNX,
   EMBEDDING_MODEL_URL,
+  EMBEDDING_MODEL_SHA256,
 } = require("../constants/speakerDetection.json");
 const { DEFAULT_CLUSTER_THRESHOLD } = require("./diarizationPolicy");
 // Embedding model shipped before the switch to the zh-en "advanced" CAM++; removed once
@@ -53,6 +54,9 @@ const SEGMENTATION_MODEL_URL =
   "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2";
 const SILERO_VAD_MODEL_URL =
   "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx";
+// Hashed from the release files on 2026-11-24 (these older assets carry no GitHub digest).
+const SEGMENTATION_MODEL_SHA256 = "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488";
+const SILERO_VAD_MODEL_SHA256 = "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6";
 
 const SEGMENTATION_DIR = "sherpa-onnx-pyannote-segmentation-3-0";
 const SEGMENTATION_ONNX = path.join(SEGMENTATION_DIR, "model.onnx");
@@ -153,6 +157,7 @@ class DiarizationManager {
 
       if (!fs.existsSync(segModelPath)) {
         await downloadFile(SEGMENTATION_MODEL_URL, segArchivePath, {
+          expectedSha256: SEGMENTATION_MODEL_SHA256,
           timeout: 600000,
           signal,
           onProgress: (downloadedBytes, totalBytes) => {
@@ -186,6 +191,7 @@ class DiarizationManager {
 
       if (!fs.existsSync(embModelPath)) {
         await downloadFile(EMBEDDING_MODEL_URL, embModelPath, {
+          expectedSha256: EMBEDDING_MODEL_SHA256,
           timeout: 600000,
           signal,
           onProgress: (downloadedBytes, totalBytes) => {
@@ -206,6 +212,7 @@ class DiarizationManager {
       if (!this.isVadModelDownloaded()) {
         try {
           await downloadFile(SILERO_VAD_MODEL_URL, this.getVadModelPath(), {
+            expectedSha256: SILERO_VAD_MODEL_SHA256,
             timeout: 600000,
             signal,
             onProgress: (downloadedBytes, totalBytes) => {

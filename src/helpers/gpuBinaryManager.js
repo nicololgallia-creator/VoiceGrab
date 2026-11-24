@@ -153,9 +153,9 @@ class GpuBinaryManager {
 
   // The binaries are unsigned and release assets are mutable — fail closed on mismatch
   async _verifyDigest(asset, archivePath) {
-    const pinned = this.config.expectedDigests?.[asset.name];
-    const expected = pinned || (asset.digest || "").replace(/^sha256:/, "");
-    if (!expected) return;
+    // VoiceGrab: the digest a release reports about itself proves nothing about who made it.
+    const expected = this.config.expectedDigests?.[asset.name];
+    if (!expected) throw new Error(`${this.config.name}: no pinned sha256 for ${asset.name}`);
 
     const actual = await sha256File(archivePath);
     if (actual !== expected) {
@@ -209,6 +209,7 @@ class GpuBinaryManager {
       extractDir = path.join(tempDir, `temp-extract-${Date.now()}`);
 
       await downloadFile(asset.browser_download_url, archivePath, {
+        expectedSha256: this.config.expectedDigests?.[asset.name],
         signal,
         expectedSize: asset.size,
         onProgress,

@@ -8,7 +8,8 @@
       "sizeMb": 75,
       "expectedSizeBytes": 78000000,
       "fileName": "ggml-tiny.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-tiny.bin",
+      "sha256": "be07e048e1e599ad46341c8d2a135645097a538221678b7acdd1b1919c6e1b21"
     },
     "base": {
       "name": "Base",
@@ -18,8 +19,9 @@
       "sizeMb": 142,
       "expectedSizeBytes": 148000000,
       "fileName": "ggml-base.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin",
-      "recommended": true
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-base.bin",
+      "recommended": true,
+      "sha256": "60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe"
     },
     "small": {
       "name": "Small",
@@ -29,7 +31,8 @@
       "sizeMb": 466,
       "expectedSizeBytes": 488000000,
       "fileName": "ggml-small.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-small.bin",
+      "sha256": "1be3a9b2063867b937e64e2ec7483364a79917e157fa98c5d94b5c1fffea987b"
     },
     "medium": {
       "name": "Medium",
@@ -39,7 +42,8 @@
       "sizeMb": 1500,
       "expectedSizeBytes": 1570000000,
       "fileName": "ggml-medium.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-medium.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-medium.bin",
+      "sha256": "6c14d5adee5f86394037b4e4e8b59f1673b6cee10e3cf0b11bbdbee79c156208"
     },
     "large": {
       "name": "Large",
@@ -49,7 +53,8 @@
       "sizeMb": 3000,
       "expectedSizeBytes": 3140000000,
       "fileName": "ggml-large-v3.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-large-v3.bin",
+      "sha256": "64d182b440b98d5203c4f9bd541544d84c605196c4f7b845dfa11fb23594d1e2"
     },
     "large-q5": {
       "name": "Large (Q5)",
@@ -59,7 +64,8 @@
       "sizeMb": 1081,
       "expectedSizeBytes": 1081140203,
       "fileName": "ggml-large-v3-q5_0.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-q5_0.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-large-v3-q5_0.bin",
+      "sha256": "d75795ecff3f83b5faa89d1900604ad8c780abd5739fae406de19f23ecd98ad1"
     },
     "turbo": {
       "name": "Turbo",
@@ -69,7 +75,8 @@
       "sizeMb": 1600,
       "expectedSizeBytes": 1670000000,
       "fileName": "ggml-large-v3-turbo.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-large-v3-turbo.bin",
+      "sha256": "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
     },
     "turbo-q5": {
       "name": "Turbo (Q5)",
@@ -79,7 +86,8 @@
       "sizeMb": 574,
       "expectedSizeBytes": 574041195,
       "fileName": "ggml-large-v3-turbo-q5_0.bin",
-      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin"
+      "downloadUrl": "https://huggingface.co/ggerganov/whisper.cpp/resolve/5359861c739e955e79d9a303bcbc70fb988958b1/ggml-large-v3-turbo-q5_0.bin",
+      "sha256": "394221709cd5ad1f40c46e6031ca61bce88931e6e088c188294c6d5a55ffa7e2"
     }
   },
   "parakeetModels": {
@@ -119,7 +127,8 @@
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8.tar.bz2",
       "extractDir": "sherpa-onnx-nemo-parakeet-tdt-0.6b-v3-int8",
-      "sherpaModelType": "nemo_transducer"
+      "sherpaModelType": "nemo_transducer",
+      "sha256": "1495e91b59d7fc53ddca91f3431758ec99f8fa253fdb0e1e851be0f72b14b0f9"
     },
     "parakeet-unified-en-0.6b": {
       "name": "Parakeet Unified EN 0.6B",
@@ -132,7 +141,8 @@
         "en"
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet-unified-en-0.6b-int8-non-streaming.tar.bz2",
-      "extractDir": "sherpa-onnx-nemo-parakeet-unified-en-0.6b-int8-non-streaming"
+      "extractDir": "sherpa-onnx-nemo-parakeet-unified-en-0.6b-int8-non-streaming",
+      "sha256": "99f63605b3a85a54c250c0869670a687b7d6598a47bf2421515e1f839a76e150"
     },
     "parakeet-tdt-110m-en": {
       "name": "Parakeet TDT 110M EN",
@@ -147,7 +157,8 @@
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemo-parakeet_tdt_transducer_110m-en-36000-int8.tar.bz2",
       "extractDir": "sherpa-onnx-nemo-parakeet_tdt_transducer_110m-en-36000-int8",
-      "sherpaModelType": "nemo_transducer"
+      "sherpaModelType": "nemo_transducer",
+      "sha256": "f628312e9fdf8686374cb01a69425c41732529d540860311f16f37cbc32cfe9b"
     },
     "nemotron-speech-streaming-en-0.6b": {
       "name": "Nemotron Speech Streaming EN 0.6B",
@@ -161,7 +172,8 @@
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25.tar.bz2",
       "extractDir": "sherpa-onnx-nemotron-speech-streaming-en-0.6b-560ms-int8-2026-04-25",
-      "runtime": "online"
+      "runtime": "online",
+      "sha256": "78e2b79fcf7271553a74402a76b771b09ea40117a39566a79f52235b23db6358"
     },
     "nemotron-3.5-asr-streaming-0.6b": {
       "name": "Nemotron 3.5 ASR Streaming 0.6B",
@@ -189,7 +201,8 @@
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-nemotron-3.5-asr-streaming-0.6b-560ms-int8-2026-06-11.tar.bz2",
       "extractDir": "sherpa-onnx-nemotron-3.5-asr-streaming-0.6b-560ms-int8-2026-06-11",
-      "runtime": "online"
+      "runtime": "online",
+      "sha256": "c6bf5e0df765f9d5b43bc9e0536d4b4b3e7d40bdf5ecf13e45f134c51c05ae3a"
     },
     "cohere-transcribe-03-2026": {
       "name": "Cohere Transcribe 2B",
@@ -217,7 +230,8 @@
       ],
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-cohere-transcribe-14-lang-int8-2026-04-01.tar.bz2",
       "extractDir": "sherpa-onnx-cohere-transcribe-14-lang-int8-2026-04-01",
-      "modelType": "cohere-transcribe"
+      "modelType": "cohere-transcribe",
+      "sha256": "bd582588d50685a795dcd2807ab77e11361b8312d96c53884682def45ab4206d"
     },
     "orukeet-v0.1.0": {
       "name": "Orukeet",
@@ -265,7 +279,8 @@
       "organization": {
         "id": "oruk",
         "name": "Oruk"
-      }
+      },
+      "sha256": "f9191f30178cc9122ce2f023bf9fefafc822028307b0efa4caff645ba3fe8d0a"
     }
   },
   "cloudProviders": [
@@ -1337,7 +1352,9 @@
           "contextLength": 262144,
           "hfRepo": "bartowski/Qwen_Qwen3.5-9B-GGUF",
           "recommended": true,
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "182be2fd6c7bc44887d88a91cb03ff009cc9f549",
+          "sha256": "d784ce9eda1a5a7b51e8f705a9e6310844bf4f173654d115823c775fdea56d43"
         },
         {
           "name": "Qwen3.5 4B",
@@ -1350,7 +1367,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "bartowski/Qwen_Qwen3.5-4B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "4168f45a16a1290d65a4ec0fa312ae917a4c15d6",
+          "sha256": "13c16f426047e2de38cd075bdade4a7bcbc8c774384876f677740cda65f8a983"
         },
         {
           "name": "Qwen3.5 2B",
@@ -1363,7 +1382,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "bartowski/Qwen_Qwen3.5-2B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "7d26695454df6de5fbcce2e58681e62dae06ce43",
+          "sha256": "57a1085840f497d764a7fc5d346922dbde961efb54cc792ea81d694fd846a1d8"
         },
         {
           "name": "Qwen3.5 0.8B",
@@ -1376,7 +1397,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "bartowski/Qwen_Qwen3.5-0.8B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "f36b1ea49a332ede8fe5f389bbf5b3575ef71f48",
+          "sha256": "fb044e93939a70469c905781334f5de1e6c8b608ced6cbc8c9249bd4127d9526"
         },
         {
           "name": "Qwen3.8 27B",
@@ -1389,7 +1412,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "bartowski/Qwen3.8-27B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "87410e7b9a5c21e6ca70c0c9cc5237de909fe621",
+          "sha256": "880a52af8317974f7b4b064a6bc29ff49e188b91aa218e08eea3078b6b1cc673"
         },
         {
           "name": "Qwen3.6 35B MoE",
@@ -1402,7 +1427,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "ggml-org/Qwen3.6-35B-A3B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "52f9f9b8052fb9c8b69bba4a95eda0f319ac3d2a",
+          "sha256": "f4ffe03c9139e6a905a5d346f77d9fabdd179367c3280dfd005d1e75ca5ed8c8"
         },
         {
           "name": "Qwen3 8B",
@@ -1416,7 +1443,9 @@
           "quantization": "q4_k_m",
           "contextLength": 131072,
           "hfRepo": "Qwen/Qwen3-8B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+          "sha256": "d98cdcbd03e17ce47681435b5150e34c1417f50b5c0019dd560e4882c5745785"
         },
         {
           "name": "Qwen3 8B (Q5)",
@@ -1430,7 +1459,9 @@
           "quantization": "q5_k_m",
           "contextLength": 131072,
           "hfRepo": "Qwen/Qwen3-8B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "7c41481f57cb95916b40956ab2f0b139b296d974",
+          "sha256": "068bae163faa96ad48032daf4e071a6a28fe67d8dcc95367609c2ff165e52738"
         },
         {
           "name": "Qwen3 4B",
@@ -1444,7 +1475,9 @@
           "quantization": "q4_k_m",
           "contextLength": 131072,
           "hfRepo": "Qwen/Qwen3-4B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+          "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
         },
         {
           "name": "Qwen3 1.7B",
@@ -1458,7 +1491,9 @@
           "quantization": "q8_0",
           "contextLength": 131072,
           "hfRepo": "Qwen/Qwen3-1.7B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "90862c4b9d2787eaed51d12237eafdfe7c5f6077",
+          "sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a"
         },
         {
           "name": "Qwen3 32B",
@@ -1472,7 +1507,9 @@
           "quantization": "q4_k_m",
           "contextLength": 131072,
           "hfRepo": "Qwen/Qwen3-32B-GGUF",
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "938a7432affaec9157f883a87164e2646ae17555",
+          "sha256": "efd971561896866f0e910cce52761ca77b1b138090c7f15fe284676d57d1f689"
         },
         {
           "name": "Qwen2.5 1.5B",
@@ -1485,7 +1522,9 @@
           "fileName": "qwen2.5-1.5b-instruct-q5_k_m.gguf",
           "quantization": "q5_k_m",
           "contextLength": 32768,
-          "hfRepo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF"
+          "hfRepo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+          "revision": "91cad51170dc346986eccefdc2dd33a9da36ead9",
+          "sha256": "b46661073c18e5b56a41fa320975f866a00def1ff08feef4718e013258896f8c"
         },
         {
           "name": "Qwen2.5 3B",
@@ -1498,7 +1537,9 @@
           "fileName": "qwen2.5-3b-instruct-q5_k_m.gguf",
           "quantization": "q5_k_m",
           "contextLength": 32768,
-          "hfRepo": "Qwen/Qwen2.5-3B-Instruct-GGUF"
+          "hfRepo": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+          "revision": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+          "sha256": "2c63dde5f2c9ab1fd64d47dee2d34dade6ba9ff62442d1d20b5342310c982081"
         },
         {
           "name": "Qwen2.5 7B",
@@ -1511,7 +1552,9 @@
           "fileName": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 128000,
-          "hfRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF"
+          "hfRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+          "revision": "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+          "sha256": "65b8fcd92af6b4fefa935c625d1ac27ea29dcb6ee14589c55a8f115ceaaa1423"
         },
         {
           "name": "Qwen2.5 7B (Q5)",
@@ -1524,7 +1567,9 @@
           "fileName": "Qwen2.5-7B-Instruct-Q5_K_M.gguf",
           "quantization": "q5_k_m",
           "contextLength": 128000,
-          "hfRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF"
+          "hfRepo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+          "revision": "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+          "sha256": "2e998d7e181c8756c5ffc55231b9ee1cdc9d3acec4245d6e27d32bd8e738c474"
         }
       ]
     },
@@ -1545,7 +1590,9 @@
           "quantization": "q4_k_m",
           "contextLength": 262144,
           "hfRepo": "mistralai/Ministral-3-8B-Instruct-2512-GGUF",
-          "recommended": true
+          "recommended": true,
+          "revision": "0102285ad796bd99af90f58de616092e5630e970",
+          "sha256": "33e7a72cf5e6e2cfc2f2847075acc013d68bba023e35310cef86b5cf8fdca761"
         },
         {
           "name": "Ministral 3 14B",
@@ -1557,7 +1604,9 @@
           "fileName": "Ministral-3-14B-Instruct-2512-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "mistralai/Ministral-3-14B-Instruct-2512-GGUF"
+          "hfRepo": "mistralai/Ministral-3-14B-Instruct-2512-GGUF",
+          "revision": "74fac473c43357d7fb2671713608183cc72496d0",
+          "sha256": "824e0f3373e69b84f2cae46fdcb9bd1ebc6ab3bfc7acc125d818b7b8178cc613"
         },
         {
           "name": "Ministral 3 3B",
@@ -1569,7 +1618,9 @@
           "fileName": "Ministral-3-3B-Instruct-2512-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "mistralai/Ministral-3-3B-Instruct-2512-GGUF"
+          "hfRepo": "mistralai/Ministral-3-3B-Instruct-2512-GGUF",
+          "revision": "eb599d408350ea2bb60452cb86be7c7b2fc28227",
+          "sha256": "9ed150d4367e68df0ac8e1540f6ddc65b42d0ee26378329d1ecbca60f93fc5f8"
         },
         {
           "name": "Mistral Nemo 12B",
@@ -1582,7 +1633,9 @@
           "fileName": "Mistral-Nemo-12B-Instruct.Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "mradermacher/Mistral-Nemo-12B-Instruct-GGUF"
+          "hfRepo": "mradermacher/Mistral-Nemo-12B-Instruct-GGUF",
+          "revision": "308fe5820f484b70e0169aad5b5553e15aabd5b9",
+          "sha256": "2046c16c427f5bd6dfb2b08b6b74edcc6102e0e2129cebff38ef7aa746d26f31"
         },
         {
           "name": "Mistral 7B Instruct v0.3",
@@ -1595,7 +1648,9 @@
           "fileName": "Mistral-7B-Instruct-v0.3-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 32768,
-          "hfRepo": "bartowski/Mistral-7B-Instruct-v0.3-GGUF"
+          "hfRepo": "bartowski/Mistral-7B-Instruct-v0.3-GGUF",
+          "revision": "61fd4167fff3ab01ee1cfe0da183fa27a944db48",
+          "sha256": "1270d22c0fbb3d092fb725d4d96c457b7b687a5f5a715abe1e818da303e562b6"
         },
         {
           "name": "Mistral 7B Instruct v0.3 (Q5)",
@@ -1608,7 +1663,9 @@
           "fileName": "Mistral-7B-Instruct-v0.3-Q5_K_M.gguf",
           "quantization": "q5_k_m",
           "contextLength": 32768,
-          "hfRepo": "bartowski/Mistral-7B-Instruct-v0.3-GGUF"
+          "hfRepo": "bartowski/Mistral-7B-Instruct-v0.3-GGUF",
+          "revision": "61fd4167fff3ab01ee1cfe0da183fa27a944db48",
+          "sha256": "0374072546aaf1257d1e34610edb11b691730d8ef7d44b5629693a2dd8e8d472"
         }
       ]
     },
@@ -1628,7 +1685,9 @@
           "fileName": "Llama-3.2-1B-Instruct-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "bartowski/Llama-3.2-1B-Instruct-GGUF"
+          "hfRepo": "bartowski/Llama-3.2-1B-Instruct-GGUF",
+          "revision": "067b946cf014b7c697f3654f621d577a3e3afd1c",
+          "sha256": "6f85a640a97cf2bf5b8e764087b1e83da0fdb51d7c9fab7d0fece9385611df83"
         },
         {
           "name": "Llama 3.2 3B",
@@ -1641,7 +1700,9 @@
           "fileName": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "bartowski/Llama-3.2-3B-Instruct-GGUF"
+          "hfRepo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+          "revision": "5ab33fa94d1d04e903623ae72c95d1696f09f9e8",
+          "sha256": "6c1a2b41161032677be168d354123594c0e6e67d2b9227c84f296ad037c728ff"
         },
         {
           "name": "Llama 3.1 8B",
@@ -1654,7 +1715,9 @@
           "fileName": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF"
+          "hfRepo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+          "revision": "bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+          "sha256": "7b064f5842bf9532c91456deda288a1b672397a54fa729aa665952863033557c"
         }
       ]
     },
@@ -1676,7 +1739,9 @@
           "contextLength": 128000,
           "hfRepo": "ggml-org/gpt-oss-20b-GGUF",
           "recommended": true,
-          "supportsThinking": true
+          "supportsThinking": true,
+          "revision": "41e8a94d15d62070b36cf4553a0250717ecf46b8",
+          "sha256": "27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901"
         }
       ]
     },
@@ -1696,7 +1761,9 @@
           "fileName": "google_gemma-4-31B-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "bartowski/google_gemma-4-31B-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-4-31B-it-GGUF",
+          "revision": "619aca7589c72be65dd968de8602ad23d68b5c14",
+          "sha256": "2959c1b0a4f792493bb0092846ea06aec54547e47be979c282634d938d501b75"
         },
         {
           "name": "Gemma 4 31B QAT",
@@ -1711,7 +1778,11 @@
           "hfRepo": "google/gemma-4-31B-it-qat-q4_0-gguf",
           "draftHfRepo": "unsloth/gemma-4-31B-it-qat-GGUF",
           "draftFileName": "mtp-gemma-4-31B-it.gguf",
-          "draftSizeBytes": 279955968
+          "draftSizeBytes": 279955968,
+          "revision": "59dde24573e7e61570dba08b18a2e1fe246955ed",
+          "sha256": "179cfb99212709597eae5929112cfca677e1bbf566178b479ae1da0c4772874b",
+          "draftRevision": "43cc1aeb31adf47ec06a854507ce552cd9862e6f",
+          "draftSha256": "3a5e99fd8d0b23afb1fccd1ee0c9ebd1f571d00399c2dae2292d217feeec0f6b"
         },
         {
           "name": "Gemma 4 26B MoE",
@@ -1723,7 +1794,9 @@
           "fileName": "google_gemma-4-26B-A4B-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "bartowski/google_gemma-4-26B-A4B-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-4-26B-A4B-it-GGUF",
+          "revision": "10f3b41bcf8d3047f4e136e7197ffc2dd1654c9d",
+          "sha256": "a07f72221e8e3f77455ab0d7f7652d01a9f63c262b954aa6932a53275a0e895a"
         },
         {
           "name": "Gemma 4 26B MoE QAT",
@@ -1738,7 +1811,11 @@
           "hfRepo": "google/gemma-4-26B-A4B-it-qat-q4_0-gguf",
           "draftHfRepo": "unsloth/gemma-4-26B-A4B-it-qat-GGUF",
           "draftFileName": "mtp-gemma-4-26B-A4B-it.gguf",
-          "draftSizeBytes": 251939328
+          "draftSizeBytes": 251939328,
+          "revision": "d1c082be9cf3c8a514acf63b8761f4b41935842e",
+          "sha256": "3eca3b8f6d7baf218a7dd6bba5fb59a56ee25fe2d567b6f5f589b4f697eca51d",
+          "draftRevision": "7b92b5b28818151e8669af2e45e88d6086f490dd",
+          "draftSha256": "7272d97595f0d4c74bd7b623492b7dbdaafd8b7c72f329a8270ba4eca68f768a"
         },
         {
           "name": "Gemma 4 12B QAT",
@@ -1753,7 +1830,11 @@
           "hfRepo": "google/gemma-4-12B-it-qat-q4_0-gguf",
           "draftHfRepo": "unsloth/gemma-4-12B-it-qat-GGUF",
           "draftFileName": "mtp-gemma-4-12B-it.gguf",
-          "draftSizeBytes": 253708800
+          "draftSizeBytes": 253708800,
+          "revision": "29d097773436b69ff9feafd636ab4cf873786537",
+          "sha256": "93567e57a8fe10b23569b9d9ec38cd005deedf71e29477c421a4b83f418a538b",
+          "draftRevision": "980b060c40a8539ac159e0501a3e0f66a6365af3",
+          "draftSha256": "fcb35dea42c71333db904cee11baac525c9ef872818ee3753f6cb156f3c6f4f6"
         },
         {
           "name": "Gemma 4 E4B",
@@ -1765,7 +1846,9 @@
           "fileName": "google_gemma-4-E4B-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "bartowski/google_gemma-4-E4B-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-4-E4B-it-GGUF",
+          "revision": "029e94146666900b08caf49a3b47b413dfa8ec66",
+          "sha256": "d35a3aa7a6d47de237fd488bb6f7f3efd62908d828f85a63da0ee93acdbefe9f"
         },
         {
           "name": "Gemma 4 E4B QAT",
@@ -1781,7 +1864,11 @@
           "recommended": true,
           "draftHfRepo": "unsloth/gemma-4-E4B-it-qat-GGUF",
           "draftFileName": "mtp-gemma-4-E4B-it.gguf",
-          "draftSizeBytes": 59678016
+          "draftSizeBytes": 59678016,
+          "revision": "4b4a2c1d584be7264f87aac328a1bc739ce81b6c",
+          "sha256": "676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee",
+          "draftRevision": "8c5a9e4fd5482e2be20fe0bf013b4c262a8f4265",
+          "draftSha256": "423074e537504b4f9ec5eafed5c639fac82c96631626efccacdd3c4039b20605"
         },
         {
           "name": "Gemma 4 E2B",
@@ -1793,7 +1880,9 @@
           "fileName": "google_gemma-4-E2B-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 262144,
-          "hfRepo": "bartowski/google_gemma-4-E2B-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-4-E2B-it-GGUF",
+          "revision": "81012ba3538e061d5ee003f11f25335b17f82e2d",
+          "sha256": "923c4c86177d2ee173a7f5b4fa3d0ac65f5962ab15e6d6a5bc250aec4fd7bf7e"
         },
         {
           "name": "Gemma 4 E2B QAT",
@@ -1808,7 +1897,11 @@
           "hfRepo": "google/gemma-4-E2B-it-qat-q4_0-gguf",
           "draftHfRepo": "unsloth/gemma-4-E2B-it-qat-GGUF",
           "draftFileName": "mtp-gemma-4-E2B-it.gguf",
-          "draftSizeBytes": 59235648
+          "draftSizeBytes": 59235648,
+          "revision": "675cff42a74c774d6cb76f76d8eacb49b48c9b93",
+          "sha256": "fa401b55b07ee70a54c6dae3903c783a6e65064312529ea57175cb5f8dec6634",
+          "draftRevision": "66a399f68ddd113b06dff02fca9523e55465d11d",
+          "draftSha256": "586f2460b909008640981ec34060aa864e03c144fbabfb3173c4335087e4aae0"
         },
         {
           "name": "Gemma 3 12B",
@@ -1821,7 +1914,9 @@
           "fileName": "google_gemma-3-12b-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "bartowski/google_gemma-3-12b-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-3-12b-it-GGUF",
+          "revision": "648e3a36a77c8a9f12d86e741f9dcb9089c769c4",
+          "sha256": "fc57f67efa46d711c346e587cbef7d049e95f3df8db2eb2271153343ef0acc7b"
         },
         {
           "name": "Gemma 3 4B",
@@ -1834,7 +1929,9 @@
           "fileName": "google_gemma-3-4b-it-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 131072,
-          "hfRepo": "bartowski/google_gemma-3-4b-it-GGUF"
+          "hfRepo": "bartowski/google_gemma-3-4b-it-GGUF",
+          "revision": "71506238f970075ca85125cd749c28b1b0eee84e",
+          "sha256": "4996030242583a40aa151ff93f49ed787ac8c25e4120c3ae4588b2e2a7d1ae94"
         },
         {
           "name": "Gemma 3 1B",
@@ -1847,7 +1944,9 @@
           "quantization": "q4_k_m",
           "contextLength": 32768,
           "hfRepo": "bartowski/google_gemma-3-1b-it-GGUF",
-          "recommended": false
+          "recommended": false,
+          "revision": "116f76234503685a98f572982177b11d44ec8ff1",
+          "sha256": "12bf0fff8815d5f73a3c9b586bd8fee8e7b248c935de70dec367679873d0f29d"
         }
       ]
     },
@@ -1915,7 +2014,9 @@
           "quantization": "q4_k_m",
           "contextLength": 32768,
           "hfRepo": "LiquidAI/LFM2.5-1.2B-Instruct-GGUF",
-          "recommended": true
+          "recommended": true,
+          "revision": "8ed288026e23958ad9dfa92d53ed773a8eee7125",
+          "sha256": "b1b3de114215d9507409a662a501a631095a479a419584e8a2ded6304b19b4f5"
         },
         {
           "name": "LFM2.5 8B MoE",
@@ -1927,7 +2028,9 @@
           "fileName": "LFM2.5-8B-A1B-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 32768,
-          "hfRepo": "LiquidAI/LFM2.5-8B-A1B-GGUF"
+          "hfRepo": "LiquidAI/LFM2.5-8B-A1B-GGUF",
+          "revision": "49c14831707011e64d70b2ebd8462ba08d608434",
+          "sha256": "4923ec14f06b968b74d663e5949867d2d9c3bf13a20b8be1a9f9af39989b2bb0"
         },
         {
           "name": "LFM2 2.6B",
@@ -1939,7 +2042,9 @@
           "fileName": "LFM2-2.6B-Q4_K_M.gguf",
           "quantization": "q4_k_m",
           "contextLength": 32768,
-          "hfRepo": "LiquidAI/LFM2-2.6B-GGUF"
+          "hfRepo": "LiquidAI/LFM2-2.6B-GGUF",
+          "revision": "a759abdc5955d4ca97763e5cb7ff3940589ba898",
+          "sha256": "384bc877b6c37064982f96885bef69e4475919f5969218ed4e3b9399ae0340df"
         },
         {
           "name": "LFM2.5 350M",
@@ -1951,7 +2056,9 @@
           "fileName": "LFM2.5-350M-Q8_0.gguf",
           "quantization": "q8_0",
           "contextLength": 32768,
-          "hfRepo": "LiquidAI/LFM2.5-350M-GGUF"
+          "hfRepo": "LiquidAI/LFM2.5-350M-GGUF",
+          "revision": "657e078c94084481950a2d555a941481f715536b",
+          "sha256": "be036a757295e550098b85e13f6af2735d0fa73b41e1156a40c7d8e8e32a5766"
         },
         {
           "name": "LFM2.5 230M",
@@ -1963,7 +2070,9 @@
           "fileName": "LFM2.5-230M-Q8_0.gguf",
           "quantization": "q8_0",
           "contextLength": 32768,
-          "hfRepo": "LiquidAI/LFM2.5-230M-GGUF"
+          "hfRepo": "LiquidAI/LFM2.5-230M-GGUF",
+          "revision": "03502067c64ce32ac4fe87b0cec0310a1a13d3e9",
+          "sha256": "855be85429300602eda72958547614703541b7d6dd965a8f8f6052b85a7aa935"
         }
       ]
     }
@@ -1976,7 +2085,8 @@
       "sizeMb": 6.6,
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2",
       "extractDir": "sherpa-onnx-pyannote-segmentation-3-0",
-      "descriptionKey": "models.descriptions.diarization.segmentation"
+      "descriptionKey": "models.descriptions.diarization.segmentation",
+      "sha256": "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488"
     },
     "3dspeaker-campplus-en": {
       "name": "CAM++ Speaker Embedding (English)",
@@ -1985,7 +2095,8 @@
       "sizeMb": 28.2,
       "downloadUrl": "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx",
       "fileName": "3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx",
-      "descriptionKey": "models.descriptions.diarization.embedding_en"
+      "descriptionKey": "models.descriptions.diarization.embedding_en",
+      "sha256": "98daf9bcf1c8abf3db374fec4c27a5eda7c58705bb3f180d057b085a72a88bb5"
     }
   },
   "openwhisprCloudModels": {

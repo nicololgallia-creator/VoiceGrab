@@ -68,7 +68,7 @@ test("getDraftDownloadUrl mirrors the main URL shape", () => {
   const { model, provider } = mm.findModelById(QAT_ID);
   assert.equal(
     mm.getDraftDownloadUrl(provider, model),
-    `${provider.baseUrl}/${model.draftHfRepo}/resolve/main/${model.draftFileName}`
+    `${provider.baseUrl}/${model.draftHfRepo}/resolve/${model.draftRevision}/${model.draftFileName}`
   );
 });
 
