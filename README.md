@@ -1,135 +1,31 @@
-<h1 align="center">VoiceGrab</h1>
+# VoiceGrab
 
-<p align="center">
-  Voice-to-text dictation for Windows that runs on your own computer.<br/>
-  Project: <a href="https://github.com/nicololgallia-creator/VoiceGrab">github.com/nicololgallia-creator/VoiceGrab</a>
-</p>
+Voice dictation for Windows that runs on your own computer. Hold a hotkey, talk, and the words are typed wherever your cursor is. Transcription is local by default, with no account and no auto-update.
 
-VoiceGrab is a hardened fork of [OpenWhispr](https://github.com/OpenWhispr/openwhispr) (MIT). Based on OpenWhispr (MIT); the original licence and copyright are kept in `LICENSE`.
+VoiceGrab is a fork of [OpenWhispr](https://github.com/OpenWhispr/openwhispr) by the OpenWhispr team (MIT licence, forked at commit `7970fda` on 2026-11-23). The dictation engine and the app are their work. This fork reviews the code and trims it down to a local-first app. [SECURITY.md](SECURITY.md) lists every change and what the review did and did not cover.
 
-What is different from OpenWhispr: no auto-update, no OpenWhispr cloud account (no default server), local transcription by default, the model list stays on the bundled copy unless you turn updates on, Windows helper programs are compiled from the C sources in `resources/`, and every downloaded engine and model is pinned by version and sha256.
+## What changed from OpenWhispr
 
-The rest of this file is inherited from OpenWhispr and may describe features this build removed.
+- **No update feed.** The auto-updater, its feed and its settings are gone.
+- **No OpenWhispr account.** No default sign-in server, no `openwhispr://` links, no cloud fallback. Dictation, meetings and file uploads transcribe locally unless you add your own API key for a provider.
+- **Helpers built from source.** The five Windows helper programs (hotkey listener, paste, mic listener, system audio, text monitor) are compiled from the C files in `resources/` with MSVC. The prebuilt downloads and nircmd are gone.
+- **Pinned downloads.** Every engine the build downloads (whisper.cpp, llama.cpp, qdrant, sherpa-onnx, yt-dlp) and every model the app downloads (Whisper, the local LLMs, speaker detection) is pinned to a version or commit and a sha256. A download with no pinned hash is refused.
+- **Model list stays local.** The catalog does not update from OpenWhispr unless you turn that on in Settings.
+- **Quieter by default.** Auto-learn (which reads the text field after a paste to learn your corrections) is off. The CLI bridge does not start. Parakeet, whose server listens on every network interface, is off.
+- **Content Security Policy** on the app window, limited to local servers and the AI providers you can add keys for.
+- Electron pinned to 43.8.3.
 
----
+## Build it on Windows
 
-OpenWhispr turns your voice into text, notes, and actions from your desktop. Press a hotkey, speak, and your words appear at your cursor. Choose between fully private offline transcription with local speech-to-text models like Orukeet, Whisper, NVIDIA Parakeet, and Cohere Transcribe — where your audio never leaves your device — or cloud processing for speed. No data collection, no telemetry, fully open source.
+You need Node 24, Git, Python 3 (for building `better-sqlite3`) and the Visual Studio C++ Build Tools.
 
-## Download
-
-| Platform              | Download                                                                                                                                                                                                                                                                                  |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| macOS (Apple Silicon) | [`.dmg`](https://github.com/OpenWhispr/openwhispr/releases/latest)                                                                                                                                                                                                                        |
-| macOS (Intel) \*      | [`.dmg`](https://github.com/OpenWhispr/openwhispr/releases/latest)                                                                                                                                                                                                                        |
-| Windows               | [`.exe`](https://github.com/OpenWhispr/openwhispr/releases/latest)                                                                                                                                                                                                                        |
-| Linux                 | [`.AppImage`](https://github.com/OpenWhispr/openwhispr/releases/latest) / [`.deb`](https://github.com/OpenWhispr/openwhispr/releases/latest) / [`.rpm`](https://github.com/OpenWhispr/openwhispr/releases/latest) / [`.tar.gz`](https://github.com/OpenWhispr/openwhispr/releases/latest) |
-
-\* On Intel Macs, live speaker identification and voice fingerprinting are unavailable: they depend on ONNX Runtime, which [stopped shipping macOS x86_64 binaries in 1.24](https://github.com/microsoft/onnxruntime/releases/tag/v1.24.1). Meetings still record and transcribe normally, and notes search falls back to keyword matching instead of semantic search.
-
-On macOS or x86_64 Linux, you can also install the community-maintained [Homebrew cask](https://formulae.brew.sh/cask/openwhispr):
-
-```bash
-brew install --cask openwhispr
+```
+npm.cmd ci
+npm.cmd run build:win -- --config electron-builder.unsigned-win.json
 ```
 
-## Features
+`build:win` compiles the helpers, downloads the pinned engines and checks their hashes, then builds the installer in `dist/`. It is unsigned, so Windows SmartScreen warns the first time you run it.
 
-- **Voice dictation** — global hotkey to dictate into any app with automatic pasting
-- **Dictation translation** — dedicated hotkey to dictate in one language and paste the text in another
-- **AI agent** — talk to GPT-5, Claude, Gemini, Groq, Tinfoil, OpenRouter, or local models with a named voice assistant
-- **Voice Assistant hotkey** — dedicated hotkey that sends what you say straight to your AI assistant as a command, no wake word needed and no cleanup pass; highlighted text is edited in place. With auto-paste enabled, answers paste at a focused text cursor or stream into a floating panel and copy to the clipboard when no writable cursor is available. You can also opt in to sending a screenshot of your current screen as context
-- **Meeting transcription** — auto-detect Zoom, Teams, and FaceTime calls with live speaker diarization, voice fingerprinting, and Google, Microsoft, or Apple Calendar integration
-- **Local speaker diarization** — on-device speaker labelling with voice fingerprint recognition across meetings, no cloud required
-- **Notes** — create, organize, and search notes with folders, semantic search, cloud sync, and AI actions
-- **Team spaces & sharing** — free for signed-in users; share notes on the web with link, domain, or invite-only visibility, and collaborate in team spaces with roles, invitations, and server-enforced membership
-- **Audio import** — transcribe existing audio and video: drag in files, batch-upload, or paste a YouTube/audio URL, with optional speaker detection
-- **Local or cloud — your choice** — all core features (transcription, AI reasoning, speaker diarization, semantic search) work with local models or cloud providers — including GPU-accelerated local Whisper on Metal, CUDA, and Vulkan (AMD/Intel)
-- **Enterprise controls** — enforce organization policy, company SSO and SCIM, and centrally managed Amazon Bedrock or Azure OpenAI access without distributing cloud keys
-- **Public API & MCP** — manage notes and transcriptions programmatically or connect your AI assistant via the [MCP server](https://docs.openwhispr.com/integrations/mcp)
+## Licence
 
-## Free vs. paid
-
-OpenWhispr is MIT-licensed. Everything that runs on your device is free, with no account and no word limit:
-
-| Free from OpenWhispr (on-device or your own keys) | Free OpenWhispr Cloud | Paid Cloud plans |
-| --- | --- | --- |
-| Local transcription (Whisper, Parakeet, Cohere, Orukeet) | 2,000 hosted words/week | Unlimited cloud transcription |
-| Local AI models and the local AI agent | 5 hours of meeting recordings/month | 20 hours/month (Pro) or unlimited (Business) meeting recordings |
-| Local speaker diarization | Teamspaces for signed-in users | Sync across devices |
-| Local notes, folders, and semantic search\* | | Public note links |
-| Custom dictionary and 100+ languages | | Personal API access and MCP integration |
-| Cloud transcription with your own API keys (provider charges and limits apply) | | Mobile app, workspace roles, and SSO |
-
-The free Cloud allowance is 2,000 words/week and 5 hours of meeting recordings/month; the remaining Cloud features in the third column require a paid plan. Teamspaces are free for signed-in users; creating a team inside a workspace requires the Business plan. See **Settings → Plans** in the app for current pricing.
-
-\* On Intel Macs, notes search falls back to keyword matching instead of semantic search.
-
-## Quick start
-
-```bash
-git clone https://github.com/OpenWhispr/openwhispr.git
-cd openwhispr
-npm install
-npm run dev
-```
-
-Requires Node.js 24+. See the [full documentation](https://docs.openwhispr.com/quickstart) for setup guides, platform-specific instructions, and build details.
-
-The list of models the desktop app offers lives in [`model-registry`](model-registry/); see its [`CONTRIBUTING.md`](model-registry/CONTRIBUTING.md) to add or correct a model.
-
-## Documentation
-
-Visit **[docs.openwhispr.com](https://docs.openwhispr.com)** for:
-
-- [Getting started](https://docs.openwhispr.com/quickstart)
-- [Platform guides](https://docs.openwhispr.com/platform/macos) (macOS, Windows, Linux)
-- [API reference](https://docs.openwhispr.com/api/overview)
-- [MCP server setup](https://docs.openwhispr.com/integrations/mcp)
-- [Troubleshooting](https://docs.openwhispr.com/troubleshooting)
-
-Repo examples:
-
-- [Custom ASR shim](examples/custom-asr-shim/) for Self-Hosted transcription against non-OpenAI-compatible ASR APIs
-
-## Tech stack
-
-React 19, TypeScript, Tailwind CSS v4, Electron 41, better-sqlite3, whisper.cpp, sherpa-onnx, shadcn/ui
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=OpenWhispr/openwhispr&type=date&legend=top-left)](https://www.star-history.com/#OpenWhispr/openwhispr&type=date&legend=top-left)
-
-## Sponsors
-
-<p align="center">
-  <a href="https://console.neon.tech/app/?promo=openwhispr">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://neon.com/brand/neon-logo-dark-color.svg">
-      <source media="(prefers-color-scheme: light)" srcset="https://neon.com/brand/neon-logo-light-color.svg">
-      <img width="250" alt="Neon" src="https://neon.com/brand/neon-logo-light-color.svg">
-    </picture>
-  </a>
-</p>
-
-<p align="center"><a href="https://console.neon.tech/app/?promo=openwhispr">Neon</a> is the serverless Postgres platform powering OpenWhispr Cloud.</p>
-
-## Contributing
-
-We welcome contributions. Fork the repo, create a feature branch, and open a pull request. See the [contributing guide](https://docs.openwhispr.com/contributing) for development setup and guidelines.
-
-## License
-
-[MIT](LICENSE) — free for personal and commercial use.
-
-## Acknowledgments
-
-- **[OpenAI Whisper](https://github.com/openai/whisper)** — speech recognition model powering local and cloud transcription
-- **[whisper.cpp](https://github.com/ggerganov/whisper.cpp)** — high-performance C++ implementation for local processing
-- **[NVIDIA Parakeet](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3)** — fast multilingual ASR model
-- **[sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)** — cross-platform ONNX runtime for Parakeet inference
-- **[Hugging Face](https://huggingface.co/)** — model hub hosting Whisper, Parakeet, and embedding model weights
-- **[llama.cpp](https://github.com/ggerganov/llama.cpp)** — local LLM inference for AI text processing
-- **[Electron](https://www.electronjs.org/)** — cross-platform desktop framework
-- **[React](https://react.dev/)** — UI component library
-- **[shadcn/ui](https://ui.shadcn.com/)** — accessible components built on Radix primitives
-- **[Neon](https://console.neon.tech/app/?promo=openwhispr)** — serverless Postgres powering OpenWhispr Cloud
+MIT, see [LICENSE](LICENSE). The original OpenWhispr copyright notice stays. ffmpeg, which `ffmpeg-static` bundles, is GPL-3.0.
