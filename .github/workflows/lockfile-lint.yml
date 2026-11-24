@@ -11,12 +11,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  changes:
-    uses: ./.github/workflows/ci-changes.yml
-
   lockfile-lint:
-    needs: changes
-    if: needs.changes.outputs.desktop == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

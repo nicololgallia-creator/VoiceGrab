@@ -1,0 +1,68 @@
+name: CI
+
+# Plain checks: lint, typecheck, tests. No secrets, no signing, no publishing.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Apply dependency patches
+        run: npm run apply:patches
+      - name: Run quality checks
+        run: npm run quality-check
+      - name: Check translations
+        run: npm run i18n:check
+      - name: Audit dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Apply dependency patches
+        run: npm run apply:patches
+      - name: Install Linux native test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libatspi2.0-dev libglib2.0-dev libx11-dev libxtst-dev libxext-dev xvfb
+      - name: Build better-sqlite3 for the runner's node
+        run: npm rebuild better-sqlite3
+      - name: Run tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+        run: npm test
+        env:
+          NODE_OPTIONS: --test-shard=${{ matrix.shard }}/${{ strategy.job-total }}
+          ELECTRON_OVERRIDE_DIST_PATH: /tmp
+          REQUIRE_DB_TESTS: "1"

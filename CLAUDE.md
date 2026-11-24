@@ -532,7 +532,6 @@ Outside a release the bundled copy has `manifestVersion` 0 and no signed bundle,
 - `src/helpers/registryLoader.js` - main-process loader: applies signed publications through `acceptCatalog` (lenient), only when their `testedClientContracts` include this build's `clientContract`, never throws, keeps a backup cache, honours `OPENWHISPR_MODEL_REGISTRY_MODE=bundled` (Settings → Privacy → Model list updates)
 - `src/models/registryData.js` - the per-process catalog store (`getRegistryData`, `subscribeRegistry`, `getRetiredModel`); `src/models/modelLifecycle.js` - retired/unknown helpers
 - `src/helpers/installedModels.js` - remembers each downloaded local model so it keeps working without its catalog entry
-- `openwhispr-mobile/src/config/providerCatalog.json` - Mobile's trimmed copy of the OpenAI and Groq entries. It, mobile's endpoint rules and its cleanup prompt (`openwhispr-mobile/src/config/prompts/defaultPrompts.json`) are copies, not shared code, so update them by hand when desktop's change (the catalog is covered in `openwhispr-mobile/CONTRIBUTING.md`)
 - `src/models/ModelRegistry.ts` - TypeScript wrapper with helper methods; also derives
   `REASONING_PROVIDERS` (`buildReasoningProviders()`), consumed by the model pickers
 - `src/models/providerDefaultModel.ts` - `pickProviderDefaultModel()`: the provider's `defaultModel`, else the first model
@@ -541,7 +540,7 @@ Outside a release the bundled copy has `manifestVersion` 0 and no signed bundle,
   it can be deleted. Speech-to-text pickers don't read the flag yet, so no Whisper or Parakeet
   entry may carry it (`test/helpers/legacyModels.test.js`).
 - `src/config/retiredCloudModels.ts` - the built-in retirement table, for models retired before the
-  registry existed. Mobile keeps its own copy (`openwhispr-mobile/src/lib/retiredModels.ts`)
+  registry existed.
 - `src/helpers/modelManagerBridge.js` - Handles local model downloads
 - Adding or removing a local model also means updating `lib/local-model-catalog.ts` in openwhispr-api and openwhispr-admin, or restricted workspaces can't approve it (the API's `npm run catalog:check` reports drift against desktop `main` daily)
 
