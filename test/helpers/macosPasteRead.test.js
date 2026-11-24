@@ -99,7 +99,7 @@ test(
         // Clipboard managers and the caller's restore look at types and the tag only.
         assert.equal(
           run(binary, "inspect", board).trim(),
-          "session-1 org.nspasteboard.TransientType,com.openwhispr.paste-session,public.utf8-plain-text,NSStringPboardType"
+          "session-1 org.nspasteboard.TransientType,com.nicololgallia.voicegrab.paste-session,public.utf8-plain-text,NSStringPboardType"
         );
         assert.equal(run(binary, "read", board), transcript);
         const verdict = /PASTE_READ (\d+)/.exec(await owner.exited);

@@ -22,7 +22,6 @@ function pasteCancelledError() {
 const PASTE_DELAYS = {
   darwin: 120,
   win32_fast: 10,
-  win32_nircmd: 30,
   win32_pwsh: 40,
   linux: 50,
 };
@@ -41,7 +40,7 @@ const FAST_PASTE_TIMEOUT_MS = 3000;
 
 // Tags the fast-paste binary's transcript item; keep in sync with
 // pasteSessionType in resources/macos-fast-paste.swift.
-const PASTE_SESSION_TYPE = "com.openwhispr.paste-session";
+const PASTE_SESSION_TYPE = "com.nicololgallia.voicegrab.paste-session";
 const PASTE_POSTED = /^PASTE_POSTED( typed)?$/m;
 const PASTE_READ_VERDICT = /^PASTE_(?:READ \d+|NOT_READ|REPLACED|TYPED)$/m;
 
@@ -51,7 +50,7 @@ const RESTORE_DELAYS = {
   // transient marker) can't trigger a restore before the target pastes.
   darwin_after_read: 50,
   darwin: 450,
-  win32_nircmd: 500,
+  win32_fast: 500,
   win32_pwsh: 500,
   linux: 800,
   linux_kde_wayland: 1200,
@@ -151,8 +150,6 @@ class ClipboardManager {
   constructor() {
     this.accessibilityCache = { value: null, expiresAt: 0 };
     this.commandAvailabilityCache = new Map();
-    this.nircmdPath = null;
-    this.nircmdChecked = false;
     this.fastPastePath = null;
     this.fastPasteChecked = false;
     this.winFastPastePath = null;
@@ -371,48 +368,6 @@ class ClipboardManager {
       texts.push(clipboard.readText());
     } catch {}
     return [...new Set(texts.filter((text) => typeof text === "string"))];
-  }
-
-  getNircmdPath() {
-    if (this.nircmdChecked) {
-      return this.nircmdPath;
-    }
-
-    this.nircmdChecked = true;
-
-    if (process.platform !== "win32") {
-      return null;
-    }
-
-    const possiblePaths = [
-      ...(process.resourcesPath ? [path.join(process.resourcesPath, "bin", "nircmd.exe")] : []),
-      path.join(__dirname, "..", "..", "resources", "bin", "nircmd.exe"),
-      path.join(process.cwd(), "resources", "bin", "nircmd.exe"),
-    ];
-
-    for (const nircmdPath of possiblePaths) {
-      try {
-        if (fs.existsSync(nircmdPath)) {
-          this.safeLog(`✅ Found nircmd.exe at: ${nircmdPath}`);
-          this.nircmdPath = nircmdPath;
-          return nircmdPath;
-        }
-      } catch {}
-    }
-
-    this.safeLog("⚠️ nircmd.exe not found, will use PowerShell fallback");
-    return null;
-  }
-
-  getNircmdStatus() {
-    if (process.platform !== "win32") {
-      return { available: false, reason: "Not Windows" };
-    }
-    const nircmdPath = this.getNircmdPath();
-    return {
-      available: !!nircmdPath,
-      path: nircmdPath,
-    };
   }
 
   _resolveNativeBinary(binaryName, platform, cacheKeyChecked, cacheKeyPath) {
@@ -1205,12 +1160,7 @@ class ClipboardManager {
         }
       } else if (platform === "win32") {
         const winFastPaste = this.resolveWindowsFastPasteBinary();
-        if (winFastPaste) {
-          method = "sendinput";
-        } else {
-          const nircmdPath = this.getNircmdPath();
-          method = nircmdPath ? "nircmd" : "powershell";
-        }
+        method = winFastPaste ? "sendinput" : "powershell";
         pasteResult = await this.pasteWindows(originalClipboard, {
           ...options,
           expectedClipboardText: text,
@@ -1546,7 +1496,7 @@ class ClipboardManager {
       return this.pasteWithFastPaste(fastPastePath, originalClipboard, options);
     }
 
-    return this.pasteWithNircmdOrPowerShell(originalClipboard, options);
+    return this.pasteWithPowerShell(originalClipboard, options);
   }
 
   async pasteWithFastPaste(fastPastePath, originalClipboard, options = {}) {
@@ -1602,7 +1552,7 @@ class ClipboardManager {
             if (originalClipboard != null) {
               resolve({
                 restoreComplete: this._restoreClipboardAfterDelay(originalClipboard, {
-                  delayMs: RESTORE_DELAYS.win32_nircmd,
+                  delayMs: RESTORE_DELAYS.win32_fast,
                   expectedText: options.expectedClipboardText,
                 }),
               });
@@ -1612,100 +1562,9 @@ class ClipboardManager {
           } else {
             if (options.isCancelled?.()) return reject(pasteCancelledError());
             this.safeLog(
-              `❌ Windows fast-paste failed (code ${code}), falling back to nircmd/PowerShell`,
+              `❌ Windows fast-paste failed (code ${code}), falling back to PowerShell`,
               { elapsedMs: elapsed, stderr: stderrData.trim() }
             );
-            this.pasteWithNircmdOrPowerShell(originalClipboard, options)
-              .then(resolve)
-              .catch(reject);
-          }
-        });
-
-        pasteProcess.on("error", (error) => {
-          if (hasTimedOut) return;
-          clearTimeout(timeoutId);
-          if (options.isCancelled?.()) return reject(pasteCancelledError());
-          this.safeLog("❌ Windows fast-paste error, falling back to nircmd/PowerShell", {
-            elapsedMs: Date.now() - startTime,
-            error: error.message,
-          });
-          this.pasteWithNircmdOrPowerShell(originalClipboard, options).then(resolve).catch(reject);
-        });
-
-        const timeoutId = setTimeout(() => {
-          hasTimedOut = true;
-          this.safeLog("⏱️ Windows fast-paste timeout, falling back to nircmd/PowerShell");
-          killProcess(pasteProcess, "SIGKILL");
-          pasteProcess.removeAllListeners();
-          if (options.isCancelled?.()) return reject(pasteCancelledError());
-          this.pasteWithNircmdOrPowerShell(originalClipboard, options).then(resolve).catch(reject);
-        }, 2000);
-      }, PASTE_DELAYS.win32_fast);
-    });
-  }
-
-  async pasteWithNircmdOrPowerShell(originalClipboard, options = {}) {
-    const nircmdPath = this.getNircmdPath();
-    if (nircmdPath) {
-      return this.pasteWithNircmd(nircmdPath, originalClipboard, options);
-    }
-    return this.pasteWithPowerShell(originalClipboard, options);
-  }
-
-  async pasteWithNircmd(nircmdPath, originalClipboard, options = {}) {
-    return new Promise((resolve, reject) => {
-      const pasteDelay = PASTE_DELAYS.win32_nircmd;
-      const restoreDelay = RESTORE_DELAYS.win32_nircmd;
-
-      setTimeout(async () => {
-        try {
-          if (options.validateTarget) await this._validatePasteTarget(options);
-          if (options.isCancelled?.()) throw pasteCancelledError();
-        } catch (error) {
-          return reject(error);
-        }
-        let hasTimedOut = false;
-        const startTime = Date.now();
-
-        this.safeLog(`⚡ nircmd paste starting (delay: ${pasteDelay}ms)`);
-
-        const pasteProcess = spawn(nircmdPath, ["sendkeypress", "ctrl+v"], {
-          windowsHide: true,
-        });
-
-        let errorOutput = "";
-
-        pasteProcess.stderr.on("data", (data) => {
-          errorOutput += data.toString();
-        });
-
-        pasteProcess.on("close", (code) => {
-          if (hasTimedOut) return;
-          clearTimeout(timeoutId);
-
-          const elapsed = Date.now() - startTime;
-
-          if (code === 0) {
-            this.safeLog(`✅ nircmd paste success`, {
-              elapsedMs: elapsed,
-              restoreDelayMs: restoreDelay,
-            });
-            if (originalClipboard != null) {
-              resolve({
-                restoreComplete: this._restoreClipboardAfterDelay(originalClipboard, {
-                  delayMs: restoreDelay,
-                  expectedText: options.expectedClipboardText,
-                }),
-              });
-            } else {
-              resolve({ restoreComplete: Promise.resolve() });
-            }
-          } else {
-            if (options.isCancelled?.()) return reject(pasteCancelledError());
-            this.safeLog(`❌ nircmd failed (code ${code}), falling back to PowerShell`, {
-              elapsedMs: elapsed,
-              stderr: errorOutput,
-            });
             this.pasteWithPowerShell(originalClipboard, options).then(resolve).catch(reject);
           }
         });
@@ -1714,9 +1573,8 @@ class ClipboardManager {
           if (hasTimedOut) return;
           clearTimeout(timeoutId);
           if (options.isCancelled?.()) return reject(pasteCancelledError());
-          const elapsed = Date.now() - startTime;
-          this.safeLog(`❌ nircmd error, falling back to PowerShell`, {
-            elapsedMs: elapsed,
+          this.safeLog("❌ Windows fast-paste error, falling back to PowerShell", {
+            elapsedMs: Date.now() - startTime,
             error: error.message,
           });
           this.pasteWithPowerShell(originalClipboard, options).then(resolve).catch(reject);
@@ -1724,14 +1582,13 @@ class ClipboardManager {
 
         const timeoutId = setTimeout(() => {
           hasTimedOut = true;
-          const elapsed = Date.now() - startTime;
-          this.safeLog(`⏱️ nircmd timeout, falling back to PowerShell`, { elapsedMs: elapsed });
+          this.safeLog("⏱️ Windows fast-paste timeout, falling back to PowerShell");
           killProcess(pasteProcess, "SIGKILL");
           pasteProcess.removeAllListeners();
           if (options.isCancelled?.()) return reject(pasteCancelledError());
           this.pasteWithPowerShell(originalClipboard, options).then(resolve).catch(reject);
         }, 2000);
-      }, pasteDelay);
+      }, PASTE_DELAYS.win32_fast);
     });
   }
 

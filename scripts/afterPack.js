@@ -258,14 +258,13 @@ function verifyWindowsOnnxRuntimePrivatized(binDir) {
   }
 }
 
-// compile:winkeys and download:windows-key-listener only warn when they can't
-// produce the key listener, so without this check a build ships where Hold and
+// compile:winkeys only warns when it can't produce the key listener, so without this check a build ships where Hold and
 // modifier-only hotkeys (the default Control+Super) never fire (#2005).
 function verifyWindowsKeyListener(binDir) {
   const listenerPath = path.join(binDir, "windows-key-listener.exe");
   if (!fs.existsSync(listenerPath)) {
     throw new Error(
-      `afterPack: missing ${listenerPath} — run npm run compile:winkeys on Windows (compiles with MSVC, MinGW or Clang, or downloads the prebuilt binary); Push-to-Talk and modifier-only hotkeys would never fire on Windows`
+      `afterPack: missing ${listenerPath} — run npm run compile:winkeys on Windows (compiles with MSVC, MinGW or Clang); Push-to-Talk and modifier-only hotkeys would never fire on Windows`
     );
   }
 }

@@ -188,7 +188,7 @@ guard let virtualKey = lookupVirtualKey(for: shortcutCharacter) else {
 }
 
 // Keep in sync with PASTE_SESSION_TYPE in src/helpers/clipboard.js.
-let pasteSessionType = NSPasteboard.PasteboardType("com.openwhispr.paste-session")
+let pasteSessionType = NSPasteboard.PasteboardType("com.nicololgallia.voicegrab.paste-session")
 let transientType = NSPasteboard.PasteboardType("org.nspasteboard.TransientType")
 
 // Hands the transcript over only when a reader asks for it, which is how the

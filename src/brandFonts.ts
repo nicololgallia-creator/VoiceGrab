@@ -1,8 +1,8 @@
 // Registers the Yowza brand faces when their files are present in the build.
 //
-// Yowza is a licensed typeface (Blaze Type), so the .otf files are not in git:
-// scripts/download-brand-fonts.js fetches them at build time and vite bundles
-// them into app.asar as hashed assets. In a build without them the glob below is
+// Yowza is a licensed typeface (Blaze Type), so the .otf files are not in git and
+// VoiceGrab does not fetch them. If they are dropped in, vite bundles them into
+// app.asar as hashed assets. In a build without them the glob below is
 // empty, nothing is registered, and every `--font-family-*` token falls through
 // to Noto Sans. Nothing is ever fetched at runtime.
 const FACES: Record<string, { family: string; weight: string }> = {
