@@ -7,6 +7,7 @@ const { downloadFile, parseArgs } = require("./lib/download-utils");
 
 const SEGMENTATION_URL =
   "https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2";
+const SEGMENTATION_SHA256 = "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488";
 const SEGMENTATION_DIR = "sherpa-onnx-pyannote-segmentation-3-0";
 const SEGMENTATION_FILE = "model.onnx";
 
@@ -15,9 +16,11 @@ const {
   EMBEDDING_MODEL_FILE: EMBEDDING_FILE,
 } = require("../src/constants/speakerDetection.json");
 // Superseded embedding model; removed so builds don't bundle both.
+const EMBEDDING_SHA256 = "53cab20ba8f2eb2f6e2d89ecc18e88ef3222169b61b4419cbc13666744a4574b";
 const LEGACY_EMBEDDING_FILE = "3dspeaker_speech_campplus_sv_en_voxceleb_16k.onnx";
 const VAD_URL =
   "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx";
+const VAD_SHA256 = "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6";
 const VAD_FILE = "silero_vad.onnx";
 
 function getModelDir() {
@@ -69,7 +72,7 @@ async function main() {
     const archivePath = path.join(modelDir, `${SEGMENTATION_DIR}.tar.bz2`);
 
     try {
-      await downloadFile(SEGMENTATION_URL, archivePath);
+      await downloadFile(SEGMENTATION_URL, archivePath, SEGMENTATION_SHA256);
 
       const extractDir = path.join(modelDir, "temp-segmentation");
       fs.mkdirSync(extractDir, { recursive: true });
@@ -109,7 +112,7 @@ async function main() {
     console.log(`[diarization-models] Downloading embedding model from ${EMBEDDING_URL}`);
 
     try {
-      await downloadFile(EMBEDDING_URL, embModelPath);
+      await downloadFile(EMBEDDING_URL, embModelPath, EMBEDDING_SHA256);
       const stats = fs.statSync(embModelPath);
       const sizeMB = (stats.size / 1024 / 1024).toFixed(1);
       console.log(`[diarization-models] Embedding model downloaded (${sizeMB}MB)`);
@@ -127,7 +130,7 @@ async function main() {
     console.log(`[diarization-models] Downloading VAD model from ${VAD_URL}`);
 
     try {
-      await downloadFile(VAD_URL, vadModelPath);
+      await downloadFile(VAD_URL, vadModelPath, VAD_SHA256);
       const stats = fs.statSync(vadModelPath);
       const sizeMB = (stats.size / 1024 / 1024).toFixed(1);
       console.log(`[diarization-models] VAD model downloaded (${sizeMB}MB)`);

@@ -16,12 +16,13 @@ const LLAMA_CPP_REPO = "ggml-org/llama.cpp";
 
 // Pinned to a tested build that loads current GGUF models. whisper-server is
 // statically linked, so bumping this can't affect local Whisper.
-const LLAMA_CPP_TAG = process.env.LLAMA_CPP_VERSION || "b12110";
+const LLAMA_CPP_TAG = "b12110";
 
 const BINARIES = {
   "darwin-arm64": {
     platformArch: "darwin-arm64",
     assetPattern: /^llama-.*-bin-macos-arm64\.tar\.gz$/,
+    sha256: "4f5b8de12e0b9516658ca6a5764c6ffb3d7c659c3dd538556b1413c7b4050662",
     binaryPath: "build/bin/llama-server",
     outputName: "llama-server-darwin-arm64",
     libPattern: "*.dylib",
@@ -29,6 +30,7 @@ const BINARIES = {
   "darwin-x64": {
     platformArch: "darwin-x64",
     assetPattern: /^llama-.*-bin-macos-x64\.tar\.gz$/,
+    sha256: "c8094268b6bf62f4998f0e45656fd9f5e2d4afb6b1cd0044d761db64be1dd47d",
     binaryPath: "build/bin/llama-server",
     outputName: "llama-server-darwin-x64",
     libPattern: "*.dylib",
@@ -36,6 +38,7 @@ const BINARIES = {
   "win32-x64-cpu": {
     platformArch: "win32-x64",
     assetPattern: /^llama-.*-bin-win-cpu-x64\.zip$/,
+    sha256: "98901e327c252875accaf2d1bf364e10e868843b0b63468baad1aa945cdc5da2",
     binaryPath: "build/bin/llama-server.exe",
     outputName: "llama-server-win32-x64-cpu.exe",
     libPattern: "*.dll",
@@ -43,6 +46,7 @@ const BINARIES = {
   "linux-x64-cpu": {
     platformArch: "linux-x64",
     assetPattern: /^llama-.*-bin-ubuntu-x64\.tar\.gz$/,
+    sha256: "368227edcc229be5f9bed16a2223d79b5e41d0ac2e19bcf5825e82291c060e55",
     binaryPath: "build/bin/llama-server",
     outputName: "llama-server-linux-x64-cpu",
     libPattern: "*.so*",
@@ -87,7 +91,7 @@ async function downloadBinary(key, config, release, isForce = false) {
   const zipPath = path.join(BIN_DIR, asset.name);
 
   try {
-    await downloadFile(asset.url, zipPath);
+    await downloadFile(asset.url, zipPath, config.sha256);
 
     const extractDir = path.join(BIN_DIR, `temp-llama-${key}`);
     fs.mkdirSync(extractDir, { recursive: true });

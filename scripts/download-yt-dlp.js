@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const { downloadFile, parseArgs, setExecutable } = require("./lib/download-utils");
@@ -56,11 +55,7 @@ async function downloadBinary(platformArch, config, isForce = false) {
   console.log(`  ${platformArch}: Downloading from ${url}`);
 
   try {
-    await downloadFile(url, outputPath);
-    const actual = crypto.createHash("sha256").update(fs.readFileSync(outputPath)).digest("hex");
-    if (actual !== config.sha256) {
-      throw new Error(`sha256 mismatch: expected ${config.sha256}, got ${actual}`);
-    }
+    await downloadFile(url, outputPath, config.sha256);
     setExecutable(outputPath);
     console.log(`  ${platformArch}: Saved to ${config.outputName} (sha256 verified)`);
     return true;

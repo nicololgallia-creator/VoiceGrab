@@ -118,14 +118,19 @@ class LocalEmbeddings {
     if (this.isAvailable()) return;
 
     const { downloadFile } = require("./downloadUtils");
+    // Same commit and hashes as scripts/download-minilm.js.
+    const commit = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41";
+    const base = `https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/${commit}`;
     const files = [
       {
         name: "model.onnx",
-        url: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx",
+        url: `${base}/onnx/model.onnx`,
+        sha256: "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
       },
       {
         name: "tokenizer.json",
-        url: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer.json",
+        url: `${base}/tokenizer.json`,
+        sha256: "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
       },
     ];
 
@@ -135,7 +140,7 @@ class LocalEmbeddings {
       const dest = path.join(this.modelDir, file.name);
       if (fs.existsSync(dest)) continue;
       debugLogger.debug("local-embeddings downloading", { file: file.name });
-      await downloadFile(file.url, dest);
+      await downloadFile(file.url, dest, { expectedSha256: file.sha256 });
     }
 
     debugLogger.info("local-embeddings model downloaded", { modelDir: this.modelDir });

@@ -3,8 +3,10 @@ const fs = require("fs");
 const path = require("path");
 const { downloadFile, parseArgs } = require("./lib/download-utils");
 
+// Pinned to one Hugging Face commit, so a later push to the repo cannot change what we ship.
 const VAD_MODEL_URL =
-  "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin";
+  "https://huggingface.co/ggml-org/whisper-vad/resolve/9ffd54a1e1ee413ddf265af9913beaf518d1639b/ggml-silero-v5.1.2.bin";
+const VAD_MODEL_SHA256 = "29940d98d42b91fbd05ce489f3ecf7c72f0a42f027e4875919a28fb4c04ea2cf";
 const VAD_MODEL_FILE = "ggml-silero-v5.1.2.bin";
 
 function getOutputDir() {
@@ -29,7 +31,7 @@ async function main() {
 
   console.log(`[whisper-vad-model] Downloading ${VAD_MODEL_FILE}`);
   try {
-    await downloadFile(VAD_MODEL_URL, outputPath);
+    await downloadFile(VAD_MODEL_URL, outputPath, VAD_MODEL_SHA256);
     const sizeKb = Math.round(fs.statSync(outputPath).size / 1024);
     console.log(`[whisper-vad-model] Downloaded ${VAD_MODEL_FILE} (${sizeKb}KB)`);
   } catch (error) {

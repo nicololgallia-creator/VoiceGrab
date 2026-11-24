@@ -15,26 +15,30 @@ const QDRANT_REPO = "qdrant/qdrant";
 
 // Qdrant publishes releases before their binary build jobs finish. Pin a complete
 // release so every platform packages the same version, independent of upstream timing.
-const QDRANT_VERSION = process.env.QDRANT_VERSION || "v1.20.1";
+const QDRANT_VERSION = "v1.20.1";
 
 const BINARIES = {
   "darwin-arm64": {
     archiveName: "qdrant-aarch64-apple-darwin.tar.gz",
+    sha256: "5deb80dfa44afea90fa27bb3fcd269e60b1e88347e769f2547a0269aadb37003",
     binaryName: "qdrant",
     outputName: "qdrant-darwin-arm64",
   },
   "darwin-x64": {
     archiveName: "qdrant-x86_64-apple-darwin.tar.gz",
+    sha256: "5f3ae5d62d476788f0c529b6f9276d5517e9c70b4707ef6374c1cceea4369597",
     binaryName: "qdrant",
     outputName: "qdrant-darwin-x64",
   },
   "linux-x64": {
     archiveName: "qdrant-x86_64-unknown-linux-gnu.tar.gz",
+    sha256: "bf0b7d2ce2e0608ceecc135e6803133849385ad317226c2749fdb2c126b63cf6",
     binaryName: "qdrant",
     outputName: "qdrant-linux-x64",
   },
   "win32-x64": {
     archiveName: "qdrant-x86_64-pc-windows-msvc.zip",
+    sha256: "cdbcf8831a19b40785af300d10b762501fb3ff796f1a3c8d7fa142c67f76ad62",
     binaryName: "qdrant.exe",
     outputName: "qdrant-win32-x64.exe",
   },
@@ -89,7 +93,7 @@ async function downloadBinary(platformArch, config, release, isForce = false) {
   const archivePath = path.join(BIN_DIR, config.archiveName);
 
   try {
-    await downloadFile(url, archivePath);
+    await downloadFile(url, archivePath, config.sha256);
 
     const extractDir = path.join(BIN_DIR, `temp-qdrant-${platformArch}`);
     fs.mkdirSync(extractDir, { recursive: true });

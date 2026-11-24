@@ -2,6 +2,7 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
+const crypto = require("crypto");
 
 const REQUEST_TIMEOUT = 30000;
 const MAX_RETRIES = 3;
@@ -201,7 +202,22 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function downloadFile(url, dest, retryCount = 0) {
+/** Throws, and deletes the file, unless it hashes to the pinned sha256. */
+async function verifySha256(filePath, expected) {
+  const hash = crypto.createHash("sha256");
+  for await (const chunk of fs.createReadStream(filePath)) hash.update(chunk);
+  const actual = hash.digest("hex");
+  if (actual !== expected) {
+    fs.rmSync(filePath, { force: true });
+    throw new Error(`sha256 mismatch for ${path.basename(filePath)}: got ${actual}`);
+  }
+}
+
+/** Every download is pinned: a missing or malformed sha256 fails the build. */
+function downloadFile(url, dest, sha256, retryCount = 0) {
+  if (!/^[a-f0-9]{64}$/.test(sha256 || "")) {
+    return Promise.reject(new Error(`No sha256 pinned for ${url}`));
+  }
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
     let activeRequest = null;
@@ -291,22 +307,24 @@ function downloadFile(url, dest, retryCount = 0) {
     };
 
     request(url);
-  }).catch(async (error) => {
-    const isTransient =
-      error.message.includes("timed out") ||
-      error.code === "ECONNRESET" ||
-      error.code === "ETIMEDOUT";
+  })
+    .then(() => verifySha256(dest, sha256))
+    .catch(async (error) => {
+      const isTransient =
+        error.message.includes("timed out") ||
+        error.code === "ECONNRESET" ||
+        error.code === "ETIMEDOUT";
 
-    if (isTransient && retryCount < MAX_RETRIES) {
-      console.log(`\n  Retry ${retryCount + 1}/${MAX_RETRIES}: ${error.message}`);
-      await sleep(RETRY_DELAY);
-      if (fs.existsSync(dest)) {
-        fs.unlinkSync(dest);
+      if (isTransient && retryCount < MAX_RETRIES) {
+        console.log(`\n  Retry ${retryCount + 1}/${MAX_RETRIES}: ${error.message}`);
+        await sleep(RETRY_DELAY);
+        if (fs.existsSync(dest)) {
+          fs.unlinkSync(dest);
+        }
+        return downloadFile(url, dest, sha256, retryCount + 1);
       }
-      return downloadFile(url, dest, retryCount + 1);
-    }
-    throw error;
-  });
+      throw error;
+    });
 }
 
 async function extractZip(zipPath, destDir) {

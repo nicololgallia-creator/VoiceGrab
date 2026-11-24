@@ -2,7 +2,6 @@
 const fs = require("fs");
 const path = require("path");
 const { execFileSync } = require("child_process");
-const crypto = require("crypto");
 const {
   cleanupFiles,
   downloadFile,
@@ -51,6 +50,7 @@ const MACOS_ARM64_ONNXRUNTIME = {
 const BINARIES = {
   "darwin-arm64": {
     archiveName: `sherpa-onnx-v${SHERPA_ONNX_VERSION}-osx-universal2-shared-no-tts.tar.bz2`,
+    sha256: "636b439c75031d892636dfdd2000a0233e4a30a08b030697e91f8aa389431b83",
     binaryPath: "sherpa-onnx-offline-websocket-server",
     outputName: "sherpa-onnx-ws-darwin-arm64",
     onlineBinaryPath: "sherpa-onnx-online-websocket-server",
@@ -61,6 +61,7 @@ const BINARIES = {
   },
   "darwin-x64": {
     archiveName: `sherpa-onnx-v${SHERPA_ONNX_VERSION}-osx-universal2-shared-no-tts.tar.bz2`,
+    sha256: "636b439c75031d892636dfdd2000a0233e4a30a08b030697e91f8aa389431b83",
     binaryPath: "sherpa-onnx-offline-websocket-server",
     outputName: "sherpa-onnx-ws-darwin-x64",
     onlineBinaryPath: "sherpa-onnx-online-websocket-server",
@@ -72,6 +73,7 @@ const BINARIES = {
   "win32-x64": {
     // Since 1.13.4 the Windows assets carry an MSVC runtime/build-type suffix
     archiveName: `sherpa-onnx-v${SHERPA_ONNX_VERSION}-win-x64-shared-MD-Release-no-tts.tar.bz2`,
+    sha256: "876e6b89b8cf84a3a1b375a397507f2cfe9c227c2a945411a11a668475fcb5d3",
     binaryPath: "sherpa-onnx-offline-websocket-server.exe",
     outputName: "sherpa-onnx-ws-win32-x64.exe",
     onlineBinaryPath: "sherpa-onnx-online-websocket-server.exe",
@@ -82,6 +84,7 @@ const BINARIES = {
   },
   "linux-x64": {
     archiveName: `sherpa-onnx-v${SHERPA_ONNX_VERSION}-linux-x64-shared-no-tts.tar.bz2`,
+    sha256: "d0f96c8b65c6cd0974fada22737e337de81bc8cd2abbec2e39caf358b1eec5fc",
     binaryPath: "sherpa-onnx-offline-websocket-server",
     outputName: "sherpa-onnx-ws-linux-x64",
     onlineBinaryPath: "sherpa-onnx-online-websocket-server",
@@ -123,9 +126,7 @@ async function replaceMacosArm64OnnxRuntime(libraryPath, platformArch) {
   const x86Path = `${libraryPath}.x86_64`;
   try {
     console.log(`  ${platformArch}: Downloading arm64 ONNX Runtime from ${url}`);
-    await downloadFile(url, zipPath);
-    const actual = crypto.createHash("sha256").update(fs.readFileSync(zipPath)).digest("hex");
-    if (actual !== sha256) throw new Error(`arm64 ONNX Runtime sha256 mismatch: ${actual}`);
+    await downloadFile(url, zipPath, sha256);
     execFileSync("unzip", ["-q", "-o", zipPath, "-d", extractDir], { stdio: "ignore" });
     const arm64Path = findLibrariesInDir(extractDir, "*.dylib").find(
       (file) => path.basename(file) === libraryName
@@ -361,7 +362,7 @@ async function downloadBinary(platformArch, config, isForce = false) {
   const extractDir = path.join(BIN_DIR, `temp-sherpa-${platformArch}`);
 
   try {
-    await downloadFile(url, archivePath);
+    await downloadFile(url, archivePath, config.sha256);
 
     fs.mkdirSync(extractDir, { recursive: true });
     await extractTarBz2(archivePath, extractDir);

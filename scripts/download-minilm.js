@@ -9,14 +9,18 @@ const MODEL_DIR = forBuild
   ? path.join(__dirname, "..", "resources", "bin", "all-MiniLM-L6-v2")
   : path.join(os.homedir(), ".cache", "openwhispr", "embedding-models", "all-MiniLM-L6-v2");
 
+// Pinned to one Hugging Face commit, so a later push to the repo cannot change what we ship.
+const COMMIT = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41";
 const FILES = [
   {
     name: "model.onnx",
-    url: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx",
+    url: `https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/${COMMIT}/onnx/model.onnx`,
+    sha256: "6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452",
   },
   {
     name: "tokenizer.json",
-    url: "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer.json",
+    url: `https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/${COMMIT}/tokenizer.json`,
+    sha256: "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
   },
 ];
 
@@ -44,7 +48,7 @@ async function main() {
     console.log(`[embedding-model] Downloading ${file.name} from ${file.url}`);
 
     try {
-      await downloadFile(file.url, destPath);
+      await downloadFile(file.url, destPath, file.sha256);
       const stats = fs.statSync(destPath);
       const sizeMB = (stats.size / 1024 / 1024).toFixed(1);
       console.log(`[embedding-model] ${file.name} downloaded (${sizeMB}MB)`);

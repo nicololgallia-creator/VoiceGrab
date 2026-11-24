@@ -18,22 +18,29 @@ const {
 
 const WHISPER_CPP_REPO = "OpenWhispr/whisper.cpp";
 
+// VoiceGrab keeps the OpenWhispr/whisper.cpp fork on purpose: its zips hold a statically linked
+// whisper-server, while the ggml-org zips ship ggml.dll beside the exe and would clash with
+// llama-server's ggml.dll in the same folder. The fork's server.cpp is identical to ggml-org v1.9.1.
+// Each zip is pinned by sha256 (GitHub release digests; the Windows one was also hashed locally).
 // Pinned to a tested build. Tracking the latest release let an upstream whisper.cpp bump
 // change transcription output between app releases with no diff to review. See #1348.
 // 0.0.10 is the first release whose win32 zips bundle the MSVC runtime DLLs (CUS-113).
 const BINARIES = {
   "darwin-arm64": {
     zipName: "whisper-server-darwin-arm64.zip",
+    sha256: "d248c01c8824271487fb3dea5aab1aa20ba4a47e04d99b5e0fa13e9efb25d313",
     binaryName: "whisper-server-darwin-arm64",
     outputName: "whisper-server-darwin-arm64",
   },
   "darwin-x64": {
     zipName: "whisper-server-darwin-x64.zip",
+    sha256: "3a952899bf01d959f7459e1240bd900f7e2855a4fa0ce875e05885f2952a7b61",
     binaryName: "whisper-server-darwin-x64",
     outputName: "whisper-server-darwin-x64",
   },
   "win32-x64": {
     zipName: "whisper-server-win32-x64-cpu.zip",
+    sha256: "7fca73533d5ac5d30f8f6aa0967672321861887c8ea1000cb13196a7d5135fd3",
     binaryName: "whisper-server-win32-x64-cpu.exe",
     outputName: "whisper-server-win32-x64.exe",
     // MSVC runtime DLLs the exe links dynamically; without them beside the exe,
@@ -43,6 +50,7 @@ const BINARIES = {
   },
   "linux-x64": {
     zipName: "whisper-server-linux-x64-cpu.zip",
+    sha256: "d184b6037f33d15f639cf3363c583148a6b2cb8d0ae7b73aafb8e71950f9fbe7",
     binaryName: "whisper-server-linux-x64-cpu",
     outputName: "whisper-server-linux-x64",
   },
@@ -111,7 +119,7 @@ async function downloadBinary(platformArch, config, release, isForce = false) {
   const zipPath = path.join(BIN_DIR, config.zipName);
 
   try {
-    await downloadFile(url, zipPath);
+    await downloadFile(url, zipPath, config.sha256);
 
     const extractDir = path.join(BIN_DIR, `temp-whisper-${platformArch}`);
     fs.mkdirSync(extractDir, { recursive: true });
